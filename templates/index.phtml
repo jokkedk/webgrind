@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>webgrind</title>
+	<link rel="stylesheet" type="text/css" href="styles/style.css" />
+	<script src="js/jquery-1.2.3.pack.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.blockUI.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.tablesorter.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.selectboxes.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/sprintf.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		var fileUrlFormat = '<?=Config::$fileUrlFormat?>';
+		var currentDataFile = null;
+		var invocationsLoaded = null;
+		function getOptions(){
+			options = new Object();
+			options.dataFile = $("#dataFile").val();
+			options.costFormat = $('#costFormat').val();
+			options.showFraction = $("#showFraction").val();
+			options.hideInternals = $('#hideInternals').attr('checked') ? 1 : 0;
+			return options;
+		}
+		
+		function update(){
+			vars = getOptions();
+			vars.op = 'function_list';
+			$.getJSON("index.php",
+				vars,
+				function(data){
+					invocationsLoaded = new Array();
+					$("#function_table tbody").empty();
+					for(i=0;i<data.functions.length;i++){
+						$("#function_table tbody").append(functionTableRow(data.functions[i]));
+					}
+					currentDataFile = data.dataFile;
+					$("#data_file").html(data.dataFile);
+					$("#invoke_url").html(data.invokeUrl);
+					$("#mtime").html(data.mtime);
+					
+					$("#hello_message").hide();
+					$("#trace_view").show();
+					
+					$("#function_table").trigger('update');
+					$("#function_table").trigger("sorton",[[[3,1]]]); 
+				}
+			);
+		}
+		
+		function reloadFilelist(){
+			$.getJSON("index.php",
+				{'op':'file_list'},
+				function(data){
+					options = new Object();
+					for(i=0;i<data.length;i++){
+						options[data[i]['filename']] = data[i]['invokeUrl']+' ('+data[i]['filename']+')';
+					}
+					$("#dataFile").removeOption(/[^0]/);
+					$("#dataFile").addOption(options, false);
+
+				}
+			);
+		}
+		
+		function loadInvocations(functionNr){
+			if(!invocationsLoaded[functionNr]){
+				$.getJSON("index.php",
+					{'op':'invocation_list','file':currentDataFile,'functionNr':functionNr},
+					function(data){
+						$("#invocation_area_"+functionNr).append(invocationTable(functionNr));
+						calledByUser = calledBySystem = false;
+						for(i=0;i<data.length;i++){
+							if(data[i].callerInfo){
+								$("#invocation_table_"+functionNr+" tbody").append(invocationTableRow(i, data[i]));
+								calledByUser = true;
+							} else {
+								calledBySystem = true;
+							}
+						}
+						if(calledByUser){				
+							$("#invocation_table_"+functionNr).tablesorter({
+								widgets: ['zebra'],
+								headers: { 
+						            4: { 
+						                sorter: false 
+						            }
+						        }							
+							});
+						} else {
+							$("#invocation_area_"+functionNr).empty();
+						}
+						if(calledBySystem){
+							$("#invocation_area_"+functionNr).append('Called by script host');
+						}
+						
+						invocationsLoaded[functionNr] = true;
+					}
+				);				
+			} else {
+				$("#invocation_area_"+functionNr).toggle();
+			}
+			current = $("#fold_marker_"+functionNr).get(0).src;
+			if(current.substr(current.lastIndexOf('/')+1) == 'right.gif')
+				$("#fold_marker_"+functionNr).get(0).src = 'img/down.gif';
+			else
+				$("#fold_marker_"+functionNr).get(0).src = 'img/right.gif';
+		}
+		
+		function invocationTable(functionNr){
+			return '<table class="tablesorter" id="invocation_table_'+functionNr+'" cellspacing="0"> \
+						<thead><tr><th>#</th><th>Called from</th><th>Self Cost</th><th>Invocation Cost</th><th> </th></tr></thead> \
+						<tbody> \
+						</tbody> \
+					</table> \
+			';
+		}
+		
+		function invocationTableRow(nr,data){
+			return '<tr> \
+						<td>'+nr+'</td> \
+						<td>'+data.callerInfo.functionName+'</td> \
+						<td>'+data.selfCost+'</td> \
+						<td>'+data.callCost+'</td> \
+						<td><a href="'+sprintf(fileUrlFormat,data.callerInfo.file,data.calledFromLine)+'" target="_blank">O</a></td> \
+					</tr>';
+			
+		}
+		
+		function functionTableRow(data){
+			openLink = (data.file=='php:internal')?'':'<a href="'+sprintf(fileUrlFormat,data.file,-1)+'" target="_blank">O</a>';
+			return '<tr> \
+						<td><a href="javascript:loadInvocations('+data.nr+')"><img id="fold_marker_'+data.nr+'" src="img/right.gif" />&nbsp;&nbsp;'+data.functionName+'</a><div class="invocation_area" id="invocation_area_'+data.nr+'"></div></td> \
+						<td>'+openLink+'</td> \
+						<td class="nr">'+data.invocationCount+'</td> \
+						<td class="nr">'+data.totalSelfCost+'</td> \
+						<td class="nr">'+data.totalCallCost+'</td> \
+					</tr> \
+			';
+		}
+		function sortBlock(){
+			$.blockUI('<h1>Sorting...</h1>');
+		}
+		
+		$(document).ready(function() { 
+			$.blockUI.defaults.pageMessage = '<h1>Loading...</h1><p>Loading information from server. If the callgrind file is large this may take some time</p>';
+			$.blockUI.defaults.overlayCSS =  { backgroundColor: '#fff', opacity: '0' }; 
+			$.blockUI.defaults.fadeIn = 0;
+			$.blockUI.defaults.fadeOut = 0;
+			$().ajaxStart($.blockUI).ajaxStop($.unblockUI);
+			$("#function_table").tablesorter({
+				widgets: ['zebra'],
+				sortInitialOrder: 'desc',
+				headers: { 
+		            1: { 
+		                sorter: false 
+		            }
+		        }
+			});
+			$("#function_table").bind("sortStart",sortBlock).bind("sortEnd",$.unblockUI);
+			
+		});
+		
+	</script>
+</head>
+<body>
+<div id="head">
+    <h1>webgrind<sup style="font-size:10px">v0.3</sup></h1>
+    <p>profiling in the browser</p>
+</div>
+<div id="options">
+    <form method="get" onsubmit="update();return false">
+    	<div style="float:right;margin-left:10px">
+    	    <input type="submit" value="update" />
+    	</div>
+    	<div style="float:right;">
+    		<label style="margin:0 5px">as</label>
+    		<select id="costFormat" name="costFormat">
+    		    <option value="percentual">percentual</option>
+    		    <option value="absolute">absolute</option>
+    		</select> values
+    	</div>
+    	<div style="float:right;">
+    		<label style="margin:0 5px">of</label>
+    		<select id="dataFile" name="dataFile" style="width:200px">
+    			<option value="0">Auto (newest)</option>
+    			<?foreach(FileHandler::getInstance()->getTraceList() as $trace):?>
+    				<option value="<?=$trace['filename']?>"><?=$trace['invokeUrl']?> (<?=$trace['filename']?>)</option>
+    			<?endforeach;?>
+    		</select>
+			<img class="list_reload" src="img/reload.gif" onclick="reloadFilelist()"/>
+    	</div>
+    	<div style="float:right">
+    		<label style="margin:0 5px">Show</label>
+    		<select id="showFraction" name="showFraction">
+    			<?for($i=100; $i>0; $i-=10):?>
+    			<option value="<?=$i/100?>" <?if($i==90):?>selected="selected"<?endif;?>><?=$i?>%</option>
+    			<?endfor;?>
+    		</select>
+    	</div>
+    	<div style="clear:both;"></div>    	
+    	<div style="margin:0 45px">
+    	    <input type="checkbox" name="hideInternals" value="1" id="hideInternals">
+    	    <label for="hideInternals">Hide PHP functions</label>
+    	</div>
+    </form>
+</div>
+<div style="clear:both;"></div>
+<div class="hr"></div>
+<div id="trace_view">
+	<h2 id="invoke_url"></h2>
+	<span id="mtime"></span> |
+	<span id="data_file"></span>
+	<table class="tablesorter" id="function_table" cellspacing="0">
+		<thead><tr><th>Function</th><th> </th><th>Invocation Count</th><th>Total Self Cost</th><th>Total Invocation Cost</th></tr></thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+<h2 id="hello_message">Select a cachegrind file above</h2>
+</body>
+</html>
