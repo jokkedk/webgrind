@@ -30,6 +30,11 @@ class Config{
 	public static $defaultTimezone = 'Europe/Copenhagen';
 	
 	/**
+	 * Date format
+	 */
+	public static $dateFormat = 'Y-m-d H:i:s';
+	
+	/**
 	* sprintf compatible format for generating links to source files. 
 	* %1$s will be replaced by the full path name of the file
 	* %2$d will be replaced by the linenumber

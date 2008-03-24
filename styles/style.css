@@ -50,6 +50,16 @@ h2 {
 	display:none;
 }
 
+#selfcost_sum, 
+#callcost_sum {
+	font-weight: bold;
+}
+
+#footer {
+	text-align: center;
+	font: normal 11px;
+}
+
 div.hr {
 	border-top: 1px solid black;
 	margin:10px 5px;	

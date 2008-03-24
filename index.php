@@ -57,7 +57,8 @@ switch(get('op')){
 		}
 		$result['dataFile'] = $dataFile;
 		$result['invokeUrl'] = FileHandler::getInstance()->getInvokeUrl(Config::$xdebugOutputDir.$dataFile);
-		$result['mtime'] = date('c',filemtime(Config::$xdebugOutputDir.$dataFile));
+		$result['mtime'] = date(Config::$dateFormat,filemtime(Config::$xdebugOutputDir.$dataFile));
+        $result['sumOfSelfCosts'] = $totalCost['self'];
 		echo json_encode($result);
 	break;
 	case 'invocation_list':

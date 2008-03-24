@@ -38,6 +38,7 @@
 					$("#data_file").html(data.dataFile);
 					$("#invoke_url").html(data.invokeUrl);
 					$("#mtime").html(data.mtime);
+					$("#selfcost_sum").html(data.sumOfSelfCosts);
 					
 					$("#hello_message").hide();
 					$("#trace_view").show();
@@ -209,8 +210,13 @@
 <div class="hr"></div>
 <div id="trace_view">
 	<h2 id="invoke_url"></h2>
-	<span id="mtime"></span> |
-	<span id="data_file"></span>
+	<div style="float:left;">
+	    <span id="data_file"></span> @ <span id="mtime"></span>
+	</div>
+	<div style="float:right;">
+	    Total Time: <span id="selfcost_sum"></span>
+	</div>
+	<div style="clear:both"></div>
 	<table class="tablesorter" id="function_table" cellspacing="0">
 		<thead><tr><th>Function</th><th> </th><th>Invocation Count</th><th>Total Self Cost</th><th>Total Invocation Cost</th></tr></thead>
 		<tbody>
@@ -218,5 +224,8 @@
 	</table>
 </div>
 <h2 id="hello_message">Select a cachegrind file above</h2>
+<div id="footer">
+    Copyright © 2008 Jacob Oettinger &amp; Joakim Nygård. <a href="http://code.google.com/p/webgrind/"></a>
+</div>
 </body>
 </html>
