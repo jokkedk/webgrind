@@ -1,9 +1,7 @@
 <?php
 
-set_include_path(dirname(__FILE__).DIRECTORY_SEPARATOR.'lib');
-require 'Zend/Json.php';
 require 'config.php';
-require 'FileHandler.php';
+require 'lib/FileHandler.php';
 // Errorhandling.
 // No files, outputdir not writabel
 // Show self traces in option group
@@ -20,7 +18,7 @@ if(function_exists('xdebug_get_profiler_filename') && ($file=xdebug_get_profiler
 
 switch(get('op')){
 	case 'file_list':
-		echo Zend_Json::encode(FileHandler::getInstance()->getTraceList());
+		echo json_encode(FileHandler::getInstance()->getTraceList());
 		break;	
 	case 'function_list':
 		$dataFile = get('dataFile');
@@ -60,7 +58,7 @@ switch(get('op')){
 		$result['dataFile'] = $dataFile;
 		$result['invokeUrl'] = FileHandler::getInstance()->getInvokeUrl(Config::$xdebugOutputDir.$dataFile);
 		$result['mtime'] = date('c',filemtime(Config::$xdebugOutputDir.$dataFile));
-		echo Zend_Json::encode($result);
+		echo json_encode($result);
 	break;
 	case 'invocation_list':
 		$reader = FileHandler::getInstance()->getTraceReader(get('file'));
@@ -74,7 +72,7 @@ switch(get('op')){
 			} else {
 				$invo['callerInfo'] = $reader->getFunctionInfo($invo['calledFromFunction']);				
 			}
-			echo Zend_Json::encode($invo).',';
+			echo json_encode($invo).',';
 		}
 		echo ']';
 	break;
