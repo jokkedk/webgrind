@@ -2,11 +2,11 @@
 // TODO Error handling
 
 class Reader{
-	const FILE_FORMAT_VERSION = 3;
+	const FILE_FORMAT_VERSION = 4;
 
 	const NR_FORMAT = 'V';
 	const NR_SIZE = 4;
-	const INVOCATION_LENGTH = 7;
+	const INVOCATION_LENGTH = 8;
 	const SUBCALL_LENGTH = 4;
 	
 
@@ -56,19 +56,19 @@ class Reader{
 
 	function getFunctionInfo($nr){
 		$this->seek($this->functionPos[$nr]);
-		list($totalSelfCost, $totalCallCost, $invocationCount) = $this->read(3);
+		list($totalSelfCost, $totalInclusiveSelfCost, $totalCallCost, $invocationCount) = $this->read(4);
 		$this->seek(self::NR_SIZE*self::INVOCATION_LENGTH*$invocationCount, SEEK_CUR);
 		$file = $this->readLine();
 		$function = $this->readLine();
-		return array('file'=>$file, 'functionName'=>$function, 'totalSelfCost'=>$totalSelfCost, 'totalCallCost'=>$totalCallCost, 'invocationCount'=>$invocationCount);
+		return array('file'=>$file, 'functionName'=>$function, 'totalSelfCost'=>$totalSelfCost, 'totalInclusiveSelfCost'=>$totalInclusiveSelfCost, 'totalCallCost'=>$totalCallCost, 'invocationCount'=>$invocationCount);
 	}
 	
 	function getInvocation($functionNr, $invocationNr){
-		$this->seek($this->functionPos[$functionNr]+self::NR_SIZE*(self::INVOCATION_LENGTH*$invocationNr+3));
+		$this->seek($this->functionPos[$functionNr]+self::NR_SIZE*(self::INVOCATION_LENGTH*$invocationNr+4));
 		$data = $this->read(self::INVOCATION_LENGTH);
-		$result = array('selfCost'=>$data[0], 'callCost'=>$data[1], 'calledFromFunction'=>$data[2], 'calledFromInvocation'=>$data[3], 'calledFromLine'=>$data[4], 'subCalls'=>array());
-		$this->seek($data[6]);
-		for($i=0;$i<$data[5];$i++){
+		$result = array('selfCost'=>$data[0], 'inclusiveSelfCost'=>$data[1], 'callCost'=>$data[2], 'calledFromFunction'=>$data[3], 'calledFromInvocation'=>$data[4], 'calledFromLine'=>$data[5], 'subCalls'=>array());
+		$this->seek($data[7]);
+		for($i=0;$i<$data[6];$i++){
 			$scData = $this->read(self::SUBCALL_LENGTH);
 			$result['subCalls'][] = array('functionNr'=>$scData[0], 'invocationNr'=>$scData[1], 'line'=>$scData[2], 'cost'=>$scData[3]);
 		}

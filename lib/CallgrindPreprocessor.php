@@ -9,9 +9,9 @@ Preprocessed file format v2:
 <version> : number 
 <function count> : number
 <function addresses> : <number><number>...
-<functions> : <total self cost><total call cost><invocation count><invocations><filename><functionname>...
+<functions> : <total self cost><total inclusive self cost><total call cost><invocation count><invocations><filename><functionname>...
 <invocation count> : number
-<invocations> : <self cost><called from><subcall count><subcalls address>
+<invocations> : <self cost><inclusive self cost><called from><subcall count><subcalls address>
 <called from> : <call cost><function><invocation><line number> (numbers)
 <self cost> : number
 <subcall count> : number
@@ -25,11 +25,11 @@ Preprocessed file format v2:
 
 
 class CallgrindPreprocessor{
-	const FILE_FORMAT_VERSION = 3;
+	const FILE_FORMAT_VERSION = 4;
 
 	const NR_FORMAT = 'V';
 	const NR_SIZE = 4;
-	const INVOCATION_LENGTH = 7;
+	const INVOCATION_LENGTH = 8;
 	const SUBCALL_LENGTH = 4;
 
 	const ENTRY_POINT = '{main}';
@@ -55,7 +55,7 @@ class CallgrindPreprocessor{
 				list($function) = fscanf($this->in,"fn=%s");
 				if(!isset($this->functions[$function])){
 					// New function
-					$this->functions[$function] = array('filename'=>substr(trim($line),3), 'invocations'=>1,'nr'=>$this->nextFuncNr++,'stack'=>0,'count'=>0,'selfCost'=>0,'callCost'=>0);
+					$this->functions[$function] = array('filename'=>substr(trim($line),3), 'invocations'=>1,'nr'=>$this->nextFuncNr++,'stack'=>0,'count'=>0,'selfCost'=>0,'inclusiveSelfCost'=>0,'callCost'=>0);
 				} else {
 					$this->functions[$function]['invocations']++;
 				}
@@ -71,7 +71,7 @@ class CallgrindPreprocessor{
 		fseek($this->out,self::NR_SIZE*$functionCount, SEEK_CUR);
 		foreach($this->functions as $function=>&$data){
 			$data['position'] = ftell($this->out);
-			fwrite($this->out,pack(self::NR_FORMAT.'*',0,0,$data['invocations']));
+			fwrite($this->out,pack(self::NR_FORMAT.'*',0,0,0,$data['invocations']));
 			$data['nextInvocationPosition'] = ftell($this->out);
 			fseek($this->out,self::NR_SIZE*self::INVOCATION_LENGTH*$data['invocations'], SEEK_CUR);
 			fwrite($this->out,$data['filename']."\n".$function."\n");			
@@ -102,6 +102,7 @@ class CallgrindPreprocessor{
 				$this->functions[$function]['stack']++;
 				$this->functions[$function]['count']++;
 				list($lnr, $selfCost) = fscanf($this->in,"%d %d");
+				$inclusiveSelfCost = $selfCost;
 				$this->functions[$function]['selfCost'] += $selfCost;
 				$callAddr = ftell($this->out);
 				$callCount = 0;				
@@ -131,15 +132,15 @@ class CallgrindPreprocessor{
 						// Cost line
 						list($lnr, $cost) = fscanf($this->in,"%d %d");
 						$calledFunctionName = substr(trim($line),4);
-						
+						$inclusiveSelfCost += $cost;
 						$this->functions[$calledFunctionName]['callCost'] += $cost;
 						$invocationNr = $nextInvocationNumber[$calledFunctionName];
 						$nextInvocationNumber[$calledFunctionName]++;
 						
 						$here = ftell($this->out);
 						$pos = $this->functions[$calledFunctionName]['position'];
-						// Seek past total selfcost, total callcost, invocationcount and invocations and self cost
-						$pos = $pos+(4+self::INVOCATION_LENGTH*$invocationNr)*self::NR_SIZE;
+						// Seek past total selfcost, total invocation cost, total callcost, invocationcount and invocations and self cost and inclusive self cost
+						$pos = $pos+(6+self::INVOCATION_LENGTH*$invocationNr)*self::NR_SIZE;
 						fseek($this->out, $pos, SEEK_SET);
 						fwrite($this->out, pack(self::NR_FORMAT.'*', $cost, $this->functions[$function]['nr'], $this->functions[$function]['count']-1, $lnr));
 						fseek($this->out, $here, SEEK_SET);
@@ -149,13 +150,15 @@ class CallgrindPreprocessor{
 					}
 				}
 				
-				$this->addInvocationInfo($function, $selfCost, $callCount, $callAddr);
+				$this->functions[$function]['inclusiveSelfCost'] += $inclusiveSelfCost;
+				
+				$this->addInvocationInfo($function, $selfCost, $inclusiveSelfCost, $callCount, $callAddr);
 			}
 		}
 		
 		foreach($this->functions as $func){
 			fseek($this->out, $func['position'], SEEK_SET);
-			fwrite($this->out,pack(self::NR_FORMAT.'*',$func['selfCost'],$func['callCost']));			
+			fwrite($this->out,pack(self::NR_FORMAT.'*',$func['selfCost'],$func['inclusiveSelfCost'],$func['callCost']));			
 		}
 		
 		fseek($this->out,0,SEEK_END);
@@ -168,12 +171,12 @@ class CallgrindPreprocessor{
 		fwrite($this->out, pack('L',$headersPos));
 	}
 	
-	private function addInvocationInfo($function, $selfCost, $subCallCount, $subCallsAddr){
+	private function addInvocationInfo($function, $selfCost, $inclusiveSelfCost, $subCallCount, $subCallsAddr){
 		$here = ftell($this->out);	
 			
 		$pos = &$this->functions[$function]['nextInvocationPosition'];
 		fseek($this->out, $pos, SEEK_SET);
-		fwrite($this->out, pack(self::NR_FORMAT.'*',$selfCost, 0, -1, 0, 0, $subCallCount, $subCallsAddr));	
+		fwrite($this->out, pack(self::NR_FORMAT.'*',$selfCost, $inclusiveSelfCost, 0, -1, 0, 0, $subCallCount, $subCallsAddr));	
 		$pos = ftell($this->out);
 
 		fseek($this->out, $here, SEEK_SET);						
