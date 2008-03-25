@@ -13,6 +13,10 @@ a:hover {
 	text-decoration:underline;
 }
 
+#footer a {
+	text-decoration:underline;
+}
+
 img {
 	border: 0;
 }
