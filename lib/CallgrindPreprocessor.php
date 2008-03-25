@@ -98,14 +98,32 @@ class CallgrindPreprocessor{
 					fgets($this->in);
 					fgets($this->in);
 				}
-				$func = &$this->functions[$function];
-				$func['stack']++;
-				$func['count']++;
+				
+				$this->functions[$function]['stack']++;
+				$this->functions[$function]['count']++;
 				list($lnr, $selfCost) = fscanf($this->in,"%d %d");
-				$func['selfCost'] += $selfCost;
+				$this->functions[$function]['selfCost'] += $selfCost;
 				$callAddr = ftell($this->out);
 				$callCount = 0;				
 				
+				
+				$callsPos = ftell($this->in);
+				$functionCalls = array();
+				while(($line=fgets($this->in))!="\n"){
+						if(substr($line,0,4)==='cfn='){
+							$calledFunctionName = substr(trim($line),4);
+							if(!isset($functionCalls[$calledFunctionName]))
+								$functionCalls[$calledFunctionName]=0;
+							$functionCalls[$calledFunctionName]++;
+						}
+				}
+				$nextInvocationNumber = array();
+				foreach($functionCalls as $f=>$c){
+					$this->functions[$f]['stack'] -= $c;
+					$nextInvocationNumber[$f] = $this->functions[$f]['stack'];
+				}
+				
+				fseek($this->in, $callsPos, SEEK_SET);
 				while(($line=fgets($this->in))!="\n"){
 					if(substr($line,0,4)==='cfn='){
 						// Skip call line
@@ -113,20 +131,20 @@ class CallgrindPreprocessor{
 						// Cost line
 						list($lnr, $cost) = fscanf($this->in,"%d %d");
 						$calledFunctionName = substr(trim($line),4);
-						$calledFunction = &$this->functions[$calledFunctionName];
-						$calledFunction['callCost'] += $cost;
-						$invocationNr = $calledFunction['count']-$calledFunction['stack'];
+						
+						$this->functions[$calledFunctionName]['callCost'] += $cost;
+						$invocationNr = $nextInvocationNumber[$calledFunctionName];
+						$nextInvocationNumber[$calledFunctionName]++;
 						
 						$here = ftell($this->out);
-						$pos = $calledFunction['position'];
+						$pos = $this->functions[$calledFunctionName]['position'];
 						// Seek past total selfcost, total callcost, invocationcount and invocations and self cost
 						$pos = $pos+(4+self::INVOCATION_LENGTH*$invocationNr)*self::NR_SIZE;
 						fseek($this->out, $pos, SEEK_SET);
-						fwrite($this->out, pack(self::NR_FORMAT.'*', $cost, $func['nr'], $func['count']-1, $lnr));
+						fwrite($this->out, pack(self::NR_FORMAT.'*', $cost, $this->functions[$function]['nr'], $this->functions[$function]['count']-1, $lnr));
 						fseek($this->out, $here, SEEK_SET);
 						
-						fwrite($this->out, pack(self::NR_FORMAT.'*',$calledFunction['nr'],$invocationNr,$lnr, $cost));
-						$calledFunction['stack']--;
+						fwrite($this->out, pack(self::NR_FORMAT.'*',$this->functions[$calledFunctionName]['nr'],$invocationNr,$lnr, $cost));
 						$callCount++;	
 					}
 				}
