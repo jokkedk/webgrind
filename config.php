@@ -28,7 +28,6 @@ class Config{
 	 * Default timezone
 	 */
 	public static $defaultTimezone = 'Europe/Copenhagen';
-	
 	/**
 	 * Date format
 	 */

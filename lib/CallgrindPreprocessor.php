@@ -55,7 +55,7 @@ class CallgrindPreprocessor{
 				list($function) = fscanf($this->in,"fn=%s");
 				if(!isset($this->functions[$function])){
 					// New function
-					$this->functions[$function] = array('filename'=>substr(trim($line),3), 'invocations'=>1,'nr'=>$this->nextFuncNr++,'stack'=>0,'count'=>0,'selfCost'=>0,'inclusiveSelfCost'=>0,'callCost'=>0);
+					$this->functions[$function] = array('filename'=>substr(trim($line),3), 'invocations'=>1,'nr'=>$this->nextFuncNr++,'stack'=>array(),'count'=>0,'selfCost'=>0,'inclusiveSelfCost'=>0,'callCost'=>0);
 				} else {
 					$this->functions[$function]['invocations']++;
 				}
@@ -99,7 +99,14 @@ class CallgrindPreprocessor{
 					fgets($this->in);
 				}
 				
-				$this->functions[$function]['stack']++;
+				$stackSize = sizeof($this->functions[$function]['stack']);
+				$count = $this->functions[$function]['count'];
+				
+				if($stackSize>0 && $this->functions[$function]['stack'][$stackSize-1]['nr']==$count-1)
+					$this->functions[$function]['stack'][$stackSize-1]['nr']++;
+				else
+					$this->functions[$function]['stack'][] = array('min'=>$count, 'nr'=>$count);
+				
 				$this->functions[$function]['count']++;
 				list($lnr, $selfCost) = fscanf($this->in,"%d %d");
 				$inclusiveSelfCost = $selfCost;
@@ -118,11 +125,6 @@ class CallgrindPreprocessor{
 							$functionCalls[$calledFunctionName]++;
 						}
 				}
-				$nextInvocationNumber = array();
-				foreach($functionCalls as $f=>$c){
-					$this->functions[$f]['stack'] -= $c;
-					$nextInvocationNumber[$f] = $this->functions[$f]['stack'];
-				}
 				
 				fseek($this->in, $callsPos, SEEK_SET);
 				while(($line=fgets($this->in))!="\n"){
@@ -134,8 +136,14 @@ class CallgrindPreprocessor{
 						$calledFunctionName = substr(trim($line),4);
 						$inclusiveSelfCost += $cost;
 						$this->functions[$calledFunctionName]['callCost'] += $cost;
-						$invocationNr = $nextInvocationNumber[$calledFunctionName];
-						$nextInvocationNumber[$calledFunctionName]++;
+						
+						$stackTop = sizeof($this->functions[$calledFunctionName]['stack'])-1;
+
+						$invocationNr = $this->functions[$calledFunctionName]['stack'][$stackTop]['nr']--;
+						if($invocationNr == $this->functions[$calledFunctionName]['stack'][$stackTop]['min'])
+							array_pop($this->functions[$calledFunctionName]['stack']);
+							
+						//echo 'Function '.$function.' calls '.$calledFunctionName.' invocation '.$invocationNr."\n";
 						
 						$here = ftell($this->out);
 						$pos = $this->functions[$calledFunctionName]['position'];

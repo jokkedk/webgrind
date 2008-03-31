@@ -29,13 +29,13 @@ switch(get('op')){
 		$reader = FileHandler::getInstance()->getTraceReader($dataFile);
 		$count = $reader->getFunctionCount();
 		$functions = array();
-		$totalCost = array('self' => 0, 'call' => 0);
+		$totalCost = array('self' => 0, 'inclusive' => 0);
 
 		for($i=0;$i<$count;$i++) {
 		    $functionInfo = $reader->getFunctionInfo($i);
 		    if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
     			$totalCost['self'] += $functionInfo['totalSelfCost'];
-    			$totalCost['call'] += $functionInfo['totalCallCost'];
+    			$totalCost['inclusive'] += $functionInfo['totalInclusiveSelfCost'];
     			$functions[$i] = $functionInfo;
     			$functions[$i]['nr'] = $i;
     		}
@@ -49,7 +49,7 @@ switch(get('op')){
 			$remainingCost -= $function['totalSelfCost'];
 			if(get('costFormat')=='percentual'){
 				$function['totalSelfCost'] = percentCost($function['totalSelfCost'], $totalCost['self']);
-				$function['totalCallCost'] = percentCost($function['totalCallCost'], $totalCost['call']);
+				$function['totalInclusiveSelfCost'] = percentCost($function['totalInclusiveSelfCost'], $totalCost['inclusive']);
 			}
 			$result['functions'][] = $function;
 			if($remainingCost<0)
@@ -95,5 +95,6 @@ function costCmp($a, $b){
 }
 
 function  percentCost($cost, $total){
-	return number_format(($cost*100)/$total, 3, '.', '');
+	$result = ($total==0) ? 0 : ($cost*100)/$total;
+	return number_format($result, 3, '.', '');
 }

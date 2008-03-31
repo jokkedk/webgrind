@@ -110,7 +110,7 @@
 		
 		function invocationTable(functionNr){
 			return '<table class="tablesorter" id="invocation_table_'+functionNr+'" cellspacing="0"> \
-						<thead><tr><th>#</th><th>Called from</th><th>Self Cost</th><th>Invocation Cost</th><th> </th></tr></thead> \
+						<thead><tr><th>#</th><th>Called from</th><th>Self Cost</th><th>Inclusive Cost</th><th> </th></tr></thead> \
 						<tbody> \
 						</tbody> \
 					</table> \
@@ -122,7 +122,7 @@
 						<td>'+nr+'</td> \
 						<td>'+data.callerInfo.functionName+'</td> \
 						<td>'+data.selfCost+'</td> \
-						<td>'+data.callCost+'</td> \
+						<td>'+data.inclusiveSelfCost+'</td> \
 						<td><a href="'+sprintf(fileUrlFormat,data.callerInfo.file,data.calledFromLine)+'" target="_blank">O</a></td> \
 					</tr>';
 			
@@ -135,7 +135,7 @@
 						<td>'+openLink+'</td> \
 						<td class="nr">'+data.invocationCount+'</td> \
 						<td class="nr">'+data.totalSelfCost+'</td> \
-						<td class="nr">'+data.totalCallCost+'</td> \
+						<td class="nr">'+data.totalInclusiveSelfCost+'</td> \
 					</tr> \
 			';
 		}
@@ -218,7 +218,7 @@
 	</div>
 	<div style="clear:both"></div>
 	<table class="tablesorter" id="function_table" cellspacing="0">
-		<thead><tr><th>Function</th><th> </th><th>Invocation Count</th><th>Total Self Cost</th><th>Total Invocation Cost</th></tr></thead>
+		<thead><tr><th>Function</th><th> </th><th>Invocation Count</th><th>Total Self Cost</th><th>Total Inclusive Cost</th></tr></thead>
 		<tbody>
 		</tbody>
 	</table>
