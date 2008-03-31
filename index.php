@@ -50,7 +50,7 @@ switch(get('op')){
 		foreach($functions as $function){
 			$remainingCost -= $function['totalSelfCost'];
 			if(get('costFormat')=='percentual'){
-				$function['totalSelfCost'] = percentCost($function['totalSelfCost'], $totalCost['self']);
+				$function['totalSelfCost'] = percentCost($function['totalSelfCost'], $result['totalRunTime']);
 				$function['totalInclusiveSelfCost'] = percentCost($function['totalInclusiveSelfCost'], $result['totalRunTime']);
 			}
 			$result['functions'][] = $function;
