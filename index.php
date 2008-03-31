@@ -33,6 +33,11 @@ switch(get('op')){
 
 		for($i=0;$i<$count;$i++) {
 		    $functionInfo = $reader->getFunctionInfo($i);
+		    
+		    # Grab {main} inclusive cost as run time
+		    if (strpos($functionInfo['functionName'], '{main}') !== false)
+		        $result['totalInclusiveTime'] = $functionInfo['totalInclusiveSelfCost'];
+		        
 		    if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
     			$totalCost['self'] += $functionInfo['totalSelfCost'];
     			$totalCost['inclusive'] += $functionInfo['totalInclusiveSelfCost'];
@@ -49,7 +54,7 @@ switch(get('op')){
 			$remainingCost -= $function['totalSelfCost'];
 			if(get('costFormat')=='percentual'){
 				$function['totalSelfCost'] = percentCost($function['totalSelfCost'], $totalCost['self']);
-				$function['totalInclusiveSelfCost'] = percentCost($function['totalInclusiveSelfCost'], $totalCost['inclusive']);
+				$function['totalInclusiveSelfCost'] = percentCost($function['totalInclusiveSelfCost'], $result['totalInclusiveTime']);
 			}
 			$result['functions'][] = $function;
 			if($remainingCost<0)
@@ -57,7 +62,8 @@ switch(get('op')){
 		}
 		$result['dataFile'] = $dataFile;
 		$result['invokeUrl'] = FileHandler::getInstance()->getInvokeUrl(Config::$xdebugOutputDir.$dataFile);
-		$result['mtime'] = date('c',filemtime(Config::$xdebugOutputDir.$dataFile));
+		$result['mtime'] = date(Config::$dateFormat,filemtime(Config::$xdebugOutputDir.$dataFile));
+		$result['totalSelftime'] = $totalCost['self'];
 		echo json_encode($result);
 	break;
 	case 'invocation_list':

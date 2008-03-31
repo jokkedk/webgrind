@@ -38,7 +38,7 @@
 					$("#data_file").html(data.dataFile);
 					$("#invoke_url").html(data.invokeUrl);
 					$("#mtime").html(data.mtime);
-					$("#selfcost_sum").html(data.totalSelftime+"/"+data.totalRuntime);
+					$("#selfcost_sum").html(data.totalSelftime+"/"+data.totalInclusiveTime);
 					
 					$("#hello_message").hide();
 					$("#trace_view").show();
@@ -166,7 +166,7 @@
 </head>
 <body>
 <div id="head">
-    <h1>webgrind<sup style="font-size:10px">v0.3</sup></h1>
+    <h1>webgrind<sup style="font-size:10px">v0.4</sup></h1>
     <p>profiling in the browser</p>
 </div>
 <div id="options">
