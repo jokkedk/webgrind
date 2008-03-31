@@ -69,11 +69,11 @@ switch(get('op')){
  		$function = $reader->getFunctionInfo($functionNr);
 		echo '[';
 		for($i=0;$i<$function['invocationCount'];$i++){
-			$invo = $reader->getInvocation($functionNr, $i);
+			$invo = $reader->getInvocation($functionNr, $i, get('costFormat', 'absolute'));
 			if($invo['calledFromFunction']==-1){
 				$invo['callerInfo'] = false;
 			} else {
-				$invo['callerInfo'] = $reader->getFunctionInfo($invo['calledFromFunction']);				
+				$invo['callerInfo'] = $reader->getFunctionInfo($invo['calledFromFunction'], get('costFormat', 'absolute'));				
 			}
 			echo json_encode($invo).',';
 		}
@@ -97,7 +97,7 @@ function costCmp($a, $b){
 	return ($a > $b) ? -1 : 1;
 }
 
-function  percentCost($cost, $total){
+function percentCost($cost, $total){
 	$result = ($total==0) ? 0 : ($cost*100)/$total;
 	return number_format($result, 3, '.', '');
 }

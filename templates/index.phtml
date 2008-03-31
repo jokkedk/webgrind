@@ -67,7 +67,7 @@
 		function loadInvocations(functionNr){
 			if(!invocationsLoaded[functionNr]){
 				$.getJSON("index.php",
-					{'op':'invocation_list','file':currentDataFile,'functionNr':functionNr},
+					{'op':'invocation_list', 'file':currentDataFile, 'functionNr':functionNr, 'costFormat':$("#costFormat").val()},
 					function(data){
 						$("#invocation_area_"+functionNr).append(invocationTable(functionNr));
 						calledByUser = calledBySystem = false;
