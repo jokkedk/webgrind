@@ -38,7 +38,7 @@
 					$("#data_file").html(data.dataFile);
 					$("#invoke_url").html(data.invokeUrl);
 					$("#mtime").html(data.mtime);
-					$("#selfcost_sum").html(data.sumOfSelfCosts);
+					$("#selfcost_sum").html(data.totalSelftime+"/"+data.totalRuntime);
 					
 					$("#hello_message").hide();
 					$("#trace_view").show();
@@ -177,8 +177,8 @@
     	<div style="float:right;">
     		<label style="margin:0 5px">as</label>
     		<select id="costFormat" name="costFormat">
-    		    <option value="percentual">percentual</option>
-    		    <option value="absolute">absolute</option>
+    		    <option value="percentual" <?=(Config::$defaultCostformat=='percentual') ? 'selected' : ''?>>percentual</option>
+    		    <option value="absolute" <?=(Config::$defaultCostformat=='absolute') ? 'selected' : ''?>>absolute</option>
     		</select> values
     	</div>
     	<div style="float:right;">
@@ -195,13 +195,13 @@
     		<label style="margin:0 5px">Show</label>
     		<select id="showFraction" name="showFraction">
     			<?for($i=100; $i>0; $i-=10):?>
-    			<option value="<?=$i/100?>" <?if($i==90):?>selected="selected"<?endif;?>><?=$i?>%</option>
+    			<option value="<?=$i/100?>" <?if($i==Config::$defaultFunctionPercentage):?>selected="selected"<?endif;?>><?=$i?>%</option>
     			<?endfor;?>
     		</select>
     	</div>
     	<div style="clear:both;"></div>    	
     	<div style="margin:0 45px">
-    	    <input type="checkbox" name="hideInternals" value="1" id="hideInternals">
+    	    <input type="checkbox" name="hideInternals" value="1" <?=(Config::$defaultHideInternalFunctions==1) ? 'checked' : ''?> id="hideInternals">
     	    <label for="hideInternals">Hide PHP functions</label>
     	</div>
     </form>
@@ -214,7 +214,7 @@
 	    <span id="data_file"></span> @ <span id="mtime"></span>
 	</div>
 	<div style="float:right;">
-	    Total Time: <span id="selfcost_sum"></span>
+	    Total Time Sum (inner/outer): <span id="selfcost_sum"></span>
 	</div>
 	<div style="clear:both"></div>
 	<table class="tablesorter" id="function_table" cellspacing="0">

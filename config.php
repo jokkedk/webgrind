@@ -33,6 +33,12 @@ class Config{
 	 */
 	public static $dateFormat = 'Y-m-d H:i:s';
 	
+	public static $defaultCostformat = 'percentual';
+	
+	public static $defaultFunctionPercentage = 90;
+	
+	public static $defaultHideInternalFunctions = false;
+	
 	/**
 	* sprintf compatible format for generating links to source files. 
 	* %1$s will be replaced by the full path name of the file
