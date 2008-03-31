@@ -30,14 +30,11 @@ switch(get('op')){
 		$count = $reader->getFunctionCount();
 		$functions = array();
 		$totalCost = array('self' => 0, 'inclusive' => 0);
+        $result['totalRunTime'] = $reader->getHeader('summary');
 
 		for($i=0;$i<$count;$i++) {
 		    $functionInfo = $reader->getFunctionInfo($i);
 		    
-		    # Grab {main} inclusive cost as run time
-		    if (strpos($functionInfo['functionName'], '{main}') !== false)
-		        $result['totalInclusiveTime'] = $functionInfo['totalInclusiveSelfCost'];
-		        
 		    if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
     			$totalCost['self'] += $functionInfo['totalSelfCost'];
     			$totalCost['inclusive'] += $functionInfo['totalInclusiveSelfCost'];
@@ -54,14 +51,14 @@ switch(get('op')){
 			$remainingCost -= $function['totalSelfCost'];
 			if(get('costFormat')=='percentual'){
 				$function['totalSelfCost'] = percentCost($function['totalSelfCost'], $totalCost['self']);
-				$function['totalInclusiveSelfCost'] = percentCost($function['totalInclusiveSelfCost'], $result['totalInclusiveTime']);
+				$function['totalInclusiveSelfCost'] = percentCost($function['totalInclusiveSelfCost'], $result['totalRunTime']);
 			}
 			$result['functions'][] = $function;
 			if($remainingCost<0)
 				break;
 		}
 		$result['dataFile'] = $dataFile;
-		$result['invokeUrl'] = FileHandler::getInstance()->getInvokeUrl(Config::$xdebugOutputDir.$dataFile);
+		$result['invokeUrl'] = $reader->getHeader('cmd');
 		$result['mtime'] = date(Config::$dateFormat,filemtime(Config::$xdebugOutputDir.$dataFile));
 		$result['totalSelftime'] = $totalCost['self'];
 		echo json_encode($result);
