@@ -1,7 +1,7 @@
 <?php
 
 /**
-* Configuration for grinder
+* Configuration for webgrind
 */
 class Config{
 	/**
@@ -47,10 +47,5 @@ class Config{
 	public static $fileUrlFormat = 'fileviewer.php?file=%1$s&line=%2$d'; // Built in fileviewer
 	//public static $fileUrlFormat = 'txmt://open/?url=file://%1$s&line=%2$d'; // Textmate
 	//public static $fileUrlFormat = 'file://%1$s'; // ?
-	
-	/**
-	* Selftrace datafile
-	*/
-	public static $selftrace = 'selftrace';
-	
+		
 }

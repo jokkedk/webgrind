@@ -14,21 +14,6 @@ class FileHandler{
 		
 		$files = $this->getFiles(Config::$xdebugOutputFormat, Config::$xdebugOutputDir);
 		
-		if(file_exists(Config::$storageDir.Config::$selftrace))
-			$selftraceFiles = unserialize(file_get_contents(Config::$storageDir.Config::$selftrace));
-		else
-			$selftraceFiles = array();
-			
-		$this->selftraceFiles = array();
-		foreach($files as &$file){
-		    $file['invokeUrl'] = $this->getInvokeUrl($file['absoluteFilename']);
-		
-			if(isset($selftraceFiles[$file['absoluteFilename']]) && $selftraceFiles[$file['absoluteFilename']]==$file['mtime']){
-				$file['selftrace']=true;
-				$this->selftraceFiles[$file['absoluteFilename']] = $selftraceFiles[$file['absoluteFilename']];
-			}
-		}
-
 		$prepFiles = $this->getFiles('/\\'.Config::$preprocessedSuffix.'$/', Config::$storageDir);
 		foreach($prepFiles as $fileName=>$prepFile){
 			$fileName = str_replace(Config::$preprocessedSuffix,'',$fileName);
@@ -42,9 +27,6 @@ class FileHandler{
 		$this->files = $files;
 	}
 	
-	public function __destruct(){
-		file_put_contents(Config::$storageDir.Config::$selftrace, serialize($this->selftraceFiles));
-	}
 	
 	public function getInvokeUrl($file){
 		# Grab name of invoked file
@@ -59,24 +41,25 @@ class FileHandler{
 	private function getFiles($format, $dir){
 		$list = preg_grep($format,scandir($dir));
 		$files = array();
+		
+		$scriptFilename = $_SERVER['SCRIPT_FILENAME'];
+		
 		foreach($list as $file){
 			$absoluteFilename = $dir.$file;
-			$files[$file] = array('absoluteFilename'=>$absoluteFilename, 'mtime'=>filemtime($absoluteFilename), 'preprocessed'=>false, 'selftrace'=>false);
+			$invokeUrl = $this->getInvokeUrl($absoluteFilename);
+
+			$files[$file] = array('absoluteFilename'=>$absoluteFilename, 'mtime'=>filemtime($absoluteFilename), 'preprocessed'=>false, 'invokeUrl'=>$invokeUrl, 'selftrace'=>false);
+			if($invokeUrl == $scriptFilename)
+				$files[$file]['selftrace'] = true;
+			
 		}		
 		return $files;
-	}
-	
-	
-	public function markAsSelftrace($file){
-		$this->selftraceFiles[$file] = filemtime($file);
-		// Newer allow the file currently beeing generated to be parsed
-		unset($this->files[basename($file)]);
 	}
 	
 	public function getTraceList($selftraces=false){
 		$result = array();
 		foreach($this->files as $fileName=>$file){
-			if(!$file['selftrace'])
+			if(!$file['selftrace'] || $selftraces)
 				$result[] = array('filename' => $fileName, 'invokeUrl' => str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $file['invokeUrl']));
 		}
 		return $result;
