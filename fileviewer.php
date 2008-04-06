@@ -1,7 +1,14 @@
 <?php
-function highlight_num($file){ 
-  $numbers = '<code class="num">'. implode(range(1, count(file($file))), '<br />') . '</code>'; 
-  return $numbers . highlight_file($file, true); 
+function highlight_num($file, $line){ 
+	$lineCount = count(file($file));
+	$numbers = '<code class="num">';
+	for($i = 1; $i<=$lineCount; $i++){
+		$numbers .= ($i==$line)? '<span id="num_emph">&bull; '.$i.'</span>' : $i;
+		$numbers .= '<br />';
+	}
+	$numbers .= '</code>'; 
+	
+	return $numbers . highlight_file($file, true); 
 }
 
 
@@ -14,7 +21,7 @@ if(isset($_GET['file']) && $_GET['file']!=''){
 	if(!is_readable($file))
 		$content = 'File('.$file.') is not readable.';
 	else
-		$content = highlight_num($file);
+		$content = highlight_num($file, $line);
 		
 } else {
 	$content = 'No file to view';

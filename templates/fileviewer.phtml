@@ -3,10 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<script src="js/jquery-1.2.3.pack.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.scrollTo.js" type="text/javascript" charset="utf-8"></script>
 		<link rel="stylesheet" type="text/css" href="styles/style.css" />
 		<title>
 			webgrind - fileviewer: <?=$file?>
 		</title>
+		<script type="text/javascript" charset="utf-8">
+			$(document).ready(function() { 
+				$.scrollTo.defaults.offset = {left:0, top:-150 };
+				$.scrollTo($('#num_emph'));
+			});
+
+		</script>
+		
 	</head>
 	<body>
 		<?=$file?>
