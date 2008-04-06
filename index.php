@@ -25,30 +25,33 @@ switch(get('op')){
 		$reader = FileHandler::getInstance()->getTraceReader($dataFile);
 		$count = $reader->getFunctionCount();
 		$functions = array();
-		$totalCost = array('self' => 0, 'inclusive' => 0);
+		$totalCost = $shownTotal = 0;
         $result['totalRunTime'] = $reader->getHeader('summary');
 
 		for($i=0;$i<$count;$i++) {
-		    $functionInfo = $reader->getFunctionInfo($i);
-		    
+		    $functionInfo = $reader->getFunctionInfo($i,'absolute');
+			unset($functionInfo['totalCallCost']);
+			$totalCost += $functionInfo['totalSelfCost'];
+
 		    if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
-    			$totalCost['self'] += $functionInfo['totalSelfCost'];
-    			$totalCost['inclusive'] += $functionInfo['totalInclusiveSelfCost'];
-    			$functions[$i] = $functionInfo;
+    			$shownTotal += $functionInfo['totalSelfCost'];
+				$functions[$i] = $functionInfo;
     			$functions[$i]['nr'] = $i;
     		}
 		}
 		usort($functions,'costCmp');
 		
-		$remainingCost = $totalCost['self']*get('showFraction');
+		$remainingCost = $shownTotal*get('showFraction');
 		
 		$result['functions'] = array();
 		foreach($functions as $function){
 			$remainingCost -= $function['totalSelfCost'];
-			if(get('costFormat')=='percentual'){
-				$function['totalSelfCost'] = percentCost($function['totalSelfCost'], $result['totalRunTime']);
-				$function['totalInclusiveSelfCost'] = percentCost($function['totalInclusiveSelfCost'], $result['totalRunTime']);
+			
+			if(get('costFormat')=='percent'){
+				$function['totalSelfCost'] = $reader->percentCost($function['totalSelfCost']);
+				$function['totalInclusiveSelfCost'] = $reader->percentCost($function['totalInclusiveSelfCost']);
 			}
+			
 			$result['functions'][] = $function;
 			if($remainingCost<0)
 				break;
@@ -56,7 +59,7 @@ switch(get('op')){
 		$result['dataFile'] = $dataFile;
 		$result['invokeUrl'] = $reader->getHeader('cmd');
 		$result['mtime'] = date(Config::$dateFormat,filemtime(Config::$xdebugOutputDir.$dataFile));
-		$result['totalSelftime'] = $totalCost['self'];
+		$result['totalSelftime'] = $totalCost;
 		echo json_encode($result);
 	break;
 	case 'invocation_list':
@@ -70,12 +73,17 @@ switch(get('op')){
 			
 		echo '[';
 		for($i=$start;$i<$end;$i++){
-			$invo = $reader->getInvocation($functionNr, $i, get('costFormat', 'absolute'));
+			$invo = $reader->getInvocation($functionNr, $i, false, get('costFormat', 'absolute'));
 			if($invo['calledFromFunction']==-1){
-				$invo['callerInfo'] = false;
+				$invo['callerFile'] = false;
+				$invo['callerFunctionName'] = false;
 			} else {
-				$invo['callerInfo'] = $reader->getFunctionInfo($invo['calledFromFunction'], get('costFormat', 'absolute'));				
+				$callerInfo = $reader->getFunctionInfo($invo['calledFromFunction'], get('costFormat', 'absolute'));
+				$invo['callerFile'] = $callerInfo['file'];
+				$invo['callerFunctionName'] = $callerInfo['functionName'];
 			}
+			unsetMultiple($invo, array('callCost','calledFromFunction','calledFromInvocation'));
+			
 			echo json_encode($invo).',';
 		}
 		echo ']';
@@ -88,6 +96,11 @@ function get($param, $default=false){
 	return (isset($_GET[$param])? $_GET[$param] : $default);
 }
 
+function unsetMultiple(&$array, $fields){
+	foreach($fields as $field)
+		unset($array[$field]);
+}
+
 function costCmp($a, $b){
 	$a = $a['totalSelfCost'];
 	$b = $b['totalSelfCost'];
@@ -96,9 +109,4 @@ function costCmp($a, $b){
 	    return 0;
 	}
 	return ($a > $b) ? -1 : 1;
-}
-
-function percentCost($cost, $total){
-	$result = ($total==0) ? 0 : ($cost*100)/$total;
-	return number_format($result, 3, '.', '');
 }

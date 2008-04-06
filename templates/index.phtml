@@ -74,7 +74,7 @@
 				function(data){
 					calledByUser = calledBySystem = false;
 					for(i=0;i<data.length;i++){
-						if(data[i].callerInfo){
+						if(data[i].callerFile){
 							$("#invocation_table_"+functionNr+" tbody").append(invocationTableRow(invocationsLoaded[functionNr]+i, data[i]));
 							calledByUser = true;
 						} else {
@@ -125,10 +125,10 @@
 		function invocationTableRow(nr,data){
 			return '<tr> \
 						<td>'+nr+'</td> \
-						<td>'+data.callerInfo.functionName+'</td> \
+						<td>'+data.callerFunctionName+'</td> \
 						<td>'+data.selfCost+'</td> \
 						<td>'+data.inclusiveSelfCost+'</td> \
-						<td><a title="Open file and show line" href="'+sprintf(fileUrlFormat,data.callerInfo.file,data.calledFromLine)+'" target="_blank"><img src="img/file_line.png" alt="O"/></a></td> \
+						<td><a title="Open file and show line" href="'+sprintf(fileUrlFormat,data.callerFile,data.calledFromLine)+'" target="_blank"><img src="img/file_line.png" alt="O"/></a></td> \
 					</tr>';
 			
 		}

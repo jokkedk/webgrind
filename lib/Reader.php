@@ -61,58 +61,49 @@ class Reader{
 		$file = $this->readLine();
 		$function = $this->readLine();
 
-	    if ($costFormat == 'percentual') {
-	        $totalTime = $this->getHeader('summary');
-    		return array(
-    		    'file'=>$file, 
-    		    'functionName'=>$function, 
-    		    'totalSelfCost'=>percentCost($totalSelfCost, $totalTime), 
-    		    'totalInclusiveSelfCost'=>percentCost($totalInclusiveSelfCost, $totalTime), 
-    		    'totalCallCost'=>$totalCallCost, 
-    		    'invocationCount'=>$invocationCount
-    		);            
-        } else {
-    		return array(
-    		    'file'=>$file, 
-    		    'functionName'=>$function, 
-    		    'totalSelfCost'=>$totalSelfCost, 
-    		    'totalInclusiveSelfCost'=>$totalInclusiveSelfCost, 
-    		    'totalCallCost'=>$totalCallCost, 
-    		    'invocationCount'=>$invocationCount
-    		);            
-        }
+	   	$result = array(
+    	    'file'=>$file, 
+   		    'functionName'=>$function, 
+   		    'totalSelfCost'=>$totalSelfCost,
+   		    'totalInclusiveSelfCost'=>$totalInclusiveSelfCost, 
+   		    'totalCallCost'=>$totalCallCost, 
+   		    'invocationCount'=>$invocationCount
+   		);            
+        if ($costFormat == 'percentual') {
+	        $result['totalSelfCost'] = $this->percentCost($result['totalSelfCost']);
+	        $result['totalInclusiveSelfCost'] = $this->percentCost($result['totalInclusiveSelfCost']);
+	        $result['totalCallCost'] = $this->percentCost($result['totalCallCost']);
+	    }
+
+		return $result;
 	}
 	
-	function getInvocation($functionNr, $invocationNr, $costFormat = 'absolute'){
+	function getInvocation($functionNr, $invocationNr, $includeSubCalls, $costFormat = 'absolute'){
 		$this->seek($this->functionPos[$functionNr]+self::NR_SIZE*(self::INVOCATION_LENGTH*$invocationNr+4));
 		$data = $this->read(self::INVOCATION_LENGTH);
+
+	    $result = array(
+	        'selfCost'=>$data[0], 
+	        'inclusiveSelfCost'=>$data[1], 
+	        'callCost'=>$data[2], 
+	        'calledFromFunction'=>$data[3], 
+	        'calledFromInvocation'=>$data[4], 
+	        'calledFromLine'=>$data[5], 
+	    );
 		
 		if ($costFormat == 'percentual') {
-	        $totalTime = $this->getHeader('summary');
-	        $result = array(
-	            'selfCost'=>percentCost($data[0], $totalTime), 
-	            'inclusiveSelfCost'=>percentCost($data[1], $totalTime), 
-	            'callCost'=>$data[2], 
-	            'calledFromFunction'=>$data[3], 
-	            'calledFromInvocation'=>$data[4], 
-	            'calledFromLine'=>$data[5], 
-	            'subCalls'=>array()
-	        );
-	    } else {
-		    $result = array(
-		        'selfCost'=>$data[0], 
-		        'inclusiveSelfCost'=>$data[1], 
-		        'callCost'=>$data[2], 
-		        'calledFromFunction'=>$data[3], 
-		        'calledFromInvocation'=>$data[4], 
-		        'calledFromLine'=>$data[5], 
-		        'subCalls'=>array()
-		    );
-		}
-		$this->seek($data[7]);
-		for($i=0;$i<$data[6];$i++){
-			$scData = $this->read(self::SUBCALL_LENGTH);
-			$result['subCalls'][] = array('functionNr'=>$scData[0], 'invocationNr'=>$scData[1], 'line'=>$scData[2], 'cost'=>$scData[3]);
+	        $result['selfCost'] = $this->percentCost($result['selfCost']);
+	        $result['inclusiveSelfCost'] = $this->percentCost($result['inclusiveSelfCost']);
+	        $result['callCost'] = $this->percentCost($result['callCost']);
+	    }
+
+		if($includeSubCalls){
+			$result['subCalls'] = array();
+			$this->seek($data[7]);
+			for($i=0;$i<$data[6];$i++){
+				$scData = $this->read(self::SUBCALL_LENGTH);
+				$result['subCalls'][] = array('functionNr'=>$scData[0], 'invocationNr'=>$scData[1], 'line'=>$scData[2], 'cost'=>$scData[3]);
+			}
 		}
 		return $result;
 	}
@@ -132,5 +123,12 @@ class Reader{
 		$headers = $this->getHeaders();
 		return $headers[$header];
 	}
+	
+	function percentCost($cost){
+		$total = $this->getHeader('summary');
+		$result = ($total==0) ? 0 : ($cost*100)/$total;
+		return number_format($result, 3, '.', '');
+	}
+	
 	
 }
