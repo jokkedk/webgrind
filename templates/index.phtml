@@ -12,8 +12,10 @@
 	<script src="js/sprintf.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		var fileUrlFormat = '<?=Config::$fileUrlFormat?>';
+		var numberOfInvocations = <?=Config::$numberOfInvocations?>;
 		var currentDataFile = null;
-		var invocationsLoaded = null;
+		var invocationsLoaded = new Array();
+		var maxInvocations = new Array();
 		function getOptions(){
 			options = new Object();
 			options.dataFile = $("#dataFile").val();
@@ -32,6 +34,8 @@
 					invocationsLoaded = new Array();
 					$("#function_table tbody").empty();
 					for(i=0;i<data.functions.length;i++){
+						invocationsLoaded[data.functions[i].nr] = 0;
+						maxInvocations[data.functions[i].nr] = data.functions[i].invocationCount;
 						$("#function_table tbody").append(functionTableRow(data.functions[i]));
 					}
 					currentDataFile = data.dataFile;
@@ -64,48 +68,48 @@
 			);
 		}
 		
-		function loadInvocations(functionNr){
-			if(!invocationsLoaded[functionNr]){
-				$.getJSON("index.php",
-					{'op':'invocation_list', 'file':currentDataFile, 'functionNr':functionNr, 'costFormat':$("#costFormat").val()},
-					function(data){
-						$("#invocation_area_"+functionNr).append(invocationTable(functionNr));
-						calledByUser = calledBySystem = false;
-						for(i=0;i<data.length;i++){
-							if(data[i].callerInfo){
-								$("#invocation_table_"+functionNr+" tbody").append(invocationTableRow(i, data[i]));
-								calledByUser = true;
-							} else {
-								calledBySystem = true;
-							}
-						}
-						if(calledByUser){				
-							$("#invocation_table_"+functionNr).tablesorter({
-								widgets: ['zebra'],
-								headers: { 
-						            4: { 
-						                sorter: false 
-						            }
-						        }							
-							});
+		function loadMoreInvocations(functionNr){			
+			$.getJSON("index.php",
+				{'op':'invocation_list', 'file':currentDataFile, 'functionNr':functionNr, 'costFormat':$("#costFormat").val(), 'start':invocationsLoaded[functionNr]},
+				function(data){
+					calledByUser = calledBySystem = false;
+					for(i=0;i<data.length;i++){
+						if(data[i].callerInfo){
+							$("#invocation_table_"+functionNr+" tbody").append(invocationTableRow(invocationsLoaded[functionNr]+i, data[i]));
+							calledByUser = true;
 						} else {
-							$("#invocation_area_"+functionNr).empty();
+							calledBySystem = true;
 						}
-						if(calledBySystem){
-							$("#invocation_area_"+functionNr).append('Called by script host');
-						}
-						
-						invocationsLoaded[functionNr] = true;
 					}
-				);				
-			} else {
-				$("#invocation_area_"+functionNr).toggle();
-			}
-			current = $("#fold_marker_"+functionNr).get(0).src;
-			if(current.substr(current.lastIndexOf('/')+1) == 'right.gif')
-				$("#fold_marker_"+functionNr).get(0).src = 'img/down.gif';
-			else
-				$("#fold_marker_"+functionNr).get(0).src = 'img/right.gif';
+					if(calledByUser){				
+						$("#invocation_table_"+functionNr).tablesorter({
+							widgets: ['zebra'],
+							headers: { 
+					            4: { 
+					                sorter: false 
+					            }
+					        }							
+						});
+					} else {
+						$("#invocation_area_"+functionNr).empty();
+					}
+					if(calledBySystem){
+						$("#invocation_area_"+functionNr).append('Called by script host');
+					}
+					
+					invocationsLoaded[functionNr] += data.length;
+					remaining = maxInvocations[functionNr]-invocationsLoaded[functionNr];
+					if(remaining==0){
+						$('#load_invocations_link_'+functionNr).hide();
+					} else if(remaining <= numberOfInvocations){
+						if(remaining==1)
+							$('#load_invocations_link_'+functionNr).text('Add last invocation');
+						else
+							$('#load_invocations_link_'+functionNr).text('Add '+remaining+' invocations');
+					}
+				}
+			);				
+		
 		}
 		
 		function invocationTable(functionNr){
@@ -114,6 +118,7 @@
 						<tbody> \
 						</tbody> \
 					</table> \
+					<a id="load_invocations_link_'+functionNr+'" href="javascript:loadMoreInvocations('+functionNr+')">Show '+numberOfInvocations+' more invocations</a> \
 			';
 		}
 		
@@ -123,15 +128,34 @@
 						<td>'+data.callerInfo.functionName+'</td> \
 						<td>'+data.selfCost+'</td> \
 						<td>'+data.inclusiveSelfCost+'</td> \
-						<td><a href="'+sprintf(fileUrlFormat,data.callerInfo.file,data.calledFromLine)+'" target="_blank">O</a></td> \
+						<td><a title="Open file and show line" href="'+sprintf(fileUrlFormat,data.callerInfo.file,data.calledFromLine)+'" target="_blank"><img src="img/file_line.png" alt="O"/></a></td> \
 					</tr>';
 			
 		}
 		
+		function toggleInvocations(functionNr){
+			if(invocationsLoaded[functionNr]==0){
+				$("#invocation_area_"+functionNr).append(invocationTable(functionNr));
+				loadMoreInvocations(functionNr);
+			}
+
+			$("#invocation_area_"+functionNr).toggle();
+			current = $("#fold_marker_"+functionNr).get(0).src;
+			if(current.substr(current.lastIndexOf('/')+1) == 'right.gif')
+				$("#fold_marker_"+functionNr).get(0).src = 'img/down.gif';
+			else
+				$("#fold_marker_"+functionNr).get(0).src = 'img/right.gif';
+		}
+		
 		function functionTableRow(data){
-			openLink = (data.file=='php:internal')?'':'<a href="'+sprintf(fileUrlFormat,data.file,-1)+'" target="_blank">O</a>';
+			openLink = (data.file=='php:internal')?'':'<a title="Open file" href="'+sprintf(fileUrlFormat,data.file,-1)+'" target="_blank"><img src="img/file.png" alt="O"/></a>';
 			return '<tr> \
-						<td><a href="javascript:loadInvocations('+data.nr+')"><img id="fold_marker_'+data.nr+'" src="img/right.gif" />&nbsp;&nbsp;'+data.functionName+'</a><div class="invocation_area" id="invocation_area_'+data.nr+'"></div></td> \
+						<td> \
+							<a href="javascript:toggleInvocations('+data.nr+')"> \
+								<img id="fold_marker_'+data.nr+'" src="img/right.gif" />&nbsp;&nbsp;'+data.functionName+' \
+							</a> \
+							<div class="invocation_area" id="invocation_area_'+data.nr+'"></div> \
+						</td> \
 						<td>'+openLink+'</td> \
 						<td class="nr">'+data.invocationCount+'</td> \
 						<td class="nr">'+data.totalSelfCost+'</td> \
@@ -139,9 +163,11 @@
 					</tr> \
 			';
 		}
+		
 		function sortBlock(){
 			$.blockUI('<h1>Sorting...</h1>');
 		}
+		
 		
 		$(document).ready(function() { 
 			$.blockUI.defaults.pageMessage = '<h1>Loading...</h1><p>Loading information from server. If the callgrind file is large this may take some time</p>';

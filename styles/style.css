@@ -70,6 +70,7 @@ div.hr {
 }
 
 div.invocation_area {
+	display: none;
 	margin: 5px 5px;
 }
 
@@ -101,7 +102,6 @@ table.tablesorter tbody td {
 	color: #000000;
 	border-right:1px solid #D9D9D9;
 	padding: 4px;
-	background-color: #FFF;
 	vertical-align: top;
 }
 

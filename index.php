@@ -11,10 +11,6 @@ set_time_limit(0);
 if (ini_get('date.timezone') == '')
     date_default_timezone_set( Config::$defaultTimezone );
 
-if(function_exists('xdebug_get_profiler_filename') && ($file=xdebug_get_profiler_filename())){
-	FileHandler::getInstance()->markAsSelftrace(xdebug_get_profiler_filename());
-}
-
 
 switch(get('op')){
 	case 'file_list':
@@ -67,8 +63,13 @@ switch(get('op')){
 		$reader = FileHandler::getInstance()->getTraceReader(get('file'));
 		$functionNr = get('functionNr');
  		$function = $reader->getFunctionInfo($functionNr);
+		$start = get('start',0);
+		$end = $start+Config::$numberOfInvocations;
+		if($end>$function['invocationCount'])
+			$end = $function['invocationCount'];
+			
 		echo '[';
-		for($i=0;$i<$function['invocationCount'];$i++){
+		for($i=$start;$i<$end;$i++){
 			$invo = $reader->getInvocation($functionNr, $i, get('costFormat', 'absolute'));
 			if($invo['calledFromFunction']==-1){
 				$invo['callerInfo'] = false;
