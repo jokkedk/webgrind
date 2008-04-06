@@ -3,8 +3,8 @@ function highlight_num($file, $line){
 	$lineCount = count(file($file));
 	$numbers = '<code class="num">';
 	for($i = 1; $i<=$lineCount; $i++){
-		$numbers .= ($i==$line)? '<span id="num_emph">&bull; '.$i.'</span>' : $i;
-		$numbers .= '<br />';
+		$numbers .= ($i==$line)? '<span id="line_emph">&nbsp;</span>' : '';
+		$numbers .= $i.'<br />';
 	}
 	$numbers .= '</code>'; 
 	

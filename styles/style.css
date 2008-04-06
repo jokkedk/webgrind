@@ -143,8 +143,10 @@ img.list_reload {
 	border-right: 1px solid gray;
 }
 
-#num_emph {
-	color: red;
-	background-color: #ddd;
+#line_emph {
+	position:absolute;
+	width:100%;
+	z-index:-1;
+	background-color: #bbbbff;
 	font-weight: bold;
 }
