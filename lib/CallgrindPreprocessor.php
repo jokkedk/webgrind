@@ -1,8 +1,7 @@
 <?php
 /*
-// TODO Error handling
 
-Preprocessed file format v2:
+Preprocessed file format v4:
 
 <version><header address><function count><function addresses><functions><subcalls><headers>
 <header address> : number

@@ -47,7 +47,7 @@ switch(get('op')){
 		foreach($functions as $function){
 			$remainingCost -= $function['totalSelfCost'];
 			
-			if(get('costFormat')=='percent'){
+			if(get('costFormat')=='percentual'){
 				$function['totalSelfCost'] = $reader->percentCost($function['totalSelfCost']);
 				$function['totalInclusiveSelfCost'] = $reader->percentCost($function['totalInclusiveSelfCost']);
 			}

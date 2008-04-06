@@ -124,6 +124,7 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 
 td.nr {
 	text-align: right;
+	font-family: "Lucida Console", "Andale Mono", "Monaco", monospace;
 }
 
 img.list_reload {
