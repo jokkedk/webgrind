@@ -104,11 +104,10 @@ table.tablesorter tbody td {
 	padding: 4px;
 	vertical-align: top;
 }
-
-table.tablesorter tbody tr.odd td {
+table.tablesorter tbody tr.odd {
 	background-color:#F1F5F9;
 }
-table.tablesorter tbody tr.even td {
+table.tablesorter tbody tr.even {
 	background-color:#FFFFFF;
 }
 
@@ -151,6 +150,7 @@ img.list_reload {
 	font-weight: bold;
 }
 a.load_invocations {
+	display: none;
 	background-color: #999;
 	border: 1px solid #333;
 	padding: 2px;

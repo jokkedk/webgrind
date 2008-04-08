@@ -73,8 +73,13 @@
 				{'op':'invocation_list', 'file':currentDataFile, 'functionNr':functionNr, 'costFormat':$("#costFormat").val(), 'start':invocationsLoaded[functionNr]},
 				function(data){
 					calledByUser = calledBySystem = false;
+					
 					for(i=0;i<data.length;i++){
 						if(data[i].callerFile){
+							if(i==0 && invocationsLoaded[functionNr]==0){
+								$("#invocation_area_"+functionNr).append(invocationTable(functionNr));
+							}					
+							
 							$("#invocation_table_"+functionNr+" tbody").append(invocationTableRow(invocationsLoaded[functionNr]+i, data[i]));
 							calledByUser = true;
 						} else {
@@ -96,6 +101,7 @@
 					if(calledBySystem){
 						$("#invocation_area_"+functionNr).append('Called by script host');
 					}
+										
 					
 					invocationsLoaded[functionNr] += data.length;
 					remaining = maxInvocations[functionNr]-invocationsLoaded[functionNr];
@@ -135,10 +141,9 @@
 		
 		function toggleInvocations(functionNr){
 			if(invocationsLoaded[functionNr]==0){
-				$("#invocation_area_"+functionNr).append(invocationTable(functionNr));
 				loadMoreInvocations(functionNr);
-			}
-
+			}					
+			
 			$("#invocation_area_"+functionNr).toggle();
 			current = $("#fold_marker_"+functionNr).get(0).src;
 			if(current.substr(current.lastIndexOf('/')+1) == 'right.gif')
