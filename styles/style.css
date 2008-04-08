@@ -150,3 +150,8 @@ img.list_reload {
 	background-color: #bbbbff;
 	font-weight: bold;
 }
+a.load_invocations {
+	background-color: #999;
+	border: 1px solid #333;
+	padding: 2px;
+}

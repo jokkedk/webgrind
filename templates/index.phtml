@@ -105,7 +105,7 @@
 						if(remaining==1)
 							$('#load_invocations_link_'+functionNr).text('Add last invocation');
 						else
-							$('#load_invocations_link_'+functionNr).text('Add '+remaining+' invocations');
+							$('#load_invocations_link_'+functionNr).text('Add last '+remaining+' invocations');
 					}
 				}
 			);				
@@ -118,7 +118,7 @@
 						<tbody> \
 						</tbody> \
 					</table> \
-					<a id="load_invocations_link_'+functionNr+'" href="javascript:loadMoreInvocations('+functionNr+')">Show '+numberOfInvocations+' more invocations</a> \
+					<a class="load_invocations" id="load_invocations_link_'+functionNr+'" href="javascript:loadMoreInvocations('+functionNr+')">Add '+numberOfInvocations+' invocations</a> \
 			';
 		}
 		
