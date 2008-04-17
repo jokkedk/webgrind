@@ -49,7 +49,7 @@ class Webgrind_Preprocessor
 			throw new Exception('Could not open '.$inFile.' for reading.');
 		$out = @fopen($outFile, 'w+b');
 		if(!$out)
-			throw new Exception('Could not open '.$outFile.' for writing.')
+			throw new Exception('Could not open '.$outFile.' for writing.');
 		
 		$nextFuncNr = 0;
 		$functions = array();
