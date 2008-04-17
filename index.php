@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author Jacob Oettinger
+ * @author Joakim Nygård
+ */
 
 require 'config.php';
 require 'library/FileHandler.php';
@@ -108,10 +112,6 @@ function get($param, $default=false){
 	return (isset($_GET[$param])? $_GET[$param] : $default);
 }
 
-function unsetMultiple(&$array, $fields){
-	foreach($fields as $field)
-		unset($array[$field]);
-}
 
 function costCmp($a, $b){
 	$a = $a['summedSelfCost'];

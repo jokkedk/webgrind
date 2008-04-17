@@ -2,9 +2,19 @@
 require 'Reader.php';
 require 'Preprocessor.php';
 
+/**
+ * Class handling access to data-files(original and preprocessed) for webgrind.
+ * @author Jacob Oettinger
+ * @author Joakim Nygård
+ */
 class Webgrind_FileHandler{
+	
 	private static $singleton = null;
 	
+	
+	/**
+	 * @return Singleton instance of the filehandler
+	 */
 	public static function getInstance(){
 		if(self::$singleton==null)
 			self::$singleton = new self();
@@ -12,25 +22,37 @@ class Webgrind_FileHandler{
 	}
 		
 	private function __construct(){
-		
+		// Get list of files matching the defined format
 		$files = $this->getFiles(Webgrind_Config::$xdebugOutputFormat, Webgrind_Config::$xdebugOutputDir);
 		
+		// Get list of preprocessed files
 		$prepFiles = $this->getFiles('/\\'.Webgrind_Config::$preprocessedSuffix.'$/', Webgrind_Config::$storageDir);
+		
+		// Loop over the preprocessed files. 
 		foreach($prepFiles as $fileName=>$prepFile){
 			$fileName = str_replace(Webgrind_Config::$preprocessedSuffix,'',$fileName);
 			
+			// If it is older than its corrosponding original: delete it.
+			// If it's original does not exist: delete it
 			if(!isset($files[$fileName]) || $files[$fileName]['mtime']>$prepFile['mtime'] )
 				unlink($prepFile['absoluteFilename']);
 			else
 				$files[$fileName]['preprocessed'] = true;
 		}
+		// Sort by mtime
 		uasort($files,array($this,'mtimeCmp'));
+		
 		$this->files = $files;
 	}
 	
-	
-	public function getInvokeUrl($file){
-		# Grab name of invoked file
+	/**
+	 * Get the value of the cmd header in $file
+	 *
+	 * @return void string
+	 */	
+	private function getInvokeUrl($file){
+		// Grab name of invoked file. 
+		// TODO: Makes assumptions about where the "cmd"-header is in a trace file. Not so cool, but a fast way to do it.
 	    $fp = fopen($file, 'r');
 	    fgets($fp);
 	    $invokeUrl = trim(substr(fgets($fp), 5));
@@ -38,7 +60,11 @@ class Webgrind_FileHandler{
 		return $invokeUrl;
 	}
 	
-	
+	/**
+	 * List of files in $dir whose filename has the format $format
+	 *
+	 * @return array Files
+	 */
 	private function getFiles($format, $dir){
 		$list = preg_grep($format,scandir($dir));
 		$files = array();
@@ -57,6 +83,11 @@ class Webgrind_FileHandler{
 		return $files;
 	}
 	
+	/**
+	 * Get list of available trace files. Optionally including traces of the webgrind script it self
+	 *
+	 * @return array Files
+	 */
 	public function getTraceList($selftraces=false){
 		$result = array();
 		foreach($this->files as $fileName=>$file){
@@ -66,19 +97,30 @@ class Webgrind_FileHandler{
 		return $result;
 	}
 	
+	/**
+	 * Get a trace reader for the specific file.
+	 * 
+	 * If the file has not been preprocessed yet this will be done first.
+	 *
+	 * @return Webgrind_Reader Reader for $file
+	 */
 	public function getTraceReader($file){
 		$prepFile = Webgrind_Config::$storageDir.$file.Webgrind_Config::$preprocessedSuffix;
 		try{
 			$r = new Webgrind_Reader($prepFile);
 		} catch (Exception $e){
 			// Preprocessed file does not exist or other error
-			$cg = new Webgrind_Preprocessor(Webgrind_Config::$xdebugOutputDir.$file, $prepFile);
-			$cg->parse();
+			Webgrind_Preprocessor::parse(Webgrind_Config::$xdebugOutputDir.$file, $prepFile);
 			$r = new Webgrind_Reader($prepFile);
 		}
 		return $r;
 	}
 	
+	/**
+	 * Comparison function for sorting
+	 *
+	 * @return boolean
+	 */
 	private function mtimeCmp($a, $b){
 		if ($a['mtime'] == $b['mtime'])
 		    return 0;
