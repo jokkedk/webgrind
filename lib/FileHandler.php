@@ -13,11 +13,11 @@ class Webgrind_FileHandler{
 		
 	private function __construct(){
 		
-		$files = $this->getFiles(Config::$xdebugOutputFormat, Config::$xdebugOutputDir);
+		$files = $this->getFiles(Webgrind_Config::$xdebugOutputFormat, Webgrind_Config::$xdebugOutputDir);
 		
-		$prepFiles = $this->getFiles('/\\'.Config::$preprocessedSuffix.'$/', Config::$storageDir);
+		$prepFiles = $this->getFiles('/\\'.Webgrind_Config::$preprocessedSuffix.'$/', Webgrind_Config::$storageDir);
 		foreach($prepFiles as $fileName=>$prepFile){
-			$fileName = str_replace(Config::$preprocessedSuffix,'',$fileName);
+			$fileName = str_replace(Webgrind_Config::$preprocessedSuffix,'',$fileName);
 			
 			if(!isset($files[$fileName]) || $files[$fileName]['mtime']>$prepFile['mtime'] )
 				unlink($prepFile['absoluteFilename']);
@@ -67,12 +67,12 @@ class Webgrind_FileHandler{
 	}
 	
 	public function getTraceReader($file){
-		$prepFile = Config::$storageDir.$file.Config::$preprocessedSuffix;
+		$prepFile = Webgrind_Config::$storageDir.$file.Webgrind_Config::$preprocessedSuffix;
 		try{
 			$r = new Webgrind_Reader($prepFile);
 		} catch (Exception $e){
 			// Preprocessed file does not exist or other error
-			$cg = new Webgrind_Preprocessor(Config::$xdebugOutputDir.$file, $prepFile);
+			$cg = new Webgrind_Preprocessor(Webgrind_Config::$xdebugOutputDir.$file, $prepFile);
 			$cg->parse();
 			$r = new Webgrind_Reader($prepFile);
 		}

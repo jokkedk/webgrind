@@ -21,6 +21,19 @@
 	<body>
 		<?=$file?>
 		<div class="hr"></div>
-		<?=$content?>
+	<?if($message==''):?>
+		<code class="num">
+		<?
+		$lineCount = count(file($file));
+		for($i = 1; $i<=$lineCount; $i++):?>
+			<?if($i==$line):?><span id="line_emph">&nbsp;</span><?endif?>
+			<?=$i?><br />
+		<?endfor?>
+		</code>
+		<?=highlight_file($file, true)?>
+	<?else:?>
+		<br />
+		<center><b><?=$message?></b></center>
+	<?endif?>
 	</body>
 </html>

@@ -1,7 +1,7 @@
 <?php
 
 require 'config.php';
-require 'lib/Webgrind/FileHandler.php';
+require 'lib/FileHandler.php';
 // Errorhandling.
 // No files, outputdir not writabel
 // Show self traces in option group
@@ -9,7 +9,7 @@ set_time_limit(0);
 
 // Make sure we have a timezone for date functions.
 if (ini_get('date.timezone') == '')
-    date_default_timezone_set( Config::$defaultTimezone );
+    date_default_timezone_set( Webgrind_Config::$defaultTimezone );
 
 
 switch(get('op')){
@@ -57,7 +57,7 @@ switch(get('op')){
 		}
 		$result['dataFile'] = $dataFile;
 		$result['invokeUrl'] = $reader->getHeader('cmd');
-		$result['mtime'] = date(Config::$dateFormat,filemtime(Config::$xdebugOutputDir.$dataFile));
+		$result['mtime'] = date(Webgrind_Config::$dateFormat,filemtime(Webgrind_Config::$xdebugOutputDir.$dataFile));
 		$result['summedSelfTime'] = $summedCost;
 		echo json_encode($result);
 	break;
@@ -80,9 +80,29 @@ switch(get('op')){
 		echo json_encode($result);
 		
 	break;
+	case 'fileviewer':
+		$file = get('file');
+		$line = get('line');
+	
+		if($file && $file!=''){
+			$message = '';
+			if(!file_exists($file)){
+				$message = $file.' does not exist.';
+			} else if(!is_readable($file)){
+				$message = $file.' is not readable.';
+			} else if(is_dir($file)){
+				$message = $file.' is a directory.';
+			} 		
+		} else {
+			$message = 'No file to view';
+		}
+		require 'templates/fileviewer.phtml';
+	
+	break;
 	default:
 		require 'templates/index.phtml';
 }
+
 
 function get($param, $default=false){
 	return (isset($_GET[$param])? $_GET[$param] : $default);
