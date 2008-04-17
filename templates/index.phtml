@@ -92,6 +92,10 @@
 					            }
 					        }							
 						});
+						$("#callinfo_table_"+functionNr).bind("sortStart",sortBlock).bind("sortEnd",$.unblockUI);
+						$("#callinfo_table_"+functionNr).trigger("sorton",[[[2,1]]]); 
+						
+						
 					} 
 					
 					callInfoLoaded[functionNr] = true;
