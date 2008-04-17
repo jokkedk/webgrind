@@ -3,21 +3,32 @@
 
 Preprocessed file format v4:
 
-<version><header address><function count><function addresses><functions><subcalls><headers>
-<header address> : number
-<version> : number 
-<function count> : number
-<function addresses> : <number><number>...
-<functions> : <total self cost><total inclusive self cost><total call cost><invocation count><invocations><filename><functionname>...
-<invocation count> : number
-<invocations> : <self cost><inclusive self cost><called from><subcall count><subcalls address>
-<called from> : <call cost><function><invocation><line number> (numbers)
-<self cost> : number
-<subcall count> : number
-<filename> : newline terminated string
-<funtionname> : newline terminated string
-<subcalls> : <function><invocation><line><cost>...
-<headers> : <string>\n<string>...
+file_contents: version_number header_address function_count function_addresses functions subcalls headers
+version_number: number
+header_address: number
+function_count: number
+function_addresses: {number}
+functions: {total_self_cost total_inclusive_self_cost total_call_cost invocation_count invocations file_name function_name}
+total_self_cost: number
+total_inclusive_self_cost: number
+total_call_cost: number
+invocation_count: number
+invocations:  self_cost inclusive_self_cost called_from subcall_count subcall_address 
+file_name: string_newline
+function_name: string_newline
+self_cost: number
+inclusive_self_cost: number
+called_from: call_cost function invocation line_number
+call_cost: number
+function: number
+invocation: number
+line_number: number
+subcall_count: number
+subcall_address: number
+subcalls: {function invocation line_number call_cost}
+headers: {string_newline}
+string_newline: any string terminated by a newline character
+number: unsigned long (always 32 bit, little endian byte order)
 
 */
 
@@ -195,4 +206,3 @@ class CallgrindPreprocessor{
 	}
 }
 
-?>
