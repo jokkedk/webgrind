@@ -1,7 +1,7 @@
 <?php
 
 require 'config.php';
-require 'lib/FileHandler.php';
+require 'library/FileHandler.php';
 // Errorhandling.
 // No files, outputdir not writabel
 // Show self traces in option group
