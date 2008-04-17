@@ -1,6 +1,6 @@
 <?php
 
-class Reader{
+class Webgrind_Reader{
 	const FILE_FORMAT_VERSION = 5;
 
 	const NR_FORMAT = 'V';

@@ -1,7 +1,7 @@
 <?php
 
 require 'config.php';
-require 'lib/FileHandler.php';
+require 'lib/Webgrind/FileHandler.php';
 // Errorhandling.
 // No files, outputdir not writabel
 // Show self traces in option group
@@ -14,15 +14,15 @@ if (ini_get('date.timezone') == '')
 
 switch(get('op')){
 	case 'file_list':
-		echo json_encode(FileHandler::getInstance()->getTraceList());
+		echo json_encode(Webgrind_FileHandler::getInstance()->getTraceList());
 		break;	
 	case 'function_list':
 		$dataFile = get('dataFile');
 		if($dataFile=='0'){
-			$files = FileHandler::getInstance()->getTraceList();
+			$files = Webgrind_FileHandler::getInstance()->getTraceList();
 			$dataFile = $files[0]['filename'];
 		}
-		$reader = FileHandler::getInstance()->getTraceReader($dataFile);
+		$reader = Webgrind_FileHandler::getInstance()->getTraceReader($dataFile);
 		$count = $reader->getFunctionCount();
 		$functions = array();
 		$summedCost = $shownTotal = 0;
@@ -62,7 +62,7 @@ switch(get('op')){
 		echo json_encode($result);
 	break;
 	case 'callinfo_list':
-		$reader = FileHandler::getInstance()->getTraceReader(get('file'));
+		$reader = Webgrind_FileHandler::getInstance()->getTraceReader(get('file'));
 		$functionNr = get('functionNr');
  		$function = $reader->getFunctionInfo($functionNr);
 			

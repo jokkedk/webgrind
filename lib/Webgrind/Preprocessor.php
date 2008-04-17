@@ -1,33 +1,6 @@
 <?php
-/*
 
-Preprocessed file format v5:
-
-file_contents: version_number header_address function_count function_addresses functions headers
-version_number: number
-header_address: number
-function_count: number
-function_addresses: {number}
-functions: {summed_self_cost summed_inclusive_cost invocation_count called_from_count call_information file_name function_name}
-summed_self_cost: number
-summed_inclusive_cost: number
-summed_call_cost: number
-invocation_count: number
-called_from_count: number
-call_information: {function_number line call_count summed_call_cost}
-function_number: number
-line: number
-call_count: number
-summed_call_cost: number
-file_name: string_newline
-function_name: string_newline
-headers: {string_newline}
-string_newline: any string terminated by a newline character
-number: unsigned long (always 32 bit, little endian byte order)
-
-*/
-
-class CallgrindPreprocessor{
+class Webgrind_Preprocessor{
 	const FILE_FORMAT_VERSION = 5;
 
 	const NR_FORMAT = 'V';

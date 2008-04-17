@@ -200,7 +200,7 @@
     		<label style="margin:0 5px">of</label>
     		<select id="dataFile" name="dataFile" style="width:200px">
     			<option value="0">Auto (newest)</option>
-    			<?foreach(FileHandler::getInstance()->getTraceList() as $trace):?>
+    			<?foreach(Webgrind_FileHandler::getInstance()->getTraceList() as $trace):?>
     				<option value="<?=$trace['filename']?>"><?=$trace['invokeUrl']?> (<?=$trace['filename']?>)</option>
     			<?endforeach;?>
     		</select>

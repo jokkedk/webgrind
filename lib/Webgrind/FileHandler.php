@@ -1,12 +1,13 @@
 <?php
 require 'Reader.php';
-require 'CallgrindPreprocessor.php';
-class FileHandler{
+require 'Preprocessor.php';
+
+class Webgrind_FileHandler{
 	private static $singleton = null;
 	
 	public static function getInstance(){
 		if(self::$singleton==null)
-			self::$singleton = new FileHandler();
+			self::$singleton = new self();
 		return self::$singleton;
 	}
 		
@@ -68,12 +69,12 @@ class FileHandler{
 	public function getTraceReader($file){
 		$prepFile = Config::$storageDir.$file.Config::$preprocessedSuffix;
 		try{
-			$r = new Reader($prepFile);
+			$r = new Webgrind_Reader($prepFile);
 		} catch (Exception $e){
 			// Preprocessed file does not exist or other error
-			$cg = new CallgrindPreprocessor(Config::$xdebugOutputDir.$file, $prepFile);
+			$cg = new Webgrind_Preprocessor(Config::$xdebugOutputDir.$file, $prepFile);
 			$cg->parse();
-			$r = new Reader($prepFile);
+			$r = new Webgrind_Reader($prepFile);
 		}
 		return $r;
 	}
