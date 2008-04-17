@@ -1,14 +1,11 @@
 <?php
-// TODO Error handling
 
 class Reader{
-	const FILE_FORMAT_VERSION = 4;
+	const FILE_FORMAT_VERSION = 5;
 
 	const NR_FORMAT = 'V';
 	const NR_SIZE = 4;
-	const INVOCATION_LENGTH = 8;
-	const SUBCALL_LENGTH = 4;
-	
+	const CALLINFORMATION_LENGTH = 4;
 
 	const ENTRY_POINT = '{main}';
 	
@@ -21,27 +18,7 @@ class Reader{
 			throw new Exception('Error opening file!');
 		$this->init();
 	}
-	
-	private function read($numbers=1){
-		$values = unpack(self::NR_FORMAT.$numbers,fread($this->fp,self::NR_SIZE*$numbers));
-		if($numbers==1)
-			return $values[1];
-		else 
-			return array_values($values); // reindex and return
-	}
-	
-	private function readLine(){
-		$result = fgets($this->fp);
-		if($result)
-			return trim($result);
-		else
-			return $result;
-	}
-	
-	private function seek($offset, $whence=SEEK_SET){
-		return fseek($this->fp, $offset, $whence);
-	}
-	
+		
 	// Read initial information from datafile
 	private function init(){
 		list($version, $this->headersPos, $functionCount) = $this->read(3);
@@ -56,55 +33,45 @@ class Reader{
 
 	function getFunctionInfo($nr, $costFormat = 'absolute'){
 		$this->seek($this->functionPos[$nr]);
-		list($totalSelfCost, $totalInclusiveSelfCost, $totalCallCost, $invocationCount) = $this->read(4);
-		$this->seek(self::NR_SIZE*self::INVOCATION_LENGTH*$invocationCount, SEEK_CUR);
+		
+		list($summedSelfCost, $summedInclusiveCost, $invocationCount, $calledFromCount) = $this->read(4);
+		
+		$this->seek(self::NR_SIZE*self::CALLINFORMATION_LENGTH*$calledFromCount, SEEK_CUR);
 		$file = $this->readLine();
 		$function = $this->readLine();
 
 	   	$result = array(
     	    'file'=>$file, 
    		    'functionName'=>$function, 
-   		    'totalSelfCost'=>$totalSelfCost,
-   		    'totalInclusiveSelfCost'=>$totalInclusiveSelfCost, 
-   		    'totalCallCost'=>$totalCallCost, 
-   		    'invocationCount'=>$invocationCount
+   		    'summedSelfCost'=>$summedSelfCost,
+   		    'summedInclusiveCost'=>$summedInclusiveCost, 
+   		    'invocationCount'=>$invocationCount,
+			'callInfoCount'=>$calledFromCount
    		);            
         if ($costFormat == 'percentual') {
-	        $result['totalSelfCost'] = $this->percentCost($result['totalSelfCost']);
-	        $result['totalInclusiveSelfCost'] = $this->percentCost($result['totalInclusiveSelfCost']);
-	        $result['totalCallCost'] = $this->percentCost($result['totalCallCost']);
+	        $result['summedSelfCost'] = $this->percentCost($result['summedSelfCost']);
+	        $result['summedInclusiveCost'] = $this->percentCost($result['summedInclusiveCost']);
 	    }
 
 		return $result;
 	}
 	
-	function getInvocation($functionNr, $invocationNr, $includeSubCalls, $costFormat = 'absolute'){
-		$this->seek($this->functionPos[$functionNr]+self::NR_SIZE*(self::INVOCATION_LENGTH*$invocationNr+4));
-		$data = $this->read(self::INVOCATION_LENGTH);
+	function getCallInfo($functionNr, $calledFromNr, $costFormat = 'absolute'){
+		// 4 = number of numbers beforea call information
+		$this->seek($this->functionPos[$functionNr]+self::NR_SIZE*(self::CALLINFORMATION_LENGTH*$calledFromNr+4));
+		$data = $this->read(self::CALLINFORMATION_LENGTH);
 
 	    $result = array(
-	        'selfCost'=>$data[0], 
-	        'inclusiveSelfCost'=>$data[1], 
-	        'callCost'=>$data[2], 
-	        'calledFromFunction'=>$data[3], 
-	        'calledFromInvocation'=>$data[4], 
-	        'calledFromLine'=>$data[5], 
+	        'functionNr'=>$data[0], 
+	        'line'=>$data[1], 
+	        'callCount'=>$data[2], 
+	        'summedCallCost'=>$data[3]
 	    );
 		
 		if ($costFormat == 'percentual') {
-	        $result['selfCost'] = $this->percentCost($result['selfCost']);
-	        $result['inclusiveSelfCost'] = $this->percentCost($result['inclusiveSelfCost']);
-	        $result['callCost'] = $this->percentCost($result['callCost']);
+	        $result['summedCallCost'] = $this->percentCost($result['summedCallCost']);
 	    }
 
-		if($includeSubCalls){
-			$result['subCalls'] = array();
-			$this->seek($data[7]);
-			for($i=0;$i<$data[6];$i++){
-				$scData = $this->read(self::SUBCALL_LENGTH);
-				$result['subCalls'][] = array('functionNr'=>$scData[0], 'invocationNr'=>$scData[1], 'line'=>$scData[2], 'cost'=>$scData[3]);
-			}
-		}
 		return $result;
 	}
 	
@@ -130,5 +97,24 @@ class Reader{
 		return number_format($result, 3, '.', '');
 	}
 	
+	private function read($numbers=1){
+		$values = unpack(self::NR_FORMAT.$numbers,fread($this->fp,self::NR_SIZE*$numbers));
+		if($numbers==1)
+			return $values[1];
+		else 
+			return array_values($values); // reindex and return
+	}
+	
+	private function readLine(){
+		$result = fgets($this->fp);
+		if($result)
+			return trim($result);
+		else
+			return $result;
+	}
+	
+	private function seek($offset, $whence=SEEK_SET){
+		return fseek($this->fp, $offset, $whence);
+	}
 	
 }

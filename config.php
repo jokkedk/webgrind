@@ -25,11 +25,6 @@ class Config{
 	static $preprocessedSuffix = '.prep';
 	
 	/**
-	* Number of invocations to load at a time
-	*/
-	static $numberOfInvocations = 50;
-	
-	/**
 	 * Default timezone
 	 */
 	static $defaultTimezone = 'Europe/Copenhagen';

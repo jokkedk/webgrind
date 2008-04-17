@@ -12,10 +12,8 @@
 	<script src="js/sprintf.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		var fileUrlFormat = '<?=Config::$fileUrlFormat?>';
-		var numberOfInvocations = <?=Config::$numberOfInvocations?>;
 		var currentDataFile = null;
-		var invocationsLoaded = new Array();
-		var maxInvocations = new Array();
+		var callInfoLoaded = new Array();
 		function getOptions(){
 			options = new Object();
 			options.dataFile = $("#dataFile").val();
@@ -31,18 +29,17 @@
 			$.getJSON("index.php",
 				vars,
 				function(data){
-					invocationsLoaded = new Array();
+					callInfoLoaded = new Array();
 					$("#function_table tbody").empty();
 					for(i=0;i<data.functions.length;i++){
-						invocationsLoaded[data.functions[i].nr] = 0;
-						maxInvocations[data.functions[i].nr] = data.functions[i].invocationCount;
+						callInfoLoaded[data.functions[i].nr] = false;
 						$("#function_table tbody").append(functionTableRow(data.functions[i]));
 					}
 					currentDataFile = data.dataFile;
 					$("#data_file").html(data.dataFile);
 					$("#invoke_url").html(data.invokeUrl);
 					$("#mtime").html(data.mtime);
-					$("#selfcost_sum").html(data.totalSelftime+"/"+data.totalRunTime);
+					$("#selfcost_sum").html(data.summedSelfTime+"/"+data.summedRunTime);
 					
 					$("#hello_message").hide();
 					$("#trace_view").show();
@@ -68,83 +65,66 @@
 			);
 		}
 		
-		function loadMoreInvocations(functionNr){			
+		function loadCallInfo(functionNr){			
 			$.getJSON("index.php",
-				{'op':'invocation_list', 'file':currentDataFile, 'functionNr':functionNr, 'costFormat':$("#costFormat").val(), 'start':invocationsLoaded[functionNr]},
+				{'op':'callinfo_list', 'file':currentDataFile, 'functionNr':functionNr, 'costFormat':$("#costFormat").val()},
 				function(data){
-					calledByUser = calledBySystem = false;
 					
-					for(i=0;i<data.length;i++){
-						if(data[i].callerFile){
-							if(i==0 && invocationsLoaded[functionNr]==0){
-								$("#invocation_area_"+functionNr).append(invocationTable(functionNr));
-							}					
-							
-							$("#invocation_table_"+functionNr+" tbody").append(invocationTableRow(invocationsLoaded[functionNr]+i, data[i]));
-							calledByUser = true;
-						} else {
-							calledBySystem = true;
+					if(!callInfoLoaded[functionNr]){
+						if(data.invocations.length>0)
+							$("#callinfo_area_"+functionNr).append(callInfoTable(functionNr));
+						if(data.calledByHost){
+							$("#callinfo_area_"+functionNr).append('Called by script host');						
 						}
+						
+					}					
+					
+					for(i=0;i<data.invocations.length;i++){
+						$("#callinfo_table_"+functionNr+" tbody").append(callInfoTableRow(i, data.invocations[i]));
 					}
-					if(calledByUser){				
-						$("#invocation_table_"+functionNr).tablesorter({
+					
+					if(data.invocations.length>0){				
+						$("#callinfo_table_"+functionNr).tablesorter({
 							widgets: ['zebra'],
 							headers: { 
-					            4: { 
+					            3: { 
 					                sorter: false 
 					            }
 					        }							
 						});
-					} else {
-						$("#invocation_area_"+functionNr).empty();
-					}
-					if(calledBySystem){
-						$("#invocation_area_"+functionNr).append('Called by script host');
-					}
-										
+					} 
 					
-					invocationsLoaded[functionNr] += data.length;
-					remaining = maxInvocations[functionNr]-invocationsLoaded[functionNr];
-					if(remaining==0){
-						$('#load_invocations_link_'+functionNr).hide();
-					} else if(remaining <= numberOfInvocations){
-						if(remaining==1)
-							$('#load_invocations_link_'+functionNr).text('Add last invocation');
-						else
-							$('#load_invocations_link_'+functionNr).text('Add last '+remaining+' invocations');
-					}
+					callInfoLoaded[functionNr] = true;
 				}
 			);				
 		
 		}
 		
-		function invocationTable(functionNr){
-			return '<table class="tablesorter" id="invocation_table_'+functionNr+'" cellspacing="0"> \
-						<thead><tr><th>#</th><th>Called from</th><th>Self Cost</th><th>Inclusive Cost</th><th> </th></tr></thead> \
+		function callInfoTable(functionNr){
+			return '<table class="tablesorter" id="callinfo_table_'+functionNr+'" cellspacing="0"> \
+						<thead><tr><th>Called from</th><th>Count</th><th>Total Call Cost</th><th> </th></tr></thead> \
 						<tbody> \
 						</tbody> \
 					</table> \
-					<a class="load_invocations" id="load_invocations_link_'+functionNr+'" href="javascript:loadMoreInvocations('+functionNr+')">Add '+numberOfInvocations+' invocations</a> \
 			';
 		}
 		
-		function invocationTableRow(nr,data){
+		function callInfoTableRow(nr,data){
 			return '<tr> \
-						<td>'+nr+'</td> \
-						<td>'+data.callerFunctionName+'</td> \
-						<td class="nr">'+data.selfCost+'</td> \
-						<td class="nr">'+data.inclusiveSelfCost+'</td> \
-						<td><a title="Open file and show line" href="'+sprintf(fileUrlFormat,data.callerFile,data.calledFromLine)+'" target="_blank"><img src="img/file_line.png" alt="O"/></a></td> \
+						<td>'+data.callerFunctionName+' line '+data.line+'</td> \
+						<td class="nr">'+data.callCount+'</td> \
+						<td class="nr">'+data.summedCallCost+'</td> \
+						<td><a title="Open file and show line" href="'+sprintf(fileUrlFormat,data.callerFile,data.line)+'" target="_blank"><img src="img/file_line.png" alt="O"/></a></td> \
 					</tr>';
 			
 		}
 		
-		function toggleInvocations(functionNr){
-			if(invocationsLoaded[functionNr]==0){
-				loadMoreInvocations(functionNr);
+		function toggleCallInfo(functionNr){
+			if(!callInfoLoaded[functionNr]){
+				loadCallInfo(functionNr);
 			}					
 			
-			$("#invocation_area_"+functionNr).toggle();
+			$("#callinfo_area_"+functionNr).toggle();
 			current = $("#fold_marker_"+functionNr).get(0).src;
 			if(current.substr(current.lastIndexOf('/')+1) == 'right.gif')
 				$("#fold_marker_"+functionNr).get(0).src = 'img/down.gif';
@@ -156,15 +136,15 @@
 			openLink = (data.file=='php:internal')?'':'<a title="Open file" href="'+sprintf(fileUrlFormat,data.file,-1)+'" target="_blank"><img src="img/file.png" alt="O"/></a>';
 			return '<tr> \
 						<td> \
-							<a href="javascript:toggleInvocations('+data.nr+')"> \
+							<a href="javascript:toggleCallInfo('+data.nr+')"> \
 								<img id="fold_marker_'+data.nr+'" src="img/right.gif" />&nbsp;&nbsp;'+data.functionName+' \
 							</a> \
-							<div class="invocation_area" id="invocation_area_'+data.nr+'"></div> \
+							<div class="callinfo_area" id="callinfo_area_'+data.nr+'"></div> \
 						</td> \
 						<td>'+openLink+'</td> \
 						<td class="nr">'+data.invocationCount+'</td> \
-						<td class="nr">'+data.totalSelfCost+'</td> \
-						<td class="nr">'+data.totalInclusiveSelfCost+'</td> \
+						<td class="nr">'+data.summedSelfCost+'</td> \
+						<td class="nr">'+data.summedInclusiveCost+'</td> \
 					</tr> \
 			';
 		}
