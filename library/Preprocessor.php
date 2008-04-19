@@ -114,7 +114,7 @@ class Webgrind_Preprocessor
 			}
 			fwrite($out, $function['filename']."\n".$functionName."\n");
 		}
-		$headersPos = ftell($this->out);
+		$headersPos = ftell($out);
 		// Write headers
 		foreach($headers as $header){
 			fwrite($out,$header);
