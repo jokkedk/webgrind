@@ -39,7 +39,7 @@
 					$("#data_file").html(data.dataFile);
 					$("#invoke_url").html(data.invokeUrl);
 					$("#mtime").html(data.mtime);
-					$("#selfcost_sum").html(data.summedSelfTime+"/"+data.summedRunTime);
+					$("#selfcost_sum").html(data.summedRunTime);
 					
 					$("#hello_message").hide();
 					$("#trace_view").show();
@@ -115,7 +115,7 @@
 		
 		function callInfoTableRow(nr,data){
 			return '<tr> \
-						<td>'+data.callerFunctionName+' line '+data.line+'</td> \
+						<td>'+data.callerFunctionName+' @ '+data.line+'</td> \
 						<td class="nr">'+data.callCount+'</td> \
 						<td class="nr">'+data.summedCallCost+'</td> \
 						<td><a title="Open file and show line" href="'+sprintf(fileUrlFormat,data.callerFile,data.line)+'" target="_blank"><img src="img/file_line.png" alt="O"/></a></td> \
@@ -229,7 +229,7 @@
 	    <span id="data_file"></span> @ <span id="mtime"></span>
 	</div>
 	<div style="float:right;">
-	    Total Time (inner/outer): <span id="selfcost_sum"></span>
+	    Total Time : <span id="selfcost_sum"></span> µs
 	</div>
 	<div style="clear:both"></div>
 	<table class="tablesorter" id="function_table" cellspacing="0">

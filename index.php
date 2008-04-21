@@ -29,12 +29,10 @@ switch(get('op')){
 		$reader = Webgrind_FileHandler::getInstance()->getTraceReader($dataFile);
 		$count = $reader->getFunctionCount();
 		$functions = array();
-		$summedCost = $shownTotal = 0;
-        $result['summedRunTime'] = $reader->getHeader('summary');
+        $shownTotal = 0;
 
 		for($i=0;$i<$count;$i++) {
 		    $functionInfo = $reader->getFunctionInfo($i,'absolute');
-			$summedCost += $functionInfo['summedSelfCost'];
 
 		    if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
     			$shownTotal += $functionInfo['summedSelfCost'];
@@ -59,10 +57,10 @@ switch(get('op')){
 			if($remainingCost<0)
 				break;
 		}
+        $result['summedRunTime'] = $reader->getHeader('summary');
 		$result['dataFile'] = $dataFile;
 		$result['invokeUrl'] = $reader->getHeader('cmd');
 		$result['mtime'] = date(Webgrind_Config::$dateFormat,filemtime(Webgrind_Config::$xdebugOutputDir.$dataFile));
-		$result['summedSelfTime'] = $summedCost;
 		echo json_encode($result);
 	break;
 	case 'callinfo_list':
