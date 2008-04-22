@@ -81,7 +81,7 @@ class Webgrind_Reader
 	 * @return int 
 	 */
 	function getFunctionCount(){
-		return sizeof($this->functionPos);
+		return count($this->functionPos);
 	}
 
 	/**

@@ -27,11 +27,10 @@ switch(get('op')){
 			$dataFile = $files[0]['filename'];
 		}
 		$reader = Webgrind_FileHandler::getInstance()->getTraceReader($dataFile);
-		$count = $reader->getFunctionCount();
 		$functions = array();
         $shownTotal = 0;
 
-		for($i=0;$i<$count;$i++) {
+		for($i=0;$i<$reader->getFunctionCount();$i++) {
 		    $functionInfo = $reader->getFunctionInfo($i,'absolute');
 
 		    if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
@@ -57,7 +56,7 @@ switch(get('op')){
 			if($remainingCost<0)
 				break;
 		}
-		$result['summedInvocationCount'] = $count;
+		$result['summedInvocationCount'] = $reader->getFunctionCount();
         $result['summedRunTime'] = $reader->getHeader('summary');
 		$result['dataFile'] = $dataFile;
 		$result['invokeUrl'] = $reader->getHeader('cmd');
