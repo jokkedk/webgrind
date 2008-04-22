@@ -54,8 +54,8 @@ h2 {
 	display:none;
 }
 
-#selfcost_sum, 
-#callcost_sum {
+#runtime_sum, 
+#invocation_sum {
 	font-weight: bold;
 }
 

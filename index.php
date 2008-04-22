@@ -57,6 +57,7 @@ switch(get('op')){
 			if($remainingCost<0)
 				break;
 		}
+		$result['summedInvocationCount'] = $count;
         $result['summedRunTime'] = $reader->getHeader('summary');
 		$result['dataFile'] = $dataFile;
 		$result['invokeUrl'] = $reader->getHeader('cmd');
