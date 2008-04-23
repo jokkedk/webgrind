@@ -73,12 +73,13 @@ class Webgrind_FileHandler{
 		
 		foreach($list as $file){
 			$absoluteFilename = $dir.$file;
+			// Make sure that script never parses the profile currently being generated. (infinite loop)
+			if(function_exists('xdebug_get_profiler_filename') && xdebug_get_profiler_filename()==$absoluteFilename)
+				continue;
+				
 			$invokeUrl = $this->getInvokeUrl($absoluteFilename);
 
-			$files[$file] = array('absoluteFilename'=>$absoluteFilename, 'mtime'=>filemtime($absoluteFilename), 'preprocessed'=>false, 'invokeUrl'=>$invokeUrl, 'selftrace'=>false);
-			if($invokeUrl == $scriptFilename)
-				$files[$file]['selftrace'] = true;
-			
+			$files[$file] = array('absoluteFilename'=>$absoluteFilename, 'mtime'=>filemtime($absoluteFilename), 'preprocessed'=>false, 'invokeUrl'=>$invokeUrl);
 		}		
 		return $files;
 	}
@@ -88,11 +89,10 @@ class Webgrind_FileHandler{
 	 *
 	 * @return array Files
 	 */
-	public function getTraceList($selftraces=false){
+	public function getTraceList(){
 		$result = array();
 		foreach($this->files as $fileName=>$file){
-			if(!$file['selftrace'] || $selftraces)
-				$result[] = array('filename' => $fileName, 'invokeUrl' => str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $file['invokeUrl']));
+			$result[] = array('filename' => $fileName, 'invokeUrl' => str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $file['invokeUrl']));
 		}
 		return $result;
 	}

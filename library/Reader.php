@@ -14,7 +14,7 @@ class Webgrind_Reader
 
 	/**
 	 * Binary number format used.
-	 * @see http://dk2.php.net/pack
+	 * @see http://php.net/pack
 	 */
 	const NR_FORMAT = 'V';
 
