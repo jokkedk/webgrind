@@ -68,17 +68,25 @@ switch(get('op')){
 		$functionNr = get('functionNr');
  		$function = $reader->getFunctionInfo($functionNr);
 			
-		$result = array('invocations'=>array());
+		$result = array('calledFrom'=>array(), 'subCalls'=>array());
 		$foundInvocations = 0;
-		for($i=0;$i<$function['callInfoCount'];$i++){
-			$invo = $reader->getCallInfo($functionNr, $i, get('costFormat', 'absolute'));
+		for($i=0;$i<$function['calledFromInfoCount'];$i++){
+			$invo = $reader->getCalledFromInfo($functionNr, $i, get('costFormat', 'absolute'));
 			$foundInvocations += $invo['callCount'];
 			$callerInfo = $reader->getFunctionInfo($invo['functionNr'], get('costFormat', 'absolute'));
 			$invo['callerFile'] = $callerInfo['file'];
 			$invo['callerFunctionName'] = $callerInfo['functionName'];
-			$result['invocations'][] = $invo;
+			$result['calledFrom'][] = $invo;
 		}
 		$result['calledByHost'] = ($foundInvocations<$function['invocationCount']);
+		
+		for($i=0;$i<$function['subCallInfoCount'];$i++){
+			$invo = $reader->getSubCallInfo($functionNr, $i, get('costFormat', 'absolute'));
+			$callInfo = $reader->getFunctionInfo($invo['functionNr'], get('costFormat', 'absolute'));
+			$invo['callerFile'] = $callInfo['file'];
+			$invo['callerFunctionName'] = $callInfo['functionName'];
+			$result['subCalls'][] = $invo;
+		}
 		echo json_encode($result);
 		
 	break;

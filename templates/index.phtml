@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<title>webgrind</title>
 	<link rel="stylesheet" type="text/css" href="styles/style.css" />
-	<script src="js/jquery-1.2.3.pack.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.pack.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery.blockUI.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery.tablesorter.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery.selectboxes.js" type="text/javascript" charset="utf-8"></script>
@@ -71,50 +71,52 @@
 				{'op':'callinfo_list', 'file':currentDataFile, 'functionNr':functionNr, 'costFormat':$("#costFormat").val()},
 				function(data){
 					
-					if(!callInfoLoaded[functionNr]){
-						if(data.invocations.length>0)
-							$("#callinfo_area_"+functionNr).append(callInfoTable(functionNr));
-						if(data.calledByHost){
-							$("#callinfo_area_"+functionNr).append('Called by script host');						
-						}
-						
-					}					
-					
-					for(i=0;i<data.invocations.length;i++){
-						$("#callinfo_table_"+functionNr+" tbody").append(callInfoTableRow(i, data.invocations[i]));
-					}
-					
-					if(data.invocations.length>0){				
-						$("#callinfo_table_"+functionNr).tablesorter({
-							widgets: ['zebra'],
-							headers: { 
-					            3: { 
-					                sorter: false 
-					            }
-					        }							
-						});
-						$("#callinfo_table_"+functionNr).bind("sortStart",sortBlock).bind("sortEnd",$.unblockUI);
-						$("#callinfo_table_"+functionNr).trigger("sorton",[[[2,1]]]); 
-						
-						
-					} 
-					
+					insertCallInfo(functionNr, 'sub_calls_table_', 'Calls', data.subCalls);
+					insertCallInfo(functionNr, 'called_from_table_', 'Called From', data.calledFrom);
+
+					if(data.calledByHost)
+						$("#callinfo_area_"+functionNr).append('Called by script host');						
+
 					callInfoLoaded[functionNr] = true;
 				}
 			);				
 		
 		}
 		
-		function callInfoTable(functionNr){
-			return '<table class="tablesorter" id="callinfo_table_'+functionNr+'" cellspacing="0"> \
-						<thead><tr><th>Called from</th><th>Count</th><th>Total Call Cost</th><th> </th></tr></thead> \
+		function insertCallInfo(functionNr, idPrefix, title, data){
+			if(data.length==0)
+				return;
+				
+			$("#callinfo_area_"+functionNr).append(callTable(functionNr,idPrefix, title));
+			
+			for(i=0;i<data.length;i++){
+				$("#"+idPrefix+functionNr+" tbody").append(callTableRow(i, data[i]));
+			}
+			
+			$("#"+idPrefix+functionNr).tablesorter({
+				widgets: ['zebra'],
+				headers: { 
+		            3: { 
+		                sorter: false 
+		            }
+		        }							
+			});
+			$("#"+idPrefix+functionNr).bind("sortStart",sortBlock).bind("sortEnd",$.unblockUI);
+			$("#"+idPrefix+functionNr).trigger("sorton",[[[2,1]]]); 				
+				
+			
+		}
+		
+		function callTable(functionNr, idPrefix, title){
+			return '<table class="tablesorter" id="'+idPrefix+functionNr+'" cellspacing="0"> \
+						<thead><tr><th>'+title+'</th><th>Count</th><th>Total Call Cost</th><th> </th></tr></thead> \
 						<tbody> \
 						</tbody> \
 					</table> \
 			';
 		}
 		
-		function callInfoTableRow(nr,data){
+		function callTableRow(nr,data){
 			return '<tr> \
 						<td>'+data.callerFunctionName+' @ '+data.line+'</td> \
 						<td class="nr">'+data.callCount+'</td> \
@@ -123,7 +125,7 @@
 					</tr>';
 			
 		}
-		
+				
 		function toggleCallInfo(functionNr){
 			if(!callInfoLoaded[functionNr]){
 				loadCallInfo(functionNr);

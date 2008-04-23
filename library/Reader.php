@@ -10,7 +10,7 @@ class Webgrind_Reader
 	/**
 	 * File format version that this reader understands
 	 */
-	const FILE_FORMAT_VERSION = 5;
+	const FILE_FORMAT_VERSION = 6;
 
 	/**
 	 * Binary number format used.
@@ -94,9 +94,9 @@ class Webgrind_Reader
 	function getFunctionInfo($nr, $costFormat = 'absolute'){
 		$this->seek($this->functionPos[$nr]);
 		
-		list($summedSelfCost, $summedInclusiveCost, $invocationCount, $calledFromCount) = $this->read(4);
+		list($summedSelfCost, $summedInclusiveCost, $invocationCount, $calledFromCount, $subCallCount) = $this->read(5);
 		
-		$this->seek(self::NR_SIZE*self::CALLINFORMATION_LENGTH*$calledFromCount, SEEK_CUR);
+		$this->seek(self::NR_SIZE*self::CALLINFORMATION_LENGTH*($calledFromCount+$subCallCount), SEEK_CUR);
 		$file = $this->readLine();
 		$function = $this->readLine();
 
@@ -106,7 +106,8 @@ class Webgrind_Reader
    		    'summedSelfCost'=>$summedSelfCost,
    		    'summedInclusiveCost'=>$summedInclusiveCost, 
    		    'invocationCount'=>$invocationCount,
-			'callInfoCount'=>$calledFromCount
+			'calledFromInfoCount'=>$calledFromCount,
+			'subCallInfoCount'=>$subCallCount
    		);            
         if ($costFormat == 'percentual') {
 	        $result['summedSelfCost'] = $this->percentCost($result['summedSelfCost']);
@@ -124,9 +125,38 @@ class Webgrind_Reader
 	 * @param $costFormat Format to return costs in. 'absolute' (default) or 'percentual'
 	 * @return array Called from information
 	 */
-	function getCallInfo($functionNr, $calledFromNr, $costFormat = 'absolute'){
-		// 4 = number of numbers before a call information
-		$this->seek($this->functionPos[$functionNr]+self::NR_SIZE*(self::CALLINFORMATION_LENGTH*$calledFromNr+4));
+	function getCalledFromInfo($functionNr, $calledFromNr, $costFormat = 'absolute'){
+		// 5 = number of numbers before called from information
+		$this->seek($this->functionPos[$functionNr]+self::NR_SIZE*(self::CALLINFORMATION_LENGTH*$calledFromNr+5));
+		$data = $this->read(self::CALLINFORMATION_LENGTH);
+
+	    $result = array(
+	        'functionNr'=>$data[0], 
+	        'line'=>$data[1], 
+	        'callCount'=>$data[2], 
+	        'summedCallCost'=>$data[3]
+	    );
+		
+		if ($costFormat == 'percentual') {
+	        $result['summedCallCost'] = $this->percentCost($result['summedCallCost']);
+	    }
+
+		return $result;
+	}
+	
+	/**
+	 * Returns information about functions called by a function
+	 *
+	 * @param $functionNr int Function number
+	 * @param $subCallNr int Sub call position nr
+	 * @param $costFormat Format to return costs in. 'absolute' (default) or 'percentual'
+	 * @return array Sub call information
+	 */
+	function getSubCallInfo($functionNr, $subCallNr, $costFormat = 'absolute'){
+		// 4 = number of numbers before sub call count
+		$this->seek($this->functionPos[$functionNr]+self::NR_SIZE*3);
+		$calledFromInfoCount = $this->read();
+		$this->seek( ( ($calledFromInfoCount+$subCallNr) * self::CALLINFORMATION_LENGTH + 1 ) * self::NR_SIZE,SEEK_CUR);
 		$data = $this->read(self::CALLINFORMATION_LENGTH);
 
 	    $result = array(
