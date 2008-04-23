@@ -48,6 +48,7 @@ h2 {
 
 #hello_message {
 	text-align: center;
+	margin: 30px 0;
 }
 
 #trace_view {
@@ -132,6 +133,9 @@ img.list_reload {
 	left: -1px;
 }
 
+.block_box {
+	margin: 10px 10px;
+}
 
 .num { 
 	float: left; 

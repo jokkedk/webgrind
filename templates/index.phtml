@@ -157,12 +157,12 @@
 		}
 		
 		function sortBlock(){
-			$.blockUI('<h1>Sorting...</h1>');
+			$.blockUI('<div class="block_box"><h1>Sorting...</h1></div>');
 		}
 		
 		
 		$(document).ready(function() { 
-			$.blockUI.defaults.pageMessage = '<h1>Loading...</h1><p>Loading information from server. If the callgrind file is large this may take some time</p>';
+			$.blockUI.defaults.pageMessage = '<div class="block_box"><h1>Loading...</h1><p>Loading information from server. If the callgrind file is large this may take some time.</p></div>';
 			$.blockUI.defaults.overlayCSS =  { backgroundColor: '#fff', opacity: '0' }; 
 			$.blockUI.defaults.fadeIn = 0;
 			$.blockUI.defaults.fadeOut = 0;
@@ -177,7 +177,6 @@
 		        }
 			});
 			$("#function_table").bind("sortStart",sortBlock).bind("sortEnd",$.unblockUI);
-			
 		});
 		
 	</script>
