@@ -71,12 +71,13 @@
 				{'op':'callinfo_list', 'file':currentDataFile, 'functionNr':functionNr, 'costFormat':$("#costFormat").val()},
 				function(data){
 					
+					if(data.calledByHost)
+						$("#callinfo_area_"+functionNr).append('<b>Called from script host</b>');
+					
 					insertCallInfo(functionNr, 'sub_calls_table_', 'Calls', data.subCalls);
 					insertCallInfo(functionNr, 'called_from_table_', 'Called From', data.calledFrom);
 
-					if(data.calledByHost)
-						$("#callinfo_area_"+functionNr).append('Called by script host');						
-
+					
 					callInfoLoaded[functionNr] = true;
 				}
 			);				
