@@ -7,7 +7,7 @@
 		<script src="js/jquery.scrollTo.js" type="text/javascript" charset="utf-8"></script>
 		<link rel="stylesheet" type="text/css" href="styles/style.css" />
 		<title>
-			webgrind - fileviewer: <?=$file?>
+			webgrind - fileviewer: <?php echo $file?>
 		</title>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready(function() { 
@@ -19,21 +19,23 @@
 		
 	</head>
 	<body>
-		<?=$file?>
+		<?php echo $file?>
 		<div class="hr"></div>
-	<?if($message==''):?>
+	<?php if ($message==''):?>
 		<code class="num">
-		<?
+		<?php
 		$lineCount = count(file($file));
 		for($i = 1; $i<=$lineCount; $i++):?>
-			<?if($i==$line):?><span id="line_emph">&nbsp;</span><?endif?>
-			<?=$i?><br />
-		<?endfor?>
+			<?php if ($i==$line): ?>
+			    <span id="line_emph">&nbsp;</span>
+			<?php endif ?>
+			<?php echo $i ?><br />
+		<?php endfor ?>
 		</code>
-		<?=highlight_file($file, true)?>
-	<?else:?>
+		<?php echo highlight_file($file, true) ?>
+	<?php else:?>
 		<br />
-		<center><b><?=$message?></b></center>
-	<?endif?>
+		<center><b><?php echo $message?></b></center>
+	<?php endif?>
 	</body>
 </html>
