@@ -109,10 +109,8 @@ class Webgrind_Reader
 			'calledFromInfoCount'=>$calledFromCount,
 			'subCallInfoCount'=>$subCallCount
    		);            
-        if ($costFormat == 'percentual') {
-	        $result['summedSelfCost'] = $this->percentCost($result['summedSelfCost']);
-	        $result['summedInclusiveCost'] = $this->percentCost($result['summedInclusiveCost']);
-	    }
+        $result['summedSelfCost'] = $this->formatCost($result['summedSelfCost'], $costFormat);
+        $result['summedInclusiveCost'] = $this->formatCost($result['summedInclusiveCost'], $costFormat);
 
 		return $result;
 	}
@@ -137,9 +135,7 @@ class Webgrind_Reader
 	        'summedCallCost'=>$data[3]
 	    );
 		
-		if ($costFormat == 'percentual') {
-	        $result['summedCallCost'] = $this->percentCost($result['summedCallCost']);
-	    }
+        $result['summedCallCost'] = $this->formatCost($result['summedCallCost'], $costFormat);
 
 		return $result;
 	}
@@ -166,9 +162,7 @@ class Webgrind_Reader
 	        'summedCallCost'=>$data[3]
 	    );
 		
-		if ($costFormat == 'percentual') {
-	        $result['summedCallCost'] = $this->percentCost($result['summedCallCost']);
-	    }
+        $result['summedCallCost'] = $this->formatCost($result['summedCallCost'], $costFormat);
 
 		return $result;
 	}
@@ -200,15 +194,24 @@ class Webgrind_Reader
 	}
 	
 	/**
-	 * Formats $cost as a percent value of the summary header
+	 * Formats $cost as per config
 	 *
 	 * @param int $cost Cost
-	 * @return int Cost in percent
+	 * @param string $format absolute or percentual
+	 * @return int Cost formatted per config and $format paramter
 	 */
-	function percentCost($cost){
-		$total = $this->getHeader('summary');
-		$result = ($total==0) ? 0 : ($cost*100)/$total;
-		return number_format($result, 3, '.', '');
+	function formatCost($cost, $format)
+	{
+	    if ($format == 'percentual') {
+	        $total = $this->getHeader('summary');
+    		$result = ($total==0) ? 0 : ($cost*100)/$total;
+    		return number_format($result, 2, '.', '');
+	    } else {
+	        if (Webgrind_Config::$timeFormat == 'msec') {
+	            return round($cost/1000, 0);
+	        }
+	        return $cost;
+	    }
 	}
 	
 	private function read($numbers=1){

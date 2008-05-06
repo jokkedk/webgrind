@@ -35,7 +35,9 @@ class Webgrind_Config{
 	 */
 	static $dateFormat = 'Y-m-d H:i:s';
 	
-	static $defaultCostformat = 'percentual';
+	static $timeFormat = 'msec'; // or 'msec'
+	
+	static $defaultCostformat = 'percentage'; // or 'absolute'
 	
 	static $defaultFunctionPercentage = 90;
 	

@@ -31,7 +31,7 @@ switch(get('op')){
         $shownTotal = 0;
 
 		for($i=0;$i<$reader->getFunctionCount();$i++) {
-		    $functionInfo = $reader->getFunctionInfo($i,'absolute');
+		    $functionInfo = $reader->getFunctionInfo($i,get('costFormat'));
 
 		    if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
     			$shownTotal += $functionInfo['summedSelfCost'];
@@ -47,17 +47,15 @@ switch(get('op')){
 		foreach($functions as $function){
 			$remainingCost -= $function['summedSelfCost'];
 			
-			if(get('costFormat')=='percentual'){
-				$function['summedSelfCost'] = $reader->percentCost($function['summedSelfCost']);
-				$function['summedInclusiveCost'] = $reader->percentCost($function['summedInclusiveCost']);
-			}
+			$function['summedSelfCost'] = $function['summedSelfCost'];
+			$function['summedInclusiveCost'] = $function['summedInclusiveCost'];
 			
 			$result['functions'][] = $function;
 			if($remainingCost<0)
 				break;
 		}
 		$result['summedInvocationCount'] = $reader->getFunctionCount();
-        $result['summedRunTime'] = $reader->getHeader('summary');
+        $result['summedRunTime'] = $reader->formatCost($reader->getHeader('summary'), 'absolute');
 		$result['dataFile'] = $dataFile;
 		$result['invokeUrl'] = $reader->getHeader('cmd');
 		$result['mtime'] = date(Webgrind_Config::$dateFormat,filemtime(Webgrind_Config::$xdebugOutputDir.$dataFile));
@@ -66,7 +64,7 @@ switch(get('op')){
 	case 'callinfo_list':
 		$reader = Webgrind_FileHandler::getInstance()->getTraceReader(get('file'));
 		$functionNr = get('functionNr');
- 		$function = $reader->getFunctionInfo($functionNr);
+ 		$function = $reader->getFunctionInfo($functionNr, get('costFormat'));
 			
 		$result = array('calledFrom'=>array(), 'subCalls'=>array());
 		$foundInvocations = 0;
