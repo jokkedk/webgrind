@@ -102,16 +102,18 @@ class Webgrind_FileHandler{
 	 * 
 	 * If the file has not been preprocessed yet this will be done first.
 	 *
+	 * @param string File to read
+	 * @param Cost format for the reader
 	 * @return Webgrind_Reader Reader for $file
 	 */
-	public function getTraceReader($file){
+	public function getTraceReader($file, $costFormat){
 		$prepFile = Webgrind_Config::$storageDir.$file.Webgrind_Config::$preprocessedSuffix;
 		try{
-			$r = new Webgrind_Reader($prepFile);
+			$r = new Webgrind_Reader($prepFile, $costFormat);
 		} catch (Exception $e){
 			// Preprocessed file does not exist or other error
 			Webgrind_Preprocessor::parse(Webgrind_Config::$xdebugOutputDir.$file, $prepFile);
-			$r = new Webgrind_Reader($prepFile);
+			$r = new Webgrind_Reader($prepFile, $costFormat);
 		}
 		return $r;
 	}

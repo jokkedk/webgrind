@@ -49,15 +49,25 @@ class Webgrind_Reader
 	 */
 	private $headers=null;
 	
+	/**
+	 * Format to return costs in
+	 *
+	 * @var string
+	 */	
+	private $costFormat;
+	
 
 	/**
 	 * Constructor
 	 * @param string Data file to read
+	 * @param string Format to return costs in
 	 **/
-	function __construct($dataFile){
+	function __construct($dataFile, $costFormat){
 		$this->fp = @fopen($dataFile,'rb');
 		if(!$this->fp)
 			throw new Exception('Error opening file!');
+			
+		$this->costFormat = $costFormat;
 		$this->init();
 	}
 	
@@ -88,10 +98,9 @@ class Webgrind_Reader
 	 * Returns information about function with nr $nr
 	 *
 	 * @param $nr int Function number
-	 * @param $costFormat Format to return costs in. 'absolute' (default) or 'percentual'
 	 * @return array Function information
 	 */
-	function getFunctionInfo($nr, $costFormat = 'absolute'){
+	function getFunctionInfo($nr){
 		$this->seek($this->functionPos[$nr]);
 		
 		list($summedSelfCost, $summedInclusiveCost, $invocationCount, $calledFromCount, $subCallCount) = $this->read(5);
@@ -109,8 +118,8 @@ class Webgrind_Reader
 			'calledFromInfoCount'=>$calledFromCount,
 			'subCallInfoCount'=>$subCallCount
    		);            
-        $result['summedSelfCost'] = $this->formatCost($result['summedSelfCost'], $costFormat);
-        $result['summedInclusiveCost'] = $this->formatCost($result['summedInclusiveCost'], $costFormat);
+        $result['summedSelfCost'] = $this->formatCost($result['summedSelfCost']);
+        $result['summedInclusiveCost'] = $this->formatCost($result['summedInclusiveCost']);
 
 		return $result;
 	}
@@ -120,10 +129,9 @@ class Webgrind_Reader
 	 *
 	 * @param $functionNr int Function number
 	 * @param $calledFromNr int Called from position nr
-	 * @param $costFormat Format to return costs in. 'absolute' (default) or 'percentual'
 	 * @return array Called from information
 	 */
-	function getCalledFromInfo($functionNr, $calledFromNr, $costFormat = 'absolute'){
+	function getCalledFromInfo($functionNr, $calledFromNr){
 		// 5 = number of numbers before called from information
 		$this->seek($this->functionPos[$functionNr]+self::NR_SIZE*(self::CALLINFORMATION_LENGTH*$calledFromNr+5));
 		$data = $this->read(self::CALLINFORMATION_LENGTH);
@@ -135,7 +143,7 @@ class Webgrind_Reader
 	        'summedCallCost'=>$data[3]
 	    );
 		
-        $result['summedCallCost'] = $this->formatCost($result['summedCallCost'], $costFormat);
+        $result['summedCallCost'] = $this->formatCost($result['summedCallCost']);
 
 		return $result;
 	}
@@ -145,10 +153,9 @@ class Webgrind_Reader
 	 *
 	 * @param $functionNr int Function number
 	 * @param $subCallNr int Sub call position nr
-	 * @param $costFormat Format to return costs in. 'absolute' (default) or 'percentual'
 	 * @return array Sub call information
 	 */
-	function getSubCallInfo($functionNr, $subCallNr, $costFormat = 'absolute'){
+	function getSubCallInfo($functionNr, $subCallNr){
 		// 4 = number of numbers before sub call count
 		$this->seek($this->functionPos[$functionNr]+self::NR_SIZE*3);
 		$calledFromInfoCount = $this->read();
@@ -162,7 +169,7 @@ class Webgrind_Reader
 	        'summedCallCost'=>$data[3]
 	    );
 		
-        $result['summedCallCost'] = $this->formatCost($result['summedCallCost'], $costFormat);
+        $result['summedCallCost'] = $this->formatCost($result['summedCallCost']);
 
 		return $result;
 	}
@@ -194,24 +201,30 @@ class Webgrind_Reader
 	}
 	
 	/**
-	 * Formats $cost as per config
+	 * Formats $cost using the format in $this->costFormat or optionally the format given as input
 	 *
 	 * @param int $cost Cost
-	 * @param string $format absolute or percentual
-	 * @return int Cost formatted per config and $format paramter
+	 * @param string $format 'percent', 'msec' or 'usec'
+	 * @return int Formatted cost
 	 */
-	function formatCost($cost, $format)
+	function formatCost($cost, $format=null)
 	{
-	    if ($format == 'percentual') {
+		if($format==null)
+			$format = $this->costFormat;
+			
+	    if ($format == 'percent') {
 	        $total = $this->getHeader('summary');
     		$result = ($total==0) ? 0 : ($cost*100)/$total;
     		return number_format($result, 2, '.', '');
-	    } else {
-	        if (Webgrind_Config::$timeFormat == 'msec') {
-	            return round($cost/1000, 0);
-	        }
-	        return $cost;
+	    } 
+		
+		if ($format == 'msec') {
+			return round($cost/1000, 0);
 	    }
+
+	    // Default usec
+		return $cost;
+	    
 	}
 	
 	private function read($numbers=1){

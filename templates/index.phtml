@@ -39,6 +39,7 @@
 					$("#data_file").html(data.dataFile);
 					$("#invoke_url").html(data.invokeUrl);
 					$("#mtime").html(data.mtime);
+					$("#shown_sum").html(data.functions.length);
 					$("#invocation_sum").html(data.summedInvocationCount);
 					$("#runtime_sum").html(data.summedRunTime);
 					
@@ -195,8 +196,9 @@
     	<div style="float:right;">
     		<label style="margin:0 5px">in</label>
     		<select id="costFormat" name="costFormat">
-    		    <option value="percentual" <?php echo (Webgrind_Config::$defaultCostformat=='percentual') ? 'selected' : ''?>>percent</option>
-    		    <option value="absolute" <?php echo (Webgrind_Config::$defaultCostformat=='absolute') ? 'selected' : ''?>>seconds</option>
+    		    <option value="percent" <?php echo (Webgrind_Config::$defaultCostformat=='percent') ? 'selected' : ''?>>percent</option>
+    		    <option value="msec" <?php echo (Webgrind_Config::$defaultCostformat=='msec') ? 'selected' : ''?>>milliseconds</option>
+    		    <option value="usec" <?php echo (Webgrind_Config::$defaultCostformat=='usec') ? 'selected' : ''?>>microseconds</option>
     		</select>
     	</div>
     	<div style="float:right;">
@@ -232,7 +234,7 @@
 	    <span id="data_file"></span> @ <span id="mtime"></span>
 	</div>
 	<div style="float:right;">
-	    <span id="invocation_sum"></span> functions called in <span id="runtime_sum"></span> <?php echo Webgrind_Config::$timeFormat?>
+	    <span id="invocation_sum"></span> different functions called in <span id="runtime_sum"></span> milliseconds (<span id="shown_sum"></span> shown)
 	</div>
 	<div style="clear:both"></div>
 	<table class="tablesorter" id="function_table" cellspacing="0">

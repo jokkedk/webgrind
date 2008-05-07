@@ -26,12 +26,12 @@ switch(get('op')){
 			$files = Webgrind_FileHandler::getInstance()->getTraceList();
 			$dataFile = $files[0]['filename'];
 		}
-		$reader = Webgrind_FileHandler::getInstance()->getTraceReader($dataFile);
+		$reader = Webgrind_FileHandler::getInstance()->getTraceReader($dataFile, get('costFormat', Webgrind_Config::$defaultCostformat));
 		$functions = array();
         $shownTotal = 0;
 
 		for($i=0;$i<$reader->getFunctionCount();$i++) {
-		    $functionInfo = $reader->getFunctionInfo($i,get('costFormat'));
+		    $functionInfo = $reader->getFunctionInfo($i);
 
 		    if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
     			$shownTotal += $functionInfo['summedSelfCost'];
@@ -55,23 +55,23 @@ switch(get('op')){
 				break;
 		}
 		$result['summedInvocationCount'] = $reader->getFunctionCount();
-        $result['summedRunTime'] = $reader->formatCost($reader->getHeader('summary'), 'absolute');
+        $result['summedRunTime'] = $reader->formatCost($reader->getHeader('summary'), 'msec');
 		$result['dataFile'] = $dataFile;
 		$result['invokeUrl'] = $reader->getHeader('cmd');
 		$result['mtime'] = date(Webgrind_Config::$dateFormat,filemtime(Webgrind_Config::$xdebugOutputDir.$dataFile));
 		echo json_encode($result);
 	break;
 	case 'callinfo_list':
-		$reader = Webgrind_FileHandler::getInstance()->getTraceReader(get('file'));
+		$reader = Webgrind_FileHandler::getInstance()->getTraceReader(get('file'), get('costFormat', Webgrind_Config::$defaultCostformat));
 		$functionNr = get('functionNr');
- 		$function = $reader->getFunctionInfo($functionNr, get('costFormat'));
+ 		$function = $reader->getFunctionInfo($functionNr);
 			
 		$result = array('calledFrom'=>array(), 'subCalls'=>array());
 		$foundInvocations = 0;
 		for($i=0;$i<$function['calledFromInfoCount'];$i++){
-			$invo = $reader->getCalledFromInfo($functionNr, $i, get('costFormat', 'absolute'));
+			$invo = $reader->getCalledFromInfo($functionNr, $i);
 			$foundInvocations += $invo['callCount'];
-			$callerInfo = $reader->getFunctionInfo($invo['functionNr'], get('costFormat', 'absolute'));
+			$callerInfo = $reader->getFunctionInfo($invo['functionNr']);
 			$invo['callerFile'] = $callerInfo['file'];
 			$invo['callerFunctionName'] = $callerInfo['functionName'];
 			$result['calledFrom'][] = $invo;
@@ -79,8 +79,8 @@ switch(get('op')){
 		$result['calledByHost'] = ($foundInvocations<$function['invocationCount']);
 		
 		for($i=0;$i<$function['subCallInfoCount'];$i++){
-			$invo = $reader->getSubCallInfo($functionNr, $i, get('costFormat', 'absolute'));
-			$callInfo = $reader->getFunctionInfo($invo['functionNr'], get('costFormat', 'absolute'));
+			$invo = $reader->getSubCallInfo($functionNr, $i);
+			$callInfo = $reader->getFunctionInfo($invo['functionNr']);
 			$invo['callerFile'] = $callInfo['file'];
 			$invo['callerFunctionName'] = $callInfo['functionName'];
 			$result['subCalls'][] = $invo;

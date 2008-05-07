@@ -56,7 +56,8 @@ h2 {
 }
 
 #runtime_sum, 
-#invocation_sum {
+#invocation_sum,
+#shown_sum {
 	font-weight: bold;
 }
 
