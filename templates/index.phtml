@@ -179,6 +179,10 @@
 		        }
 			});
 			$("#function_table").bind("sortStart",sortBlock).bind("sortEnd",$.unblockUI);
+			
+			if(document.location.hash) {
+				update(document.location.hash.substr(1));
+			}
 		});
 		
 	</script>
