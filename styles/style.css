@@ -29,6 +29,7 @@ h2 {
 
 #head {
 	float:left;
+	width:200px;
 }
 #head h1 {
 	font:normal 30px "Futura", Helvetica, Verdana;
@@ -43,6 +44,7 @@ h2 {
 
 #options {
 	float:right;
+	width:580px;
 	padding:10px 0 0 0;
 }
 

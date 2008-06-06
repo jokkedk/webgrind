@@ -29,9 +29,23 @@ switch(get('op')){
 		$reader = Webgrind_FileHandler::getInstance()->getTraceReader($dataFile, get('costFormat', Webgrind_Config::$defaultCostformat));
 		$functions = array();
         $shownTotal = 0;
+        $breakdown = array('internal' => 0, 'user' => 0, 'class' => 0);
 
 		for($i=0;$i<$reader->getFunctionCount();$i++) {
 		    $functionInfo = $reader->getFunctionInfo($i);
+		    
+		    if (false !== strpos($functionInfo['functionName'], 'php::') || 
+		        false !== strpos($functionInfo['functionName'], 'require_once::') ||
+		        false !== strpos($functionInfo['functionName'], 'require::') || 
+		        false !== strpos($functionInfo['functionName'], 'include_once::') ||
+		        false !== strpos($functionInfo['functionName'], 'include::')) {
+		        $breakdown['internal'] += $functionInfo['summedSelfCost'];
+		    } else {
+		        if (false !== strpos($functionInfo['functionName'], '->'))
+		            $breakdown['class'] += $functionInfo['summedSelfCost'];
+		        else
+		            $breakdown['user'] += $functionInfo['summedSelfCost'];
+		    }
 
 		    if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
     			$shownTotal += $functionInfo['summedSelfCost'];
@@ -58,6 +72,7 @@ switch(get('op')){
         $result['summedRunTime'] = $reader->formatCost($reader->getHeader('summary'), 'msec');
 		$result['dataFile'] = $dataFile;
 		$result['invokeUrl'] = $reader->getHeader('cmd');
+		$result['breakdown'] = $breakdown;
 		$result['mtime'] = date(Webgrind_Config::$dateFormat,filemtime(Webgrind_Config::$xdebugOutputDir.$dataFile));
 		echo json_encode($result);
 	break;
