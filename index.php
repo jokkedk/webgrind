@@ -6,9 +6,10 @@
 
 require 'config.php';
 require 'library/FileHandler.php';
-// Errorhandling.
-// No files, outputdir not writabel
-// Show self traces in option group
+
+// TODO: Errorhandling:
+// 		No files, outputdir not writabel
+
 set_time_limit(0);
 
 // Make sure we have a timezone for date functions.
@@ -130,7 +131,6 @@ switch(get('op')){
 function get($param, $default=false){
 	return (isset($_GET[$param])? $_GET[$param] : $default);
 }
-
 
 function costCmp($a, $b){
 	$a = $a['summedSelfCost'];

@@ -130,6 +130,10 @@ td.nr {
 	font-family: "Lucida Console", "Andale Mono", "Monaco", monospace;
 }
 
+th span{
+	margin-right: 13px;
+}
+
 img.list_reload {
 	position: relative;
 	top: 2px;
