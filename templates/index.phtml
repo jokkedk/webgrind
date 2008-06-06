@@ -46,9 +46,9 @@
 					var breakdown_sum = data.breakdown['internal']+data.breakdown['user']+data.breakdown['class'];
 					$("#breakdown").html(
 					    '<img src="img/gradient_left.png" height="20" width="10">'+
-					    '<img title="internal functions" src="img/gradient_blue.png" height="20" width="'+Math.round(data.breakdown['internal']/breakdown_sum*300)+'">'+
-					    '<img title="class methods" src="img/gradient_green.png" height="20" width="'+Math.round(data.breakdown['class']/breakdown_sum*300)+'">'+
-                        '<img title="procedural functions" src="img/gradient_orange.png" height="20" width="'+Math.round(data.breakdown['user']/breakdown_sum*300)+'">'+
+					    '<img title="internal functions" src="img/gradient_blue.png" height="20" width="'+Math.floor(data.breakdown['internal']/breakdown_sum*300)+'">'+
+					    '<img title="class methods" src="img/gradient_green.png" height="20" width="'+Math.floor(data.breakdown['class']/breakdown_sum*300)+'">'+
+                        '<img title="procedural functions" src="img/gradient_orange.png" height="20" width="'+Math.floor(data.breakdown['user']/breakdown_sum*300)+'">'+
 					    '<img src="img/gradient_right.png" height="20" width="10">'+
 					    '<div style="background:url(img/gradient_markers.png);position:relative;top:-20px;left:10px;width:301px;height:19px"></div>'
 					);
