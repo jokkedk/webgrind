@@ -35,24 +35,28 @@ switch(get('op')){
 		for($i=0;$i<$reader->getFunctionCount();$i++) {
 		    $functionInfo = $reader->getFunctionInfo($i);
 		    
+		    if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
+    			$shownTotal += $functionInfo['summedSelfCost'];
+				$functions[$i] = $functionInfo;
+    			$functions[$i]['nr'] = $i;
+    		}
+		    
 		    if (false !== strpos($functionInfo['functionName'], 'php::') || 
 		        false !== strpos($functionInfo['functionName'], 'require_once::') ||
 		        false !== strpos($functionInfo['functionName'], 'require::') || 
 		        false !== strpos($functionInfo['functionName'], 'include_once::') ||
 		        false !== strpos($functionInfo['functionName'], 'include::')) {
 		        $breakdown['internal'] += $functionInfo['summedSelfCost'];
+		        $functions[$i]['kind'] = 'blue';
 		    } else {
-		        if (false !== strpos($functionInfo['functionName'], '->'))
+		        if (false !== strpos($functionInfo['functionName'], '->') || false !== strpos($functionInfo['functionName'], '::')) {
 		            $breakdown['class'] += $functionInfo['summedSelfCost'];
-		        else
+    		        $functions[$i]['kind'] = 'green';
+		        } else {
 		            $breakdown['user'] += $functionInfo['summedSelfCost'];
-		    }
-
-		    if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
-    			$shownTotal += $functionInfo['summedSelfCost'];
-				$functions[$i] = $functionInfo;
-    			$functions[$i]['nr'] = $i;
-    		}
+    		        $functions[$i]['kind'] = 'orange';
+    		    }
+            }
 		}
 		usort($functions,'costCmp');
 		
