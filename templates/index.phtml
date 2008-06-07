@@ -201,7 +201,7 @@
 </head>
 <body>
 <div id="head">
-    <h1>webgrind<sup style="font-size:10px">v0.6</sup></h1>
+    <h1>webgrind<sup style="font-size:10px">v0.7</sup></h1>
     <p>profiling in the browser</p>
 </div>
 <div id="options">
@@ -236,7 +236,7 @@
     		</select>
     	</div>
     	<div style="clear:both;"></div>    	
-    	<div style="margin:0 45px">
+    	<div style="margin:0 70px">
     	    <input type="checkbox" name="hideInternals" value="1" <?php echo (Webgrind_Config::$defaultHideInternalFunctions==1) ? 'checked' : ''?> id="hideInternals">
     	    <label for="hideInternals">Hide PHP functions</label>
     	</div>
@@ -250,8 +250,7 @@
 	    <span id="data_file"></span> @ <span id="mtime"></span>
 	</div>
 	<div style="float:right;">
-	    <div id="breakdown" style="margin-bottom:5px;width:320px;height:20px">
-	    </div>
+	    <div id="breakdown" style="margin-bottom:5px;width:320px;height:20px"></div>
 	    <span id="invocation_sum"></span> different functions called in <span id="runtime_sum"></span> milliseconds (<span id="shown_sum"></span> shown)
 	</div>
 	<div style="clear:both"></div>
