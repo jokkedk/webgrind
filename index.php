@@ -130,6 +130,16 @@ switch(get('op')){
 	
 	break;
 	default:
+	    $versionInfo = null;
+	    if (Webgrind_Config::$checkVersion) {
+	        $result = file_get_contents('http://jokke.dk/webgrindupdate.json?version='.Webgrind_Config::$webgrindVersion);
+	        if (false !== $result && ($versionData = json_decode($result)) && isset($versionData->latest_version)) {
+	            if ($versionData->latest_version > Webgrind_Config::$webgrindVersion)
+	                $versionInfo = "Version ".$versionData->latest_version." is available for <a href='".$versionData->download_url."'>download</a>.<br>";
+	            else
+	                $versionInfo = "You have the latest version.<br>";
+	        }
+	    }
 		require 'templates/index.phtml';
 }
 
