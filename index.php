@@ -30,7 +30,7 @@ switch(get('op')){
 		$reader = Webgrind_FileHandler::getInstance()->getTraceReader($dataFile, get('costFormat', Webgrind_Config::$defaultCostformat));
 		$functions = array();
         $shownTotal = 0;
-        $breakdown = array('internal' => 0, 'user' => 0, 'class' => 0);
+        $breakdown = array('internal' => 0, 'user' => 0, 'class' => 0, 'include' => 0);
 
 		for($i=0;$i<$reader->getFunctionCount();$i++) {
 		    $functionInfo = $reader->getFunctionInfo($i);
@@ -41,13 +41,15 @@ switch(get('op')){
     			$functions[$i]['nr'] = $i;
     		}
 		    
-		    if (false !== strpos($functionInfo['functionName'], 'php::') || 
-		        false !== strpos($functionInfo['functionName'], 'require_once::') ||
-		        false !== strpos($functionInfo['functionName'], 'require::') || 
-		        false !== strpos($functionInfo['functionName'], 'include_once::') ||
-		        false !== strpos($functionInfo['functionName'], 'include::')) {
+		    if (false !== strpos($functionInfo['functionName'], 'php::')) {
 		        $breakdown['internal'] += $functionInfo['summedSelfCost'];
 		        $functions[$i]['kind'] = 'blue';
+		    } elseif (false !== strpos($functionInfo['functionName'], 'require_once::') ||
+    		          false !== strpos($functionInfo['functionName'], 'require::') || 
+    		          false !== strpos($functionInfo['functionName'], 'include_once::') ||
+    		          false !== strpos($functionInfo['functionName'], 'include::')) {
+                $breakdown['include'] += $functionInfo['summedSelfCost'];
+		        $functions[$i]['kind'] = 'grey';
 		    } else {
 		        if (false !== strpos($functionInfo['functionName'], '->') || false !== strpos($functionInfo['functionName'], '::')) {
 		            $breakdown['class'] += $functionInfo['summedSelfCost'];
