@@ -35,30 +35,32 @@ switch(get('op')){
 		for($i=0;$i<$reader->getFunctionCount();$i++) {
 		    $functionInfo = $reader->getFunctionInfo($i);
 		    
-		    if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
-    			$shownTotal += $functionInfo['summedSelfCost'];
-				$functions[$i] = $functionInfo;
-    			$functions[$i]['nr'] = $i;
-    		}
 		    
 		    if (false !== strpos($functionInfo['functionName'], 'php::')) {
 		        $breakdown['internal'] += $functionInfo['summedSelfCost'];
-		        $functions[$i]['kind'] = 'blue';
+		        $kind = 'blue';
 		    } elseif (false !== strpos($functionInfo['functionName'], 'require_once::') ||
     		          false !== strpos($functionInfo['functionName'], 'require::') || 
     		          false !== strpos($functionInfo['functionName'], 'include_once::') ||
     		          false !== strpos($functionInfo['functionName'], 'include::')) {
                 $breakdown['include'] += $functionInfo['summedSelfCost'];
-		        $functions[$i]['kind'] = 'grey';
+		        $kind = 'grey';
 		    } else {
 		        if (false !== strpos($functionInfo['functionName'], '->') || false !== strpos($functionInfo['functionName'], '::')) {
 		            $breakdown['class'] += $functionInfo['summedSelfCost'];
-    		        $functions[$i]['kind'] = 'green';
+    		        $kind = 'green';
 		        } else {
 		            $breakdown['user'] += $functionInfo['summedSelfCost'];
-    		        $functions[$i]['kind'] = 'orange';
+    		        $kind = 'orange';
     		    }
             }
+			if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
+    			$shownTotal += $functionInfo['summedSelfCost'];
+				$functions[$i] = $functionInfo;
+    			$functions[$i]['nr'] = $i;
+				$functions[$i]['kind'] = $kind;
+    		} 
+
 		}
 		usort($functions,'costCmp');
 		
@@ -66,11 +68,9 @@ switch(get('op')){
 		
 		$result['functions'] = array();
 		foreach($functions as $function){
+				
 			$remainingCost -= $function['summedSelfCost'];
-			
-			$function['summedSelfCost'] = $function['summedSelfCost'];
-			$function['summedInclusiveCost'] = $function['summedInclusiveCost'];
-			
+						
 			$result['functions'][] = $function;
 			if($remainingCost<0)
 				break;
