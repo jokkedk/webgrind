@@ -7,6 +7,10 @@
  */
 class Webgrind_Config{
     static $webgrindVersion = '0.7';
+
+	/**
+	* Automatically check if a newer version of webgrind is available for download
+	*/
 	static $checkVersion = true;
     
 	/**

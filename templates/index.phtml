@@ -14,6 +14,7 @@
 		var fileUrlFormat = '<?php echo Webgrind_Config::$fileUrlFormat?>';
 		var currentDataFile = null;
 		var callInfoLoaded = new Array();
+		var disableAjaxBlock = false;
 		function getOptions(){
 			options = new Object();
 			options.dataFile = $("#dataFile").val();
@@ -174,13 +175,35 @@
 			$.blockUI('<div class="block_box"><h1>Sorting...</h1></div>');
 		}
 		
+		function loadBlock(){
+			if(!disableAjaxBlock)
+				$.blockUI();
+			disableAjaxBlock = false;
+		}
+		
+		function checkVersion(){
+			disableAjaxBlock = true;
+			$.getJSON("index.php",
+				{'op':'version_info'},
+				function(data){
+					if(data.latest_version><?=Webgrind_Config::$webgrindVersion?>){
+						$("#version_info").append('Version '+data.latest_version+' is available for <a href="'+data.download_url+'">download</a>.');
+					} else {
+						$("#version_info").append('You have the latest version.');
+					}
+
+				}
+			);			
+			
+		}
 		
 		$(document).ready(function() { 
+			
 			$.blockUI.defaults.pageMessage = '<div class="block_box"><h1>Loading...</h1><p>Loading information from server. If the callgrind file is large this may take some time.</p></div>';
 			$.blockUI.defaults.overlayCSS =  { backgroundColor: '#fff', opacity: '0' }; 
 			$.blockUI.defaults.fadeIn = 0;
 			$.blockUI.defaults.fadeOut = 0;
-			$().ajaxStart($.blockUI).ajaxStop($.unblockUI);
+			$().ajaxStart(loadBlock).ajaxStop($.unblockUI);
 			$("#function_table").tablesorter({
 				widgets: ['zebra'],
 				sortInitialOrder: 'desc',
@@ -195,6 +218,11 @@
 			if(document.location.hash) {
 				update(document.location.hash.substr(1));
 			}
+			
+			<?if(Webgrind_Config::$checkVersion):?>
+			setTimeout(checkVersion,100);
+			<?endif?>
+			
 		});
 		
 	</script>
@@ -262,7 +290,9 @@
 </div>
 <h2 id="hello_message">Select a cachegrind file above</h2>
 <div id="footer">
-    <?=$versionInfo?>
+    <?if(Webgrind_Config::$checkVersion):?>
+	<div id="version_info">&nbsp;</div>
+	<?endif?>
     Copyright © 2008 Jacob Oettinger &amp; Joakim Nygård. <a href="http://code.google.com/p/webgrind/">webgrind homepage</a>
 </div>
 </body>
