@@ -15,17 +15,17 @@
 		var currentDataFile = null;
 		var callInfoLoaded = new Array();
 		var disableAjaxBlock = false;
-		function getOptions(){
+		function getOptions(specificFile){
 			options = new Object();
-			options.dataFile = $("#dataFile").val();
+			options.dataFile = specificFile || $("#dataFile").val();
 			options.costFormat = $('#costFormat').val();
 			options.showFraction = $("#showFraction").val();
 			options.hideInternals = $('#hideInternals').attr('checked') ? 1 : 0;
 			return options;
 		}
 		
-		function update(){
-			vars = getOptions();
+		function update(specificFile){
+			vars = getOptions(specificFile);
 			vars.op = 'function_list';
 			$.getJSON("index.php",
 				vars,
