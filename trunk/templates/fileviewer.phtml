@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.scrollTo.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="styles/style.css" />
+		<title>
+			webgrind - fileviewer: <?php echo $file?>
+		</title>
+		<script type="text/javascript" charset="utf-8">
+			$(document).ready(function() { 
+				$.scrollTo.defaults.offset = {left:0, top:-200 };
+				$.scrollTo($('#line_emph'));
+			});
+
+		</script>
+		
+	</head>
+	<body>
+		<?php echo $file?>
+		<div class="hr"></div>
+	<?php if ($message==''):?>
+		<code class="num">
+		<?php
+		$lineCount = count(file($file));
+		for($i = 1; $i<=$lineCount; $i++):?>
+			<?php if ($i==$line): ?>
+			    <span id="line_emph">&nbsp;</span>
+			<?php endif ?>
+			<?php echo $i ?><br />
+		<?php endfor ?>
+		</code>
+		<?php echo highlight_file($file, true) ?>
+	<?php else:?>
+		<br />
+		<center><b><?php echo $message?></b></center>
+	<?php endif?>
+	</body>
+</html>
