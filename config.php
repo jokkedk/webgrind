@@ -6,7 +6,7 @@
  * @author Joakim Nygård
  */
 class Webgrind_Config{
-    static $webgrindVersion = '0.7';
+    static $webgrindVersion = '0.71';
 
 	/**
 	* Automatically check if a newer version of webgrind is available for download
