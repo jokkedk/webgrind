@@ -80,7 +80,7 @@ switch(get('op')){
 		$result['dataFile'] = $dataFile;
 		$result['invokeUrl'] = $reader->getHeader('cmd');
 		$result['breakdown'] = $breakdown;
-		$result['mtime'] = date(Webgrind_Config::$dateFormat,filemtime(Webgrind_Config::$xdebugOutputDir.$dataFile));
+		$result['mtime'] = date(Webgrind_Config::$dateFormat,filemtime(Webgrind_Config::xdebugOutputDir().$dataFile));
 		echo json_encode($result);
 	break;
 	case 'callinfo_list':

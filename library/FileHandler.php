@@ -23,7 +23,7 @@ class Webgrind_FileHandler{
 		
 	private function __construct(){
 		// Get list of files matching the defined format
-		$files = $this->getFiles(Webgrind_Config::$xdebugOutputFormat, Webgrind_Config::$xdebugOutputDir);
+		$files = $this->getFiles(Webgrind_Config::xdebugOutputFormat(), Webgrind_Config::xdebugOutputDir());
 		
 		// Get list of preprocessed files
 		$prepFiles = $this->getFiles('/\\'.Webgrind_Config::$preprocessedSuffix.'$/', Webgrind_Config::$storageDir);
@@ -112,7 +112,7 @@ class Webgrind_FileHandler{
 			$r = new Webgrind_Reader($prepFile, $costFormat);
 		} catch (Exception $e){
 			// Preprocessed file does not exist or other error
-			Webgrind_Preprocessor::parse(Webgrind_Config::$xdebugOutputDir.$file, $prepFile);
+			Webgrind_Preprocessor::parse(Webgrind_Config::xdebugOutputDir().$file, $prepFile);
 			$r = new Webgrind_Reader($prepFile, $costFormat);
 		}
 		return $r;
