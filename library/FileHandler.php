@@ -26,7 +26,7 @@ class Webgrind_FileHandler{
 		$files = $this->getFiles(Webgrind_Config::xdebugOutputFormat(), Webgrind_Config::xdebugOutputDir());
 		
 		// Get list of preprocessed files
-		$prepFiles = $this->getFiles('/\\'.Webgrind_Config::$preprocessedSuffix.'$/', Webgrind_Config::$storageDir);
+		$prepFiles = $this->getFiles('/\\'.Webgrind_Config::$preprocessedSuffix.'$/', Webgrind_Config::storageDir());
 		
 		// Loop over the preprocessed files. 
 		foreach($prepFiles as $fileName=>$prepFile){
@@ -107,7 +107,7 @@ class Webgrind_FileHandler{
 	 * @return Webgrind_Reader Reader for $file
 	 */
 	public function getTraceReader($file, $costFormat){
-		$prepFile = Webgrind_Config::$storageDir.$file.Webgrind_Config::$preprocessedSuffix;
+		$prepFile = Webgrind_Config::storageDir().$file.Webgrind_Config::$preprocessedSuffix;
 		try{
 			$r = new Webgrind_Reader($prepFile, $costFormat);
 		} catch (Exception $e){

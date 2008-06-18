@@ -10,16 +10,17 @@ class Webgrind_Config{
 	* Automatically check if a newer version of webgrind is available for download
 	*/
 	static $checkVersion = true;
-
+	
 	/**
-	* Writable dir for information storage
+	* Writable dir for information storage.
+	* If empty, will use system tmp folder or xdebug tmp
 	*/
-	static $storageDir = '/tmp/';
-		
+	static $storageDir = '';
+	
 	/**
 	* Suffix for preprocessed files
 	*/
-	static $preprocessedSuffix = '.prep';
+	static $preprocessedSuffix = '.webgrind';
 	
 	static $defaultTimezone = 'Europe/Copenhagen';
 	static $dateFormat = 'Y-m-d H:i:s';
@@ -57,6 +58,20 @@ class Webgrind_Config{
 	* Directory to search for trace files
 	*/
 	static function xdebugOutputDir() {
-	    return ini_get('xdebug.profiler_output_dir').'/';
-	}		
+	    return realpath(ini_get('xdebug.profiler_output_dir')).'/';
+	}
+	
+	/**
+	* Writable dir for information storage
+	*/
+	static function storageDir() {
+	    if (!empty(Webgrind_Config::$storageDir))
+	        return realpath(Webgrind_Config::$storageDir).'/';
+	        
+	    if (!function_exists('sys_get_temp_dir')) {
+	        # use xdebug setting
+            return Webgrind_Config::xdebugOutputDir();
+	    }
+	    return realpath(sys_get_temp_dir()).'/';
+	}
 }
