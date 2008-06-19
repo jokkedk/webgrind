@@ -39,6 +39,7 @@
 					currentDataFile = data.dataFile;
 					$("#data_file").html(data.dataFile);
 					$("#invoke_url").html(data.invokeUrl);
+					$(document).attr('title', 'webgrind of '+data.invokeUrl);
 					$("#mtime").html(data.mtime);
 					$("#shown_sum").html(data.functions.length);
 					$("#invocation_sum").html(data.summedInvocationCount);
