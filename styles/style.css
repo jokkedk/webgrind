@@ -1,7 +1,8 @@
 body {
 	font-family      : Helvetica, Verdana, Arial, sans-serif;
 	font-size        : 12px;
-	color            : #000000;			
+	color            : #000000;	
+	margin:0px;		
 }
 
 a {
@@ -28,15 +29,20 @@ h2 {
 }
 
 #head {
+	padding:5px 10px 10px 10px;
+	border-bottom:1px solid #404040;
+	background:url(../img/head.png) repeat-x;
+}
+#logo {
 	float:left;
 	width:200px;
 }
-#head h1 {
+#logo h1 {
 	font:normal 30px "Futura", Helvetica, Verdana;
 	padding:0px;
 	margin:0px;
 }
-#head p {
+#logo p {
 	font:normal 11px "Verdana";
 	margin:0px;
 	padding:0px;
@@ -46,6 +52,13 @@ h2 {
 	float:right;
 	width:580px;
 	padding:10px 0 0 0;
+}
+#options form {
+	margin:0px;
+}
+
+#main {
+	margin:10px;
 }
 
 #hello_message {
@@ -135,9 +148,7 @@ th span{
 }
 
 img.list_reload {
-	position: relative;
-	top: 2px;
-	left: -1px;
+	margin:0px 5px;
 }
 
 .block_box {
