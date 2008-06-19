@@ -146,6 +146,7 @@ img.list_reload {
 
 .num { 
 	float: left; 
+	width:25px;
 	color: gray; 
 	text-align: right; 
 	margin-right: 6pt; 
@@ -154,11 +155,7 @@ img.list_reload {
 }
 
 #line_emph {
-	position:absolute;
-	width:100%;
-	z-index:-1;
 	background-color: #bbbbff;
-	font-weight: bold;
 }
 a.load_invocations {
 	display: none;
