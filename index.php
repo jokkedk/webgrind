@@ -38,19 +38,23 @@ switch(get('op')){
 		    
 		    if (false !== strpos($functionInfo['functionName'], 'php::')) {
 		        $breakdown['internal'] += $functionInfo['summedSelfCost'];
+		        $humanKind = 'internal';
 		        $kind = 'blue';
 		    } elseif (false !== strpos($functionInfo['functionName'], 'require_once::') ||
     		          false !== strpos($functionInfo['functionName'], 'require::') || 
     		          false !== strpos($functionInfo['functionName'], 'include_once::') ||
     		          false !== strpos($functionInfo['functionName'], 'include::')) {
                 $breakdown['include'] += $functionInfo['summedSelfCost'];
+		        $humanKind = 'include';
 		        $kind = 'grey';
 		    } else {
 		        if (false !== strpos($functionInfo['functionName'], '->') || false !== strpos($functionInfo['functionName'], '::')) {
 		            $breakdown['class'] += $functionInfo['summedSelfCost'];
+    		        $humanKind = 'class';
     		        $kind = 'green';
 		        } else {
 		            $breakdown['user'] += $functionInfo['summedSelfCost'];
+		            $humanKind = 'procedural';
     		        $kind = 'orange';
     		    }
             }
@@ -59,6 +63,7 @@ switch(get('op')){
 				$functions[$i] = $functionInfo;
     			$functions[$i]['nr'] = $i;
 				$functions[$i]['kind'] = $kind;
+				$functions[$i]['humanKind'] = $humanKind;
     		} 
 
 		}

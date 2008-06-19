@@ -60,7 +60,7 @@
 					$("#trace_view").show();
 					
 					$("#function_table").trigger('update');
-					$("#function_table").trigger("sorton",[[[3,1]]]); 
+					$("#function_table").trigger("sorton",[[[4,1]]]); 
 				}
 			);
 		}
@@ -157,8 +157,10 @@
 		function functionTableRow(data){
 			openLink = (data.file=='php:internal')?'':'<a title="Open file" href="'+sprintf(fileUrlFormat,data.file,-1)+'" target="_blank"><img src="img/file.png" alt="O"/></a>';
 			return '<tr> \
+			            <td> \
+			                <img src="img/call_'+data.kind+'.png" title="'+data.humanKind+'" /> \
+			            </td> \
 						<td> \
-						    <img src="img/call_'+data.kind+'.png" /> \
 							<a href="javascript:toggleCallInfo('+data.nr+')"> \
 								<img id="fold_marker_'+data.nr+'" src="img/right.gif" />&nbsp;&nbsp;'+data.functionName+' \
 							</a> \
@@ -211,6 +213,9 @@
 				headers: { 
 		            1: { 
 		                sorter: false 
+		            },
+		            2: {
+		                sorter: false
 		            }
 		        }
 			});
@@ -287,7 +292,16 @@
         	</div>
         	<div style="clear:both"></div>
         	<table class="tablesorter" id="function_table" cellspacing="0">
-        		<thead><tr><th><span>Function</span></th><th> </th><th><span>Invocation Count</span></th><th><span>Total Self Cost</span></th><th><span>Total Inclusive Cost</span></th></tr></thead>
+        		<thead>
+        		    <tr>
+        		        <th> </th>
+        		        <th><span>Function</span></th>
+        		        <th> </th>
+        		        <th><span>Invocation Count</span></th>
+        		        <th><span>Total Self Cost</span></th>
+        		        <th><span>Total Inclusive Cost</span></th>
+        		    </tr>
+        		</thead>
         		<tbody>
         		</tbody>
         	</table>
