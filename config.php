@@ -50,7 +50,10 @@ class Webgrind_Config{
 	*/
     static function xdebugOutputFormat() {
         $outputName = ini_get('xdebug.profiler_output_name');
-	    $outputName = '/^'.preg_replace('/(%[^%])+/', '[a-zA-Z0-9%_-]+$/', $outputName);
+		if($outputName=='') // Ini value not defined
+			$outputName = '/^cachegrind\.out\.[0-9]+$/';
+		else
+	    	$outputName = '/^'.preg_replace('/(%[^%])+/', '[a-zA-Z0-9%_-]+$/', $outputName);
 	    return $outputName;
     }
 	
@@ -58,7 +61,10 @@ class Webgrind_Config{
 	* Directory to search for trace files
 	*/
 	static function xdebugOutputDir() {
-	    return realpath(ini_get('xdebug.profiler_output_dir')).'/';
+		$dir = ini_get('xdebug.profiler_output_dir');
+		if($dir=='') // Ini value not defined
+			return '/tmp/';
+	    return realpath($dir).'/';
 	}
 	
 	/**
@@ -68,7 +74,7 @@ class Webgrind_Config{
 	    if (!empty(Webgrind_Config::$storageDir))
 	        return realpath(Webgrind_Config::$storageDir).'/';
 	        
-	    if (!function_exists('sys_get_temp_dir')) {
+	    if (!function_exists('sys_get_temp_dir') || !is_writable(sys_get_temp_dir())) {
 	        # use xdebug setting
             return Webgrind_Config::xdebugOutputDir();
 	    }
