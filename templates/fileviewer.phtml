@@ -29,15 +29,13 @@
     <div id="main">
     	<h2><?php echo $file?></h2>
         <br>
-    	<code>
+    	<code style="overflow-x: auto; white-space: nowrap">
         <?php if ($message==''):?>
 
     	<?php 
     	    $syntax = explode('<br />', str_replace(array('<code>', '</code>'), '', highlight_file($file, true)));
             foreach ($syntax as $num => $string): ?>
-                <span class="num" <?php if ($num==$line):?>id="line_emph"<?php endif; ?>>
-                    <?php echo $num ?>
-    			</span>
+                <span class="num" <?php if ($num==$line):?>id="line_emph"<?php endif; ?>><?php echo $num ?></span>
     			<?php echo $string; ?>
     			<br />
             <? endforeach;
