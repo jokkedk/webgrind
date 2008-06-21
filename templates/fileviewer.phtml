@@ -34,7 +34,7 @@
 
     	<?php 
     	    $syntax = explode('<br />', str_replace(array('<code>', '</code>'), '', highlight_file($file, true)));
-            foreach ($syntax as $num => $string): ?>
+            foreach ($syntax as $num => $string): $num++;?>
                 <span class="num" <?php if ($num==$line):?>id="line_emph"<?php endif; ?>><?php echo $num ?></span>
     			<?php echo $string; ?>
     			<br />

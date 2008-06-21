@@ -99,7 +99,7 @@ switch(get('op')){
 			$invo = $reader->getCalledFromInfo($functionNr, $i);
 			$foundInvocations += $invo['callCount'];
 			$callerInfo = $reader->getFunctionInfo($invo['functionNr']);
-			$invo['callerFile'] = $callerInfo['file'];
+			$invo['file'] = $callerInfo['file'];
 			$invo['callerFunctionName'] = $callerInfo['functionName'];
 			$result['calledFrom'][] = $invo;
 		}
@@ -108,7 +108,7 @@ switch(get('op')){
 		for($i=0;$i<$function['subCallInfoCount'];$i++){
 			$invo = $reader->getSubCallInfo($functionNr, $i);
 			$callInfo = $reader->getFunctionInfo($invo['functionNr']);
-			$invo['callerFile'] = $callInfo['file'];
+			$invo['file'] = $function['file']; // Sub call to $callInfo['file'] but from $function['file']
 			$invo['callerFunctionName'] = $callInfo['functionName'];
 			$result['subCalls'][] = $invo;
 		}
