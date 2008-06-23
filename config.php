@@ -53,7 +53,7 @@ class Webgrind_Config{
 		if($outputName=='') // Ini value not defined
 			$outputName = '/^cachegrind\.out\.[0-9]+$/';
 		else
-	    	$outputName = '/^'.preg_replace('/(%[^%])+/', '[a-zA-Z0-9%_-]+$/', $outputName);
+	    	$outputName = '/^'.preg_replace('/(%[^%])+/', '[a-zA-Z0-9%_-]+', $outputName).'$/';
 	    return $outputName;
     }
 	
