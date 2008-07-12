@@ -16,7 +16,7 @@
 		var callInfoLoaded = new Array();
 		var disableAjaxBlock = false;
 		function getOptions(specificFile){
-			options = new Object();
+			var options = new Object();
 			options.dataFile = specificFile || $("#dataFile").val();
 			options.costFormat = $('#costFormat').val();
 			options.showFraction = $("#showFraction").val();
@@ -69,7 +69,7 @@
 			$.getJSON("index.php",
 				{'op':'file_list'},
 				function(data){
-					options = new Object();
+					var options = new Object();
 					for(i=0;i<data.length;i++){
 						options[data[i]['filename']] = data[i]['invokeUrl']+' ('+data[i]['filename']+')';
 					}
@@ -240,7 +240,7 @@
             <p>profiling in the browser</p>
         </div>
         <div id="options">
-            <form method="get" onsubmit="update();return false">
+            <form method="get" onsubmit="update();return false;">
             	<div style="float:right;margin-left:10px">
             	    <input type="submit" value="update" />
             	</div>
