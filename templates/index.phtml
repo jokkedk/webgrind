@@ -1,10 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
-	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<title>webgrind</title>
-	<link rel="stylesheet" type="text/css" href="styles/style.css" />
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
 	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery.blockUI.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery.tablesorter.js" type="text/javascript" charset="utf-8"></script>
@@ -53,7 +53,7 @@
                         '<img src="img/gradient_green.png" height="20" width="'+Math.floor(data.breakdown['class']/breakdown_sum*300)+'">'+
                         '<img src="img/gradient_orange.png" height="20" width="'+Math.floor(data.breakdown['user']/breakdown_sum*300)+'">'+
                         '<img src="img/gradient_right.png" height="20" width="10">'+
-                        '<div title="blue: internal functions\ngrey: include/require\ngreen: class methods\norange: procedural functions" style="background:url(img/gradient_markers.png);position:relative;top:-20px;left:10px;width:301px;height:19px"></div>'
+                        '<div title="blue: internal functions\n grey: include/require\ngreen: class methods\norange: procedural functions" style="background:url(img/gradient_markers.png);position:relative;top:-20px;left:10px;width:301px;height:19px"></div>'
                     );
 					
 					$("#hello_message").hide();
@@ -136,7 +136,7 @@
 						<td>'+data.callerFunctionName+' @ '+data.line+'</td> \
 						<td class="nr">'+data.callCount+'</td> \
 						<td class="nr">'+data.summedCallCost+'</td> \
-						<td><a title="Open file and show line" href="'+sprintf(fileUrlFormat,data.file,data.line)+'" target="_blank"><img src="img/file_line.png" alt="O"/></a></td> \
+						<td><a title="Open file and show line" href="'+sprintf(fileUrlFormat,data.file,data.line)+'" target="_blank"><img src="img/file_line.png" alt="O"></a></td> \
 					</tr>';
 			
 		}
@@ -155,14 +155,14 @@
 		}
 		
 		function functionTableRow(data){
-			openLink = (data.file=='php:internal')?'':'<a title="Open file" href="'+sprintf(fileUrlFormat,data.file,-1)+'" target="_blank"><img src="img/file.png" alt="O"/></a>';
+			openLink = (data.file=='php:internal')?'':'<a title="Open file" href="'+sprintf(fileUrlFormat,data.file,-1)+'" target="_blank"><img src="img/file.png" alt="O"></a>';
 			return '<tr> \
 			            <td> \
-			                <img src="img/call_'+data.kind+'.png" title="'+data.humanKind+'" /> \
+			                <img src="img/call_'+data.kind+'.png" title="'+data.humanKind+'"> \
 			            </td> \
 						<td> \
 							<a href="javascript:toggleCallInfo('+data.nr+')"> \
-								<img id="fold_marker_'+data.nr+'" src="img/right.gif" />&nbsp;&nbsp;'+data.functionName+' \
+								<img id="fold_marker_'+data.nr+'" src="img/right.gif">&nbsp;&nbsp;'+data.functionName+' \
 							</a> \
 							<div class="callinfo_area" id="callinfo_area_'+data.nr+'"></div> \
 						</td> \
@@ -242,7 +242,7 @@
         <div id="options">
             <form method="get" onsubmit="update();return false;">
             	<div style="float:right;margin-left:10px">
-            	    <input type="submit" value="update" />
+            	    <input type="submit" value="update">
             	</div>
             	<div style="float:right;">
             		<label style="margin:0 5px">in</label>
@@ -260,7 +260,7 @@
             				<option value="<?php echo $trace['filename']?>"><?php echo $trace['invokeUrl']?> (<?php echo $trace['filename']?>)</option>
             			<?php endforeach;?>
             		</select>
-        			<img class="list_reload" src="img/reload.png" onclick="reloadFilelist()"/>
+        			<img class="list_reload" src="img/reload.png" onclick="reloadFilelist()">
             	</div>
             	<div style="float:right">
             		<label style="margin:0 5px">Show</label>
