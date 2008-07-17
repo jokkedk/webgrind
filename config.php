@@ -52,9 +52,9 @@ class Webgrind_Config{
     static function xdebugOutputFormat() {
         $outputName = ini_get('xdebug.profiler_output_name');
 		if($outputName=='') // Ini value not defined
-			$outputName = '/^cachegrind\.out\.[0-9]+$/';
+			$outputName = '/^cachegrind\.out\..+$/';
 		else
-	    	$outputName = '/^'.preg_replace('/(%[^%])+/', '[a-zA-Z0-9%_-]+', $outputName).'$/';
+	    	$outputName = '/^'.preg_replace('/(%[^%])+/', '.+', $outputName).'$/';
 	    return $outputName;
     }
 	
