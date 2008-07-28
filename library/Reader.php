@@ -197,7 +197,7 @@ class Webgrind_Reader
 	 */
 	function getHeader($header){
 		$headers = $this->getHeaders();
-		return $headers[$header];
+		return isset($headers[$header]) ? $headers[$header] : '';
 	}
 	
 	/**
