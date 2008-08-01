@@ -73,8 +73,13 @@ class Webgrind_FileHandler{
 		
 		foreach($list as $file){
 			$absoluteFilename = $dir.$file;
+			
+			// Exclude webgrind preprocessed files
+			if (false !== strstr($absoluteFilename, Webgrind_Config::$preprocessedSuffix))
+			    continue;
+			
 			// Make sure that script never parses the profile currently being generated. (infinite loop)
-			if(function_exists('xdebug_get_profiler_filename') && realpath(xdebug_get_profiler_filename())==$absoluteFilename)
+			if (function_exists('xdebug_get_profiler_filename') && realpath(xdebug_get_profiler_filename())==$absoluteFilename)
 				continue;
 				
 			$invokeUrl = $this->getInvokeUrl($absoluteFilename);
