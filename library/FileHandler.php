@@ -51,12 +51,21 @@ class Webgrind_FileHandler{
 	 * @return void string
 	 */	
 	private function getInvokeUrl($file){
+	    if (preg_match('/.webgrind$/', $file)) 
+	        return 'Webgrind internal';
+
 		// Grab name of invoked file. 
-		// TODO: Makes assumptions about where the "cmd"-header is in a trace file. Not so cool, but a fast way to do it.
 	    $fp = fopen($file, 'r');
-	    fgets($fp);
-	    $invokeUrl = trim(substr(fgets($fp), 5));
-	    fclose($fp);
+        $invokeUrl = '';
+        while ((($line = fgets($fp)) !== FALSE) && !strlen($invokeUrl)){
+            if (preg_match('/^cmd: (.*)$/', $line, $parts)){
+                $invokeUrl = isset($parts[1]) ? $parts[1] : '';
+            }
+        }
+        fclose($fp);
+        if (!strlen($invokeUrl)) 
+            $invokeUrl = 'Unknown!';
+
 		return $invokeUrl;
 	}
 	
