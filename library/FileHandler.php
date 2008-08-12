@@ -93,7 +93,12 @@ class Webgrind_FileHandler{
 				
 			$invokeUrl = $this->getInvokeUrl($absoluteFilename);
 
-			$files[$file] = array('absoluteFilename'=>$absoluteFilename, 'mtime'=>filemtime($absoluteFilename), 'preprocessed'=>false, 'invokeUrl'=>$invokeUrl);
+			$files[$file] = array('absoluteFilename' => $absoluteFilename, 
+			                      'mtime' => filemtime($absoluteFilename), 
+			                      'preprocessed' => false, 
+			                      'invokeUrl' => $invokeUrl,
+			                      'filesize' => $this->bytestostring(filesize($absoluteFilename))
+			                );
 		}		
 		return $files;
 	}
@@ -106,7 +111,10 @@ class Webgrind_FileHandler{
 	public function getTraceList(){
 		$result = array();
 		foreach($this->files as $fileName=>$file){
-			$result[] = array('filename' => $fileName, 'invokeUrl' => str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $file['invokeUrl']));
+			$result[] = array('filename' => $fileName, 
+			                  'invokeUrl' => str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $file['invokeUrl']),
+			                  'filesize' => $file['filesize']
+			            );
 		}
 		return $result;
 	}
@@ -144,4 +152,20 @@ class Webgrind_FileHandler{
 		return ($a['mtime'] > $b['mtime']) ? -1 : 1;
 	}
 	
+	/**
+	 * Present a size (in bytes) as a human-readable value
+	 *
+	 * @param int    $size        size (in bytes)
+	 * @param int    $precision    number of digits after the decimal point
+	 * @return string
+	 */
+	private function bytestostring($size, $precision = 0) {
+   		$sizes = array('YB', 'ZB', 'EB', 'PB', 'TB', 'GB', 'MB', 'KB', 'B');
+		$total = count($sizes);
+
+		while($total-- && $size > 1024) {
+		    $size /= 1024;
+		}
+		return round($size, $precision).$sizes[$total];
+    }
 }

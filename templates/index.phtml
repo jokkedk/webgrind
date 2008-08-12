@@ -71,7 +71,7 @@
 				function(data){
 					var options = new Object();
 					for(i=0;i<data.length;i++){
-						options[data[i]['filename']] = data[i]['invokeUrl']+' ('+data[i]['filename']+')';
+						options[data[i]['filename']] = data[i]['invokeUrl']+' ('+data[i]['filename']+')'+' ['+data[i]['filesize']+']';
 					}
 					$("#dataFile").removeOption(/[^0]/);
 					$("#dataFile").addOption(options, false);
@@ -257,7 +257,7 @@
             		<select id="dataFile" name="dataFile" style="width:200px">
             			<option value="0">Auto (newest)</option>
             			<?php foreach(Webgrind_FileHandler::getInstance()->getTraceList() as $trace):?>
-            				<option value="<?php echo $trace['filename']?>"><?php echo $trace['invokeUrl']?> (<?php echo $trace['filename']?>)</option>
+            				<option value="<?php echo $trace['filename']?>"><?php echo $trace['invokeUrl']?> (<?php echo $trace['filename']?>) [<?php echo $trace['filesize']?>]</option>
             			<?php endforeach;?>
             		</select>
         			<img class="list_reload" src="img/reload.png" onclick="reloadFilelist()">
