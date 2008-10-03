@@ -26,9 +26,8 @@ class Webgrind_FileHandler{
 		$files = $this->getFiles(Webgrind_Config::xdebugOutputFormat(), Webgrind_Config::xdebugOutputDir());
 		
 		// Get list of preprocessed files
-		$prepFiles = $this->getFiles('/\\'.Webgrind_Config::$preprocessedSuffix.'$/', Webgrind_Config::storageDir());
-		
-		// Loop over the preprocessed files. 
+        $prepFiles = $this->getPrepFiles('/\\'.Webgrind_Config::$preprocessedSuffix.'$/', Webgrind_Config::storageDir());
+		// Loop over the preprocessed files.		
 		foreach($prepFiles as $fileName=>$prepFile){
 			$fileName = str_replace(Webgrind_Config::$preprocessedSuffix,'',$fileName);
 			
@@ -103,6 +102,32 @@ class Webgrind_FileHandler{
 		return $files;
 	}
 	
+	/**
+	 * List of files in $dir whose filename has the format $format
+	 *
+	 * @return array Files
+	 */
+	private function getPrepFiles($format, $dir){
+		$list = preg_grep($format,scandir($dir));
+		$files = array();
+		
+		$scriptFilename = $_SERVER['SCRIPT_FILENAME'];
+		
+		foreach($list as $file){
+			$absoluteFilename = $dir.$file;
+			
+			// Make sure that script does not include the profile currently being generated. (infinite loop)
+			if (function_exists('xdebug_get_profiler_filename') && realpath(xdebug_get_profiler_filename())==realpath($absoluteFilename))
+				continue;
+				
+			$files[$file] = array('absoluteFilename' => $absoluteFilename, 
+			                      'mtime' => filemtime($absoluteFilename), 
+			                      'preprocessed' => true, 
+			                      'filesize' => $this->bytestostring(filesize($absoluteFilename))
+			                );
+		}		
+		return $files;
+	}
 	/**
 	 * Get list of available trace files. Optionally including traces of the webgrind script it self
 	 *
