@@ -44,6 +44,7 @@
 					$("#shown_sum").html(data.functions.length);
 					$("#invocation_sum").html(data.summedInvocationCount);
 					$("#runtime_sum").html(data.summedRunTime);
+					$("#runs").html(data.runs);
 					
 					var breakdown_sum = data.breakdown['internal']+data.breakdown['user']+data.breakdown['class']+data.breakdown['include'];
                     $("#breakdown").html(
@@ -288,7 +289,7 @@
         	</div>
         	<div style="float:right;">
         	    <div id="breakdown" style="margin-bottom:5px;width:320px;height:20px"></div>
-        	    <span id="invocation_sum"></span> different functions called in <span id="runtime_sum"></span> milliseconds (<span id="shown_sum"></span> shown)
+        	    <span id="invocation_sum"></span> different functions called in <span id="runtime_sum"></span> milliseconds (<span id="runs"></span> runs, <span id="shown_sum"></span> shown)
         	</div>
         	<div style="clear:both"></div>
         	<table class="tablesorter" id="function_table" cellspacing="0">

@@ -84,6 +84,7 @@ switch(get('op')){
         $result['summedRunTime'] = $reader->formatCost($reader->getHeader('summary'), 'msec');
 		$result['dataFile'] = $dataFile;
 		$result['invokeUrl'] = $reader->getHeader('cmd');
+		$result['runs'] = $reader->getHeader('runs');
 		$result['breakdown'] = $breakdown;
 		$result['mtime'] = date(Webgrind_Config::$dateFormat,filemtime(Webgrind_Config::xdebugOutputDir().$dataFile));
 		echo json_encode($result);
