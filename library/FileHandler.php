@@ -79,18 +79,27 @@ class Webgrind_FileHandler{
 		
 		$scriptFilename = $_SERVER['SCRIPT_FILENAME'];
 		
+		# Moved this out of loop to run faster
+		if (function_exists('xdebug_get_profiler_filename'))
+		    $selfFile = realpath(xdebug_get_profiler_filename());
+		else 
+		    $selfFile = '';
+		
 		foreach($list as $file){
 			$absoluteFilename = $dir.$file;
-			
+
 			// Exclude webgrind preprocessed files
 			if (false !== strstr($absoluteFilename, Webgrind_Config::$preprocessedSuffix))
 			    continue;
 			
 			// Make sure that script never parses the profile currently being generated. (infinite loop)
-			if (function_exists('xdebug_get_profiler_filename') && realpath(xdebug_get_profiler_filename())==realpath($absoluteFilename))
+			if ($selfFile == realpath($absoluteFilename))
 				continue;
 				
 			$invokeUrl = $this->getInvokeUrl($absoluteFilename);
+			if (Webgrind_Config::$hideWebgrindProfiles && $invokeUrl == dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'index.php')
+			    continue;
+			
 
 			$files[$file] = array('absoluteFilename' => $absoluteFilename, 
 			                      'mtime' => filemtime($absoluteFilename), 

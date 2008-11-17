@@ -10,12 +10,13 @@ class Webgrind_Config{
 	* Automatically check if a newer version of webgrind is available for download
 	*/
 	static $checkVersion = true;
+	static $hideWebgrindProfiles = true;
 	
 	/**
 	* Writable dir for information storage.
 	* If empty, will use system tmp folder or xdebug tmp
 	*/
-	static $storageDir = '';
+	static $storageDir = '/tmp';
 	static $profilerDir = '/tmp';
 	
 	/**
