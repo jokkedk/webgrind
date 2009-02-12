@@ -16,7 +16,7 @@ class Webgrind_Config{
 	* Writable dir for information storage.
 	* If empty, will use system tmp folder or xdebug tmp
 	*/
-	static $storageDir = '/tmp';
+	static $storageDir = '';
 	static $profilerDir = '/tmp';
 	
 	/**
