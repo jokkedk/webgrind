@@ -134,7 +134,9 @@
 		
 		function callTableRow(nr,data){
 			return '<tr> \
-						<td>'+data.callerFunctionName+' @ '+data.line+'</td> \
+						<td>'
+						+($("#callinfo_area_"+data.functionNr).length ? '<img src="img/right.gif">&nbsp;&nbsp;<a href="javascript:openCallInfo('+data.functionNr+')">'+data.callerFunctionName+'</a>' : '<img src="img/blank.gif">&nbsp;&nbsp;'+data.callerFunctionName)
+						+ ' @ '+data.line+'</td> \
 						<td class="nr">'+data.callCount+'</td> \
 						<td class="nr">'+data.summedCallCost+'</td> \
 						<td><a title="Open file and show line" href="'+sprintf(fileUrlFormat,data.file,data.line)+'" target="_blank"><img src="img/file_line.png" alt="O"></a></td> \
@@ -153,6 +155,14 @@
 				$("#fold_marker_"+functionNr).get(0).src = 'img/down.gif';
 			else
 				$("#fold_marker_"+functionNr).get(0).src = 'img/right.gif';
+		}
+		
+		function openCallInfo(functionNr) {
+			var areaEl = $("#callinfo_area_"+functionNr);
+			if (areaEl.length) {
+    			if (areaEl.is(":hidden")) toggleCallInfo(functionNr);
+    			window.scrollTo(0, areaEl.parent().offset().top);
+    		}
 		}
 		
 		function functionTableRow(data){
