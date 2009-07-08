@@ -176,7 +176,11 @@
 		}
 		
 		function functionTableRow(data){
-			openLink = (data.file=='php:internal')?'':'<a title="Open file" href="'+sprintf(fileUrlFormat,data.file,-1)+'" target="_blank"><img src="img/file.png" alt="O"></a>';
+			if (data.file=='php%3Ainternal') {
+			    openLink = '<a title="Lookup function" href="<?=ini_get('xdebug.manual_url')?>/'+data.functionName.substr(5)+'" target="_blank"><img src="img/file.png" alt="O"></a>';;
+			} else {
+			    openLink = '<a title="Open file" href="'+sprintf(fileUrlFormat,data.file,-1)+'" target="_blank"><img src="img/file.png" alt="O"></a>';
+			}
 			return '<tr> \
 			            <td> \
 			                <img src="img/call_'+data.humanKind+'.png" title="'+data.humanKind+'"> \
