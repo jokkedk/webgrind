@@ -61,7 +61,7 @@ class Webgrind_Preprocessor
 		while(($line = fgets($in))){
 			if(substr($line,0,3)==='fl='){
 				// Found invocation of function. Read functionname
-				list($function) = fscanf($in,"fn=%s");
+				list($function) = fscanf($in,"fn=%[^\n]s");
 				if(!isset($functions[$function])){
 					$functions[$function] = array('filename'=>substr(trim($line),3), 'invocationCount'=>0,'nr'=>$nextFuncNr++,'count'=>0,'summedSelfCost'=>0,'summedInclusiveCost'=>0,'calledFromInformation'=>array(),'subCallInformation'=>array());
 				} 
