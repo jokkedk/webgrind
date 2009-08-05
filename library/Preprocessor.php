@@ -61,7 +61,7 @@ class Webgrind_Preprocessor
 		while(($line = fgets($in))){
 			if(substr($line,0,3)==='fl='){
 				// Found invocation of function. Read functionname
-				list($function) = fscanf($in,"fn=%[^\n]s");
+				list($function) = fscanf($in,"fn=%[^\n\r]s");
 				if(!isset($functions[$function])){
 					$functions[$function] = array('filename'=>substr(trim($line),3), 'invocationCount'=>0,'nr'=>$nextFuncNr++,'count'=>0,'summedSelfCost'=>0,'summedInclusiveCost'=>0,'calledFromInformation'=>array(),'subCallInformation'=>array());
 				} 
@@ -77,6 +77,7 @@ class Webgrind_Preprocessor
 				$functions[$function]['summedSelfCost'] += $cost;
 				$functions[$function]['summedInclusiveCost'] += $cost;				
 			} else if(substr($line,0,4)==='cfn=') {
+				
 				// Found call to function. ($function should contain function call originates from)
 				$calledFunctionName = substr(trim($line),4);
 				// Skip call line
@@ -92,8 +93,9 @@ class Webgrind_Preprocessor
 				$functions[$calledFunctionName]['calledFromInformation'][$function.':'.$lnr]['callCount']++;
 				$functions[$calledFunctionName]['calledFromInformation'][$function.':'.$lnr]['summedCallCost'] += $cost;
 
-				if(!isset($functions[$function]['subCallInformation'][$calledFunctionName.':'.$lnr]))
+				if(!isset($functions[$function]['subCallInformation'][$calledFunctionName.':'.$lnr])){
 					$functions[$function]['subCallInformation'][$calledFunctionName.':'.$lnr] = array('functionNr'=>$functions[$calledFunctionName]['nr'],'line'=>$lnr,'callCount'=>0,'summedCallCost'=>0);
+				}
 				
 				$functions[$function]['subCallInformation'][$calledFunctionName.':'.$lnr]['callCount']++;
 				$functions[$function]['subCallInformation'][$calledFunctionName.':'.$lnr]['summedCallCost'] += $cost;
