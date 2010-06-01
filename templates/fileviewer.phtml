@@ -31,18 +31,14 @@
     <div id="main">
     	<h2><?php echo $file?></h2>
         <br>
-    	<code style="overflow-x: auto; white-space: nowrap">
         <?php if ($message==''):?>
-
-    	<?php 
-    	    $syntax = explode('<br />', str_replace(array('<code>', '</code>'), '', highlight_file($file, true)));
-            foreach ($syntax as $num => $string): $num++;?>
-                <span class="num" <?php if ($num==$line):?>id="line_emph"<?php endif; ?>><?php echo $num ?></span>
-    			<?php echo $string; ?>
-    			<br>
-            <?php endforeach;
-    	?>
-    	</code>
+            <?php $source = highlight_file($file, true); ?>
+    	<table border="0">
+            <tr>
+                <td align="right" class="num" valign="top"><code><?php echo implode("<br />", range(1, count(explode('<br />', $source)), 1)) ?></code></td>
+                <td valign="top" nowrap="nowrap"><?php echo $source; ?></td>
+            </tr>
+    	</table>    	
         <?php else:?>
         	<p><b><?php echo $message?></b></p>
         <?php endif?>
