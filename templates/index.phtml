@@ -66,7 +66,9 @@
 					$("#trace_view").show();
 					
 					$("#function_table").trigger('update');
-					$("#function_table").trigger("sorton",[[[4,1]]]); 
+					$("#function_table").trigger("sorton",[[[4,1]]]);
+					
+					$('#callfilter').trigger('keyup');
 				}
 			);
 		}
@@ -254,6 +256,17 @@
 			setTimeout(checkVersion,100);
 			<?php endif?>
 			
+			$("#callfilter").keyup(function(){
+			    var reg = new RegExp($(this).val(), 'i');
+			    var row;
+			    $('tbody tr').each(function(){
+			        row = $(this);
+			        if (row.find('td:eq(1) a').text().match(reg))
+			            row.css('display', 'table-row');
+			        else
+			            row.css('display', 'none');
+			    });
+    		});
 		});
 		
 	</script>
@@ -302,10 +315,11 @@
             	</div>
             </form>
         </div>
+        
         <div style="clear:both;"></div>
     </div>
     <div id="main">
-
+        
         <div id="trace_view">
         	<div style="float:left;">
         	    <h2 id="invoke_url"></h2>
@@ -316,6 +330,7 @@
         	    <span id="invocation_sum"></span> different functions called in <span id="runtime_sum"></span> milliseconds (<span id="runs"></span> runs, <span id="shown_sum"></span> shown)
         	</div>
         	<div style="clear:both"></div>
+        	Filter: <input type="text" style="width:150px" id="callfilter"> (regex too)
         	<table class="tablesorter" id="function_table" cellspacing="0">
         		<thead>
         		    <tr>
