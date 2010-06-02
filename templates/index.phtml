@@ -259,7 +259,7 @@
 			$("#callfilter").keyup(function(){
 			    var reg = new RegExp($(this).val(), 'i');
 			    var row;
-			    $('tbody tr').each(function(){
+			    $('#function_table').children('tbody').children('tr').each(function(){
 			        row = $(this);
 			        if (row.find('td:eq(1) a').text().match(reg))
 			            row.css('display', 'table-row');
