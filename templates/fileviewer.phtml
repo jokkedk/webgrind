@@ -11,10 +11,7 @@
 	</title>
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() { 
-			if($('#line_emph').length>0){
-				$.scrollTo.defaults.offset = {left:0, top:-200 };			
-				$.scrollTo($('#line_emph'));				
-			}
+			$('div#'+location.hash.substr(1)).addClass('line_emph');
 		});
 
 	</script>
@@ -35,7 +32,14 @@
             <?php $source = highlight_file($file, true); ?>
     	<table border="0">
             <tr>
-                <td align="right" class="num" valign="top"><code><?php echo implode("<br />", range(1, count(explode('<br />', $source)), 1)) ?></code></td>
+                <td align="right" valign="top"><code>
+                <?php 
+                foreach ($lines = explode('<br />', $source) as $num => $line) {
+                    $num++;
+                    echo "<div class='num' name='line$num' id='line$num'>$num</div>";
+                }
+                ?>
+                </code></td>
                 <td valign="top" nowrap="nowrap"><?php echo $source; ?></td>
             </tr>
     	</table>    	
