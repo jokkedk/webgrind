@@ -96,7 +96,7 @@ class Webgrind_FileHandler{
 			if ($selfFile == realpath($absoluteFilename))
 				continue;
 				
-			$invokeUrl = $this->getInvokeUrl($absoluteFilename);
+			$invokeUrl = rtrim($this->getInvokeUrl($absoluteFilename));
 			if (Webgrind_Config::$hideWebgrindProfiles && $invokeUrl == dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'index.php')
 			    continue;
 			
