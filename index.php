@@ -4,6 +4,11 @@
  * @author Joakim Nygård
  */
 
+class Webgrind_MasterConfig
+{
+    static $webgrindVersion = '1.01';
+}
+
 require 'config.php';
 require 'library/FileHandler.php';
 
