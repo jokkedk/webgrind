@@ -148,7 +148,7 @@ try {
     	    }
     	    
     	    if ($welcome == '') {
-        	    $welcome = 'Select a cachegrind file above';
+        	    $welcome = 'Select a cachegrind file above (looking in '.Webgrind_Config::xdebugOutputDir().')';
     	    }
     		require 'templates/index.phtml';
     }
