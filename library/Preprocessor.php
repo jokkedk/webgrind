@@ -63,7 +63,16 @@ class Webgrind_Preprocessor
 				// Found invocation of function. Read functionname
 				list($function) = fscanf($in,"fn=%[^\n\r]s");
 				if(!isset($functions[$function])){
-					$functions[$function] = array('filename'=>substr(trim($line),3), 'invocationCount'=>0,'nr'=>$nextFuncNr++,'count'=>0,'summedSelfCost'=>0,'summedInclusiveCost'=>0,'calledFromInformation'=>array(),'subCallInformation'=>array());
+					$functions[$function] = array(
+                        'filename'              => substr(trim($line),3), 
+                        'invocationCount'       => 0,
+                        'nr'                    => $nextFuncNr++,
+                        'count'                 => 0,
+                        'summedSelfCost'        => 0,
+                        'summedInclusiveCost'   => 0,
+                        'calledFromInformation' => array(),
+                        'subCallInformation'    => array()
+					);
 				} 
 				$functions[$function]['invocationCount']++;
 				// Special case for ENTRY_POINT - it contains summary header
@@ -120,11 +129,11 @@ class Webgrind_Preprocessor
 			$subCallCount = sizeof($function['subCallInformation']);
 			fwrite($out, pack(self::NR_FORMAT.'*', $function['summedSelfCost'], $function['summedInclusiveCost'], $function['invocationCount'], $calledFromCount, $subCallCount));
 			// Write called from information
-			foreach($function['calledFromInformation'] as $call){
+			foreach((array)$function['calledFromInformation'] as $call){
 				fwrite($out, pack(self::NR_FORMAT.'*', $call['functionNr'], $call['line'], $call['callCount'], $call['summedCallCost']));
 			}
 			// Write sub call information
-			foreach($function['subCallInformation'] as $call){
+			foreach((array)$function['subCallInformation'] as $call){
 				fwrite($out, pack(self::NR_FORMAT.'*', $call['functionNr'], $call['line'], $call['callCount'], $call['summedCallCost']));
 			}
 			
