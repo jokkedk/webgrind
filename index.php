@@ -141,14 +141,14 @@ try {
     	default:
             $welcome = '';
     	    if (!file_exists(Webgrind_Config::storageDir()) || !is_writable(Webgrind_Config::storageDir())) {
-    	        $welcome .= 'Webgrind $storageDir does not exist or is not writeable: "'.Webgrind_Config::storageDir().'"<br>';
+    	        $welcome .= 'Webgrind $storageDir does not exist or is not writeable: <code>'.Webgrind_Config::storageDir().'</code><br>';
     	    }
     	    if (!file_exists(Webgrind_Config::xdebugOutputDir()) || !is_readable(Webgrind_Config::xdebugOutputDir())) {
-    	        $welcome .= 'Webgrind $profilerDir does not exist or is not readable: "'.Webgrind_Config::xdebugOutputDir().'"<br>';
+    	        $welcome .= 'Webgrind $profilerDir does not exist or is not readable: <code>'.Webgrind_Config::xdebugOutputDir().'</code><br>';
     	    }
     	    
     	    if ($welcome == '') {
-        	    $welcome = 'Select a cachegrind file above (looking in '.Webgrind_Config::xdebugOutputDir().')';
+        	    $welcome = 'Select a cachegrind file above<br>(looking in <code>'.Webgrind_Config::xdebugOutputDir().'</code> for files matching <code>'.Webgrind_Config::xdebugOutputFormat().'</code>)';
     	    }
     		require 'templates/index.phtml';
     }
