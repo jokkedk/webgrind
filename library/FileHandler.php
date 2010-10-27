@@ -145,9 +145,10 @@ class Webgrind_FileHandler{
 	public function getTraceList(){
 		$result = array();
 		foreach($this->files as $fileName=>$file){
-			$result[] = array('filename' => $fileName, 
+			$result[] = array('filename'  => $fileName, 
 			                  'invokeUrl' => str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $file['invokeUrl']),
-			                  'filesize' => $file['filesize']
+			                  'filesize'  => $file['filesize'],
+			                  'mtime'     => date(Webgrind_Config::$dateFormat, $file['mtime'])
 			            );
 		}
 		return $result;

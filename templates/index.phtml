@@ -295,7 +295,8 @@
             		<select id="dataFile" name="dataFile" style="width:200px">
             			<option value="0">Auto (newest)</option>
             			<?php foreach(Webgrind_FileHandler::getInstance()->getTraceList() as $trace):?>
-            				<option value="<?php echo $trace['filename']?>"><?php echo $trace['invokeUrl']?> (<?php echo $trace['filename']?>) [<?php echo $trace['filesize']?>]</option>
+                            <!-- <option value="<?php echo $trace['filename']?>"><?php echo $trace['invokeUrl']?> (<?php echo $trace['filename']?>) [<?php echo $trace['filesize']?>]</option> -->
+                            <option value="<?php echo $trace['filename']?>"><?php echo str_replace(array('%i','%f','%s','%m'),array($trace['invokeUrl'],$trace['filename'],$trace['filesize'],$trace['mtime']),Webgrind_Config::$traceFileListFormat); ?></option>
             			<?php endforeach;?>
             		</select>
         			<img class="list_reload" src="img/reload.png" onclick="reloadFilelist()">

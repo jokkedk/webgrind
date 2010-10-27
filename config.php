@@ -39,6 +39,16 @@ class Webgrind_Config extends Webgrind_MasterConfig {
 	//static $fileUrlFormat = 'txmt://open/?url=file://%1$s&line=%2$d'; // Textmate
 	//static $fileUrlFormat = 'file://%1$s'; // ?
 
+    /**
+    * format of the trace drop down list                                                                                                                                                      
+    * default is: invokeurl (tracefile_name) [tracefile_size]
+    * the following options will be replaced:
+    *   %i - invoked url
+    *   %f - trace file name
+    *   %s - size of trace file
+    *   %m - modified time of file name (in dateFormat specified above)
+    */
+    static $traceFileListFormat = '%i (%f) [%s]';
 
 
     #########################
