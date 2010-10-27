@@ -156,6 +156,7 @@ img.list_reload {
 }
 
 .num { 
+    display:block;
 	color: gray; 
 	text-align: right; 
 	margin-right: 6pt; 
