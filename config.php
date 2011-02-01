@@ -29,6 +29,9 @@ class Webgrind_Config extends Webgrind_MasterConfig {
 	static $defaultCostformat = 'percent'; // 'percent', 'usec' or 'msec'
 	static $defaultFunctionPercentage = 90;
 	static $defaultHideInternalFunctions = false;
+
+	static $pythonExecutable = '';
+	static $dotExecutable = '';
 		
 	/**
 	* sprintf compatible format for generating links to source files. 
@@ -89,5 +92,25 @@ class Webgrind_Config extends Webgrind_MasterConfig {
             return Webgrind_Config::xdebugOutputDir();
 	    }
 	    return realpath(sys_get_temp_dir()).'/';
+	}
+	
+	/**
+	* Path to graphviz dot executable
+	*/
+	static function dotExecutable() {
+		if (!empty(Webgrind_Config::$dotExecutable))
+			return realpath(Webgrind_Config::$dotExecutable);
+		
+		return '/usr/bin/dot';
+	}
+	
+	/**
+	* Path to python executable
+	*/ 
+	static function pythonExecutable() {
+		if (!empty(Webgrind_Config::$pythonExecutable))
+			return realpath(Webgrind_Config::$pythonExecutable);
+		
+		return '/usr/bin/python';
 	}
 }
