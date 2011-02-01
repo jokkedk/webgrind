@@ -12,6 +12,9 @@ Features
   * Track time spent in functions by self cost or inclusive cost. Inclusive cost is time inside function + calls to other functions.
   * See if time is spent in internal or user functions.
   * See where any function was called from and which functions it calls.
+  * Generate a call graph using [gprof2dot.py](http://code.google.com/p/jrfonseca/wiki/Gprof2Dot)
+
+[![](http://wiki.jrfonseca.googlecode.com/hg/gprof2dot_small.png)](http://wiki.jrfonseca.googlecode.com/hg/gprof2dot.png)
 
 Suggestions for improvements and new features are more than welcome - this is just a start.
 
