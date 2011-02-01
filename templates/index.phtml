@@ -76,7 +76,7 @@
 		function showCallGraph() {
 			vars = getOptions();
 			vars.op = 'function_graph';
-			vars.dataFile = $("#data_file").val();
+			vars.dataFile = $("#data_file").html();
 			window.open('index.php?' + $.param(vars));
 		}
 		
