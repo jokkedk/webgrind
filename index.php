@@ -134,16 +134,21 @@ try {
     		require 'templates/fileviewer.phtml';
 	
     	break;
-			case 'function_graph':
-				$dataFile = get('dataFile');
-				$showFraction = 100 - intval(get('showFraction') * 100);
-				if($dataFile == '0'){
-					$files = Webgrind_FileHandler::getInstance()->getTraceList();
-					$dataFile = $files[0]['filename'];
-				}
-				header("Content-Type: image/png");
-				passthru(Webgrind_Config::pythonExecutable().' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::dotExecutable().' -Tpng');
-			break;
+		case 'function_graph':
+			$dataFile = get('dataFile');
+			$showFraction = 100 - intval(get('showFraction') * 100);
+			if($dataFile == '0'){
+				$files = Webgrind_FileHandler::getInstance()->getTraceList();
+				$dataFile = $files[0]['filename'];
+			}
+            header("Content-Type: image/png");
+            $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.'.png';
+		    if (!file_exists($filename)) {
+			    $imageData = shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -Tpng');
+			    file_put_contents($filename, $imageData);
+			}
+			readfile($filename);
+		break;
     	case 'version_info':
     		$response = @file_get_contents('http://jokke.dk/webgrindupdate.json?version='.Webgrind_Config::$webgrindVersion);
     		echo $response;

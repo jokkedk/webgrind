@@ -30,8 +30,15 @@ class Webgrind_Config extends Webgrind_MasterConfig {
 	static $defaultFunctionPercentage = 90;
 	static $defaultHideInternalFunctions = false;
 
-	static $pythonExecutable = '';
-	static $dotExecutable = '';
+	/**
+	* Path to python executable
+	*/ 
+	static $pythonExecutable = '/usr/bin/python';
+	
+	/**
+	* Path to graphviz dot executable
+	*/	
+	static $dotExecutable = '/usr/local/bin/dot';
 		
 	/**
 	* sprintf compatible format for generating links to source files. 
@@ -92,25 +99,5 @@ class Webgrind_Config extends Webgrind_MasterConfig {
             return Webgrind_Config::xdebugOutputDir();
 	    }
 	    return realpath(sys_get_temp_dir()).'/';
-	}
-	
-	/**
-	* Path to graphviz dot executable
-	*/
-	static function dotExecutable() {
-		if (!empty(Webgrind_Config::$dotExecutable))
-			return realpath(Webgrind_Config::$dotExecutable);
-		
-		return '/usr/bin/dot';
-	}
-	
-	/**
-	* Path to python executable
-	*/ 
-	static function pythonExecutable() {
-		if (!empty(Webgrind_Config::$pythonExecutable))
-			return realpath(Webgrind_Config::$pythonExecutable);
-		
-		return '/usr/bin/python';
 	}
 }
