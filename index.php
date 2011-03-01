@@ -142,7 +142,7 @@ try {
 				$dataFile = $files[0]['filename'];
 			}
             header("Content-Type: image/png");
-            $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.'.png';
+            $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.png';
 		    if (!file_exists($filename)) {
 			    $imageData = shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -Tpng');
 			    file_put_contents($filename, $imageData);
