@@ -6,7 +6,7 @@
 
 class Webgrind_MasterConfig
 {
-    static $webgrindVersion = '1.02';
+    static $webgrindVersion = '1.1';
 }
 
 require 'config.php';
