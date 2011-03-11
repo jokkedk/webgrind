@@ -137,6 +137,9 @@ try {
 		case 'function_graph':
 			$dataFile = get('dataFile');
 			$showFraction = 100 - intval(get('showFraction') * 100);
+			if($showFraction < 0.5) {
+				$showFraction = 0.5;
+			}
 			if($dataFile == '0'){
 				$files = Webgrind_FileHandler::getInstance()->getTraceList();
 				$dataFile = $files[0]['filename'];
