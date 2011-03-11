@@ -143,17 +143,16 @@ try {
             }
             header("Content-Type: image/png");
             $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.png';
-            if (!file_exists($filename)) {
-                $imageData = shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -Tpng');
-                file_put_contents($filename, $imageData);
-            }
-            readfile($filename);
-        break;
-        case 'version_info':
-            $response = @file_get_contents('http://jokke.dk/webgrindupdate.json?version='.Webgrind_Config::$webgrindVersion);
-            echo $response;
-        break;
-        default:
+		    if (!file_exists($filename)) {
+				shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -Tpng -o ' . $filename);
+			}
+			readfile($filename);
+		break;
+    	case 'version_info':
+    		$response = @file_get_contents('http://jokke.dk/webgrindupdate.json?version='.Webgrind_Config::$webgrindVersion);
+    		echo $response;
+    	break;
+    	default:
             $welcome = '';
             if (!file_exists(Webgrind_Config::storageDir()) || !is_writable(Webgrind_Config::storageDir())) {
                 $welcome .= 'Webgrind $storageDir does not exist or is not writeable: <code>'.Webgrind_Config::storageDir().'</code><br>';
