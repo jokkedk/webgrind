@@ -137,6 +137,10 @@ try {
 		case 'function_graph':
 			$dataFile = get('dataFile');
 			$showFraction = 100 - intval(get('showFraction') * 100);
+			$edgeArg = '';
+			if($showFraction < 0.1) {
+				$edgeArg = ' -e ' . $showFraction;
+			}
 			if($dataFile == '0'){
 				$files = Webgrind_FileHandler::getInstance()->getTraceList();
 				$dataFile = $files[0]['filename'];
@@ -144,8 +148,7 @@ try {
             header("Content-Type: image/png");
             $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.png';
 		    if (!file_exists($filename)) {
-			    $imageData = shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -Tpng');
-			    file_put_contents($filename, $imageData);
+				shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.$edgeArg.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -Tpng -o ' . $filename);
 			}
 			readfile($filename);
 		break;
