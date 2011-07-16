@@ -27,6 +27,7 @@ class Webgrind_FileHandler{
 		
 		// Get list of preprocessed files
         $prepFiles = $this->getPrepFiles('/\\'.Webgrind_Config::$preprocessedSuffix.'$/', Webgrind_Config::storageDir());
+
 		// Loop over the preprocessed files.		
 		foreach($prepFiles as $fileName=>$prepFile){
 			$fileName = str_replace(Webgrind_Config::$preprocessedSuffix,'',$fileName);
@@ -88,25 +89,28 @@ class Webgrind_FileHandler{
 		foreach($list as $file){
 			$absoluteFilename = $dir.$file;
 
+
 			// Exclude webgrind preprocessed files
 			if (false !== strstr($absoluteFilename, Webgrind_Config::$preprocessedSuffix))
 			    continue;
+
 			
 			// Make sure that script never parses the profile currently being generated. (infinite loop)
 			if ($selfFile == realpath($absoluteFilename))
 				continue;
-				
+
 			$invokeUrl = rtrim($this->getInvokeUrl($absoluteFilename));
-			if (Webgrind_Config::$hideWebgrindProfiles && $invokeUrl == dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'index.php')
+            if (Webgrind_Config::$hideWebgrindProfiles 
+                    && $invokeUrl == dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'index.php')
 			    continue;
-			
 
 			$files[$file] = array('absoluteFilename' => $absoluteFilename, 
 			                      'mtime' => filemtime($absoluteFilename), 
 			                      'preprocessed' => false, 
 			                      'invokeUrl' => $invokeUrl,
 			                      'filesize' => $this->bytestostring(filesize($absoluteFilename))
-			                );
+            );
+            
 		}		
 		return $files;
 	}
