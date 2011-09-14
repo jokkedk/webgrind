@@ -59,7 +59,7 @@
                         '<img src="img/gradient_class.png" height="20" width="'+Math.floor(data.breakdown['class']/breakdown_sum*300)+'">'+
                         '<img src="img/gradient_procedural.png" height="20" width="'+Math.floor(data.breakdown['procedural']/breakdown_sum*300)+'">'+
                         '<img src="img/gradient_right.png" height="20" width="10">'+
-                        '<div title="internal functions, include/require, class methods and procedural functions." style="background:url(img/gradient_markers.png);position:relative;top:-20px;left:10px;width:301px;height:19px"></div>'
+                        '<div title="internal functions, include/require, class methods and procedural functions." style="position:relative;top:-20px;left:10px;width:301px;height:19px"></div>'
                     );
 					
 					$("#hello_message").hide();
@@ -337,7 +337,7 @@
         	<div style="float:right;">
         	    <div id="breakdown" style="margin-bottom:5px;width:320px;height:20px"></div>
         	    <span id="invocation_sum"></span> different functions called in <span id="runtime_sum"></span> milliseconds (<span id="runs"></span> runs, <span id="shown_sum"></span> shown)
-				<div><a href="javascript:showCallGraph()">Show Call Graph</a></div>
+				<div><input type="button" name="graph" value="Show Call Graph" onclick="showCallGraph()"></div>
         	</div>
         	<div style="clear:both"></div>
         	Filter: <input type="text" style="width:150px" id="callfilter"> (regex too)
