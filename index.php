@@ -89,7 +89,7 @@ try {
             $result['mtime'] = date(Webgrind_Config::$dateFormat,filemtime(Webgrind_Config::xdebugOutputDir().$dataFile));
 
             $version = preg_replace('/[^0-9\.]/', '', $reader->getHeader('creator'));
-            $result['linkToFunctionLine'] = version_compare($version, '2.2') > 0;
+            $result['linkToFunctionLine'] = version_compare($version, '2.1') > 0;
             
             echo json_encode($result);
         break;
