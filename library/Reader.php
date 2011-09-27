@@ -28,7 +28,12 @@ class Webgrind_Reader
 	 */
 	const CALLINFORMATION_LENGTH = 4;	
 	
-	/**
+    /**
+	 * Length of a function information block
+	 */
+	const FUNCTIONINFORMATION_LENGTH = 6;	
+	
+    /**
 	 * Address of the headers in the data file
 	 *
 	 * @var int
@@ -103,7 +108,7 @@ class Webgrind_Reader
 	function getFunctionInfo($nr){
 		$this->seek($this->functionPos[$nr]);
 		
-		list($summedSelfCost, $summedInclusiveCost, $invocationCount, $calledFromCount, $subCallCount) = $this->read(5);
+		list($line, $summedSelfCost, $summedInclusiveCost, $invocationCount, $calledFromCount, $subCallCount) = $this->read(self::FUNCTIONINFORMATION_LENGTH);
 		
 		$this->seek(self::NR_SIZE*self::CALLINFORMATION_LENGTH*($calledFromCount+$subCallCount), SEEK_CUR);
 		$file = $this->readLine();
@@ -111,6 +116,7 @@ class Webgrind_Reader
 
 	   	$result = array(
     	    'file'=>$file, 
+    	    'line'=>$line,
    		    'functionName'=>$function, 
    		    'summedSelfCost'=>$summedSelfCost,
    		    'summedInclusiveCost'=>$summedInclusiveCost, 
@@ -132,8 +138,12 @@ class Webgrind_Reader
 	 * @return array Called from information
 	 */
 	function getCalledFromInfo($functionNr, $calledFromNr){
-		// 5 = number of numbers before called from information
-		$this->seek($this->functionPos[$functionNr]+self::NR_SIZE*(self::CALLINFORMATION_LENGTH*$calledFromNr+5));
+		$this->seek(
+		    $this->functionPos[$functionNr]
+		    + self::NR_SIZE
+		    * (self::CALLINFORMATION_LENGTH * $calledFromNr + self::FUNCTIONINFORMATION_LENGTH)
+		    );
+		    
 		$data = $this->read(self::CALLINFORMATION_LENGTH);
 
 	    $result = array(
@@ -156,8 +166,8 @@ class Webgrind_Reader
 	 * @return array Sub call information
 	 */
 	function getSubCallInfo($functionNr, $subCallNr){
-		// 4 = number of numbers before sub call count
-		$this->seek($this->functionPos[$functionNr]+self::NR_SIZE*3);
+	    // Sub call count is the second last number in the FUNCTION_INFORMATION block
+		$this->seek($this->functionPos[$functionNr] + self::NR_SIZE * (self::FUNCTIONINFORMATION_LENGTH - 2));
 		$calledFromInfoCount = $this->read();
 		$this->seek( ( ($calledFromInfoCount+$subCallNr) * self::CALLINFORMATION_LENGTH + 1 ) * self::NR_SIZE,SEEK_CUR);
 		$data = $this->read(self::CALLINFORMATION_LENGTH);
