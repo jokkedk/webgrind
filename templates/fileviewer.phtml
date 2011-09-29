@@ -5,17 +5,17 @@
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery.scrollTo.js" type="text/javascript" charset="utf-8"></script>
-	<link rel="stylesheet" type="text/css" href="styles/style.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo Webgrind_Config::$cssFile?>">
 	<title>
 		webgrind - fileviewer: <?php echo $file?>
 	</title>
 	<script type="text/javascript" charset="utf-8">
-		$(document).ready(function() { 
+		$(document).ready(function() {
 			$('div#'+location.hash.substr(1)).addClass('line_emph');
 		});
 
 	</script>
-	
+
 </head>
 <body>
     <div id="head">
@@ -33,7 +33,7 @@
     	<table border="0">
             <tr>
                 <td align="right" valign="top"><code>
-                <?php 
+                <?php
                 foreach ($lines = explode('<br />', $source) as $num => $line) {
                     $num++;
                     echo "<span class='num' name='line$num' id='line$num'>$num</span>";
@@ -42,7 +42,7 @@
                 </code></td>
                 <td valign="top" nowrap="nowrap"><?php echo $source; ?></td>
             </tr>
-    	</table>    	
+    	</table>
         <?php else:?>
         	<p><b><?php echo $message?></b></p>
         <?php endif?>
