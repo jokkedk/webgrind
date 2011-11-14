@@ -11,19 +11,19 @@ class Webgrind_Config extends Webgrind_MasterConfig {
 	*/
 	static $checkVersion = true;
 	static $hideWebgrindProfiles = true;
-	
+
 	/**
 	* Writable dir for information storage.
 	* If empty, will use system tmp folder or xdebug tmp
 	*/
 	static $storageDir = '';
 	static $profilerDir = '/tmp';
-	
+
 	/**
 	* Suffix for preprocessed files
 	*/
 	static $preprocessedSuffix = '.webgrind';
-	
+
 	static $defaultTimezone = 'Europe/Copenhagen';
 	static $dateFormat = 'Y-m-d H:i:s';
 	static $defaultCostformat = 'percent'; // 'percent', 'usec' or 'msec'
@@ -32,16 +32,16 @@ class Webgrind_Config extends Webgrind_MasterConfig {
 
 	/**
 	* Path to python executable
-	*/ 
+	*/
 	static $pythonExecutable = '/usr/bin/python';
-	
+
 	/**
 	* Path to graphviz dot executable
-	*/	
+	*/
 	static $dotExecutable = '/usr/local/bin/dot';
-		
+
 	/**
-	* sprintf compatible format for generating links to source files. 
+	* sprintf compatible format for generating links to source files.
 	* %1$s will be replaced by the full path name of the file
 	* %2$d will be replaced by the linenumber
 	*/
@@ -76,7 +76,7 @@ class Webgrind_Config extends Webgrind_MasterConfig {
 			$outputName = '/^'.preg_replace('/(%[^%])+/', '.+', $outputName).'$/';
 		return $outputName;
 	}
-	
+
 	/**
 	* Directory to search for trace files
 	*/
@@ -86,7 +86,7 @@ class Webgrind_Config extends Webgrind_MasterConfig {
 			return realpath(Webgrind_Config::$profilerDir).'/';
 		return realpath($dir).'/';
 	}
-	
+
 	/**
 	* Writable dir for information storage
 	*/
