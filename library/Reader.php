@@ -10,7 +10,7 @@ class Webgrind_Reader
 	/**
 	 * File format version that this reader understands
 	 */
-	const FILE_FORMAT_VERSION = 6;
+	const FILE_FORMAT_VERSION = 7;
 
 	/**
 	 * Binary number format used.

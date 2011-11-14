@@ -16,7 +16,7 @@ class Webgrind_Preprocessor
 	/**
 	 * Fileformat version. Embedded in the output for parsers to use.
 	 */
-	const FILE_FORMAT_VERSION = 6;
+	const FILE_FORMAT_VERSION = 7;
 
 	/**
 	 * Binary number format used.
@@ -83,6 +83,7 @@ class Webgrind_Preprocessor
 				}
 				// Cost line
 				list($lnr, $cost) = fscanf($in,"%d %d");
+				$functions[$function]['line'] = $lnr;
 				$functions[$function]['summedSelfCost'] += $cost;
 				$functions[$function]['summedInclusiveCost'] += $cost;				
 			} else if(substr($line,0,4)==='cfn=') {
@@ -127,7 +128,7 @@ class Webgrind_Preprocessor
 			$functionAddresses[] = ftell($out);
 			$calledFromCount = sizeof($function['calledFromInformation']);
 			$subCallCount = sizeof($function['subCallInformation']);
-			fwrite($out, pack(self::NR_FORMAT.'*', $function['summedSelfCost'], $function['summedInclusiveCost'], $function['invocationCount'], $calledFromCount, $subCallCount));
+			fwrite($out, pack(self::NR_FORMAT.'*', $function['line'], $function['summedSelfCost'], $function['summedInclusiveCost'], $function['invocationCount'], $calledFromCount, $subCallCount));
 			// Write called from information
 			foreach((array)$function['calledFromInformation'] as $call){
 				fwrite($out, pack(self::NR_FORMAT.'*', $call['functionNr'], $call['line'], $call['callCount'], $call['summedCallCost']));
