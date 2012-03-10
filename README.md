@@ -1,6 +1,6 @@
 Webgrind
 ========
-Webgrind is an [Xdebug](http://www.xdebug.org) profiling web frontend in PHP5. It implements a subset of the features of [kcachegrind](http://kcachegrind.sourceforge.net/cgi-bin/show.cgi) and installs in seconds and works on all platforms. For quick'n'dirty optimizations it does the job. Here's a screenshot showing the output from profiling:
+Webgrind is a [Xdebug](http://www.xdebug.org) profiling web frontend in PHP5. It implements a subset of the features of [kcachegrind](http://kcachegrind.sourceforge.net/cgi-bin/show.cgi) and installs in seconds and works on all platforms. For quick'n'dirty optimizations it does the job. Here's a screenshot showing the output from profiling:
 
 [![](http://jokke.dk/media/2008-webgrind/webgrind_small.png)](http://jokke.dk/media/2008-webgrind/webgrind_large.png)
 
@@ -14,7 +14,7 @@ Features
   * See where any function was called from and which functions it calls.
   * Generate a call graph using [gprof2dot.py](http://code.google.com/p/jrfonseca/wiki/Gprof2Dot)
 
-[![](http://wiki.jrfonseca.googlecode.com/hg/gprof2dot_small.png)](http://wiki.jrfonseca.googlecode.com/hg/gprof2dot.png)
+[![](http://wiki.jrfonseca.googlecode.com/git/gprof2dot_small.png)](http://wiki.jrfonseca.googlecode.com/git/gprof2dot.png)
 
 Suggestions for improvements and new features are more than welcome - this is just a start.
 
