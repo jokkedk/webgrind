@@ -1,0 +1,104 @@
+version: 0.9.6
+cmd: /tmp/xdebug/1.php
+part: 1
+
+events: Time
+
+fl=/tmp/xdebug/1.php
+fn=c
+4 6
+
+fl=/tmp/xdebug/1.php
+fn=c
+5 2
+
+fl=/tmp/xdebug/1.php
+fn=a->__construct
+20 101
+cfn=c
+calls=1 0 0
+4 6
+cfn=c
+calls=1 0 0
+5 2
+
+fl=/tmp/xdebug/1.php
+fn=d
+11 2
+
+fl=/tmp/xdebug/1.php
+fn=d
+12 2
+
+fl=/tmp/xdebug/1.php
+fn=b->__construct
+21 77
+cfn=d
+calls=1 0 0
+11 2
+cfn=d
+calls=1 0 0
+12 2
+
+fl=/tmp/xdebug/1.php
+fn=c
+4 2
+
+fl=/tmp/xdebug/1.php
+fn=c
+5 1
+
+fl=/tmp/xdebug/1.php
+fn=a->__construct
+22 68
+cfn=c
+calls=1 0 0
+4 2
+cfn=c
+calls=1 0 0
+5 1
+
+fl=/tmp/xdebug/1.php
+fn=d
+23 2
+
+fl=/tmp/xdebug/1.php
+fn=c
+24 1
+
+fl=/tmp/xdebug/1.php
+fn=d
+25 2
+
+fl=/tmp/xdebug/1.php
+fn=c
+26 2
+
+fl=/tmp/xdebug/1.php
+fn={main}
+
+summary: 23802
+
+0 23525
+cfn=a->__construct
+calls=1 0 0
+20 111
+cfn=b->__construct
+calls=1 0 0
+21 82
+cfn=a->__construct
+calls=1 0 0
+22 73
+cfn=d
+calls=1 0 0
+23 2
+cfn=c
+calls=1 0 0
+24 1
+cfn=d
+calls=1 0 0
+25 2
+cfn=c
+calls=1 0 0
+26 2
+

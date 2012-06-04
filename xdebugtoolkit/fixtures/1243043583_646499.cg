@@ -1,0 +1,154 @@
+version: 0.9.6
+cmd: /var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+part: 1
+
+events: Time
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=c
+4 7
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=c
+5 2
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=a->__construct
+23 97
+cfn=c
+calls=1 0 0
+4 7
+cfn=c
+calls=1 0 0
+5 2
+
+fl=php:internal
+fn=php::usleep
+20 100122
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=d
+11 74
+cfn=php::usleep
+calls=1 0 0
+20 100122
+
+fl=php:internal
+fn=php::usleep
+20 100096
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=d
+12 51
+cfn=php::usleep
+calls=1 0 0
+20 100096
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=b->__construct
+24 84
+cfn=d
+calls=1 0 0
+11 100196
+cfn=d
+calls=1 0 0
+12 100147
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=c
+4 1
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=c
+5 2
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=a->__construct
+25 72
+cfn=c
+calls=1 0 0
+4 1
+cfn=c
+calls=1 0 0
+5 2
+
+fl=php:internal
+fn=php::usleep
+20 100095
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=d
+26 50
+cfn=php::usleep
+calls=1 0 0
+20 100095
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=c
+27 2
+
+fl=php:internal
+fn=php::usleep
+20 100095
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=d
+28 54
+cfn=php::usleep
+calls=1 0 0
+20 100095
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=c
+29 3
+
+fl=php:internal
+fn=php::register_shutdown_function
+31 32
+
+fl=php:internal
+fn=php::register_shutdown_function
+32 5
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn={main}
+
+summary: 401401
+
+0 446
+cfn=a->__construct
+calls=1 0 0
+23 108
+cfn=b->__construct
+calls=1 0 0
+24 200428
+cfn=a->__construct
+calls=1 0 0
+25 77
+cfn=d
+calls=1 0 0
+26 100146
+cfn=c
+calls=1 0 0
+27 2
+cfn=d
+calls=1 0 0
+28 100150
+cfn=c
+calls=1 0 0
+29 3
+cfn=php::register_shutdown_function
+calls=1 0 0
+31 32
+cfn=php::register_shutdown_function
+calls=1 0 0
+32 5
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=c
+0 3
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/1.php
+fn=c
+0 2
+

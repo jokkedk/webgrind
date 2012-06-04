@@ -1,0 +1,157 @@
+version: 0.9.6
+cmd: /var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+part: 1
+
+events: Time
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=d
+18 24872
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=c
+5 381
+cfn=d
+calls=1 0 0
+18 24872
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=d
+18 1765
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=c
+6 864
+cfn=d
+calls=1 0 0
+18 1765
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=a
+26 332
+cfn=c
+calls=1 0 0
+5 25254
+cfn=c
+calls=1 0 0
+6 2630
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=d
+18 24685
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=c
+5 272
+cfn=d
+calls=1 0 0
+18 24685
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=d
+18 1801
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=c
+6 2231
+cfn=d
+calls=1 0 0
+18 1801
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=a
+27 235
+cfn=c
+calls=1 0 0
+5 24958
+cfn=c
+calls=1 0 0
+6 4033
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=d
+18 339
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=c
+11 11556
+cfn=d
+calls=1 0 0
+18 339
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=d
+18 28
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=c
+12 60932
+cfn=d
+calls=1 0 0
+18 28
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=b
+28 194
+cfn=c
+calls=1 0 0
+11 11896
+cfn=c
+calls=1 0 0
+12 60961
+
+fl=php:internal
+fn=php::register_shutdown_function
+29 28
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn={main}
+
+summary: 130678
+
+0 153
+cfn=a
+calls=1 0 0
+26 28217
+cfn=a
+calls=1 0 0
+27 29227
+cfn=b
+calls=1 0 0
+28 73051
+cfn=php::register_shutdown_function
+calls=1 0 0
+29 28
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=d
+18 73
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=c
+11 2653
+cfn=d
+calls=1 0 0
+18 73
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=d
+18 118
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=c
+12 39909
+cfn=d
+calls=1 0 0
+18 118
+
+fl=/var/www/xdebugtoolkit-trunk/xdebugtoolkit/fixtures/2.php
+fn=b
+0 41
+cfn=c
+calls=1 0 0
+11 2727
+cfn=c
+calls=1 0 0
+12 40027
+
