@@ -49,7 +49,7 @@ h2 {
 
 #options {
 	float:right;
-	width:580px;
+	width:700px;
 	padding:10px 0 0 0;
 }
 #options form {
@@ -146,10 +146,6 @@ th span{
 	margin-right: 13px;
 }
 
-img.list_reload {
-	margin:0px 5px;
-}
-
 .block_box {
 	margin: 10px 10px;
 }
@@ -172,4 +168,26 @@ a.load_invocations {
 	background-color: #999;
 	border: 1px solid #333;
 	padding: 2px;
+}
+
+input.del_file,input.list_reload {
+	margin-left:5px;
+	color:transparent;
+	border:none;
+	cursor:pointer;
+}
+
+input.del_file{
+	background: url(../img/delete.gif) -2px 1px transparent no-repeat;
+	width:14px;
+	height:15px;	
+}
+
+input.list_reload {
+	background: url(../img/reload.png) 2px 1px transparent no-repeat;
+	width:11px;
+	height:15px;
+}
+input.upload_file {
+	margin-left:22px;
 }
