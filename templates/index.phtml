@@ -74,14 +74,6 @@
 			);
 		}
 
-		function showCallGraph() {
-			vars = getOptions();
-			vars.op = 'function_graph';
-			delete vars.costFormat;
-			delete vars.hideInternals;
-			window.open('index.php?' + $.param(vars));
-		}
-		
 		function reloadFilelist(value){
 			$.getJSON("index.php",
 				{'op':'file_list'},
@@ -403,7 +395,6 @@
         	<div style="float:right;">
         	    <div id="breakdown" style="margin-bottom:5px;width:320px;height:20px"></div>
         	    <span id="invocation_sum"></span> different functions called in <span id="runtime_sum"></span> milliseconds (<span id="runs"></span> runs, <span id="shown_sum"></span> shown)
-				<div><input type="button" name="graph" value="Show Call Graph" onclick="showCallGraph()"></div>
         	</div>
         	<div style="clear:both"></div>
         	Filter: <input type="text" style="width:150px" id="callfilter"> (regex too)
