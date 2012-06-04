@@ -24,7 +24,6 @@ Installation
 ------------
   # Download webgrind
   # Unzip package to favourite path accessible by webserver.
-  # chmod 0777 webgrind/tmp
   # Load webgrind in browser and start profiling
 
 See the [Installation page on Google Code](http://code.google.com/p/webgrind/wiki/Installation) for more
