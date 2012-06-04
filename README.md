@@ -6,7 +6,7 @@ Webgrind is a [Xdebug](http://www.xdebug.org) profiling web frontend in PHP5. It
 
 It is possible that a larger number of kcachegrind features will be implemented in the future, bringing webgrind closer to completing one of the [suggested PHP Google Summer of Code 2008](http://wiki.php.net/gsoc/2008#xdebug_profiling_web_frontend). At this point nothing has been planned, though.
 
-Generate a call graph using [gprof2dot.py](http://code.google.com/p/jrfonseca/wiki/Gprof2Dot)
+Generate a call graph using [xdebugtoolkit](http://code.google.com/p/xdebugtoolkit/)
 
 [![](http://wiki.jrfonseca.googlecode.com/git/gprof2dot_small.png)](http://wiki.jrfonseca.googlecode.com/git/gprof2dot.png)
 
