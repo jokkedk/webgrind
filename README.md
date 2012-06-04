@@ -6,16 +6,18 @@ Webgrind is a [Xdebug](http://www.xdebug.org) profiling web frontend in PHP5. It
 
 It is possible that a larger number of kcachegrind features will be implemented in the future, bringing webgrind closer to completing one of the [suggested PHP Google Summer of Code 2008](http://wiki.php.net/gsoc/2008#xdebug_profiling_web_frontend). At this point nothing has been planned, though.
 
+Generate a call graph using [gprof2dot.py](http://code.google.com/p/jrfonseca/wiki/Gprof2Dot)
+
+[![](http://wiki.jrfonseca.googlecode.com/git/gprof2dot_small.png)](http://wiki.jrfonseca.googlecode.com/git/gprof2dot.png)
+
+
 Features
 --------
   * Super simple, cross platform installation - obviously :)
   * Track time spent in functions by self cost or inclusive cost. Inclusive cost is time inside function + calls to other functions.
   * See if time is spent in internal or user functions.
   * See where any function was called from and which functions it calls.
-  * Generate a call graph using [gprof2dot.py](http://code.google.com/p/jrfonseca/wiki/Gprof2Dot)
-
-[![](http://wiki.jrfonseca.googlecode.com/git/gprof2dot_small.png)](http://wiki.jrfonseca.googlecode.com/git/gprof2dot.png)
-
+ 
 Suggestions for improvements and new features are more than welcome - this is just a start.
 
 Mailing list is available through the [webgrind google group](http://groups.google.com/group/webgrind-general/topics).
