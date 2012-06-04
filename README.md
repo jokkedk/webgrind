@@ -8,6 +8,7 @@ It is possible that a larger number of kcachegrind features will be implemented 
 
 Generate a call graph using [xdebugtoolkit](http://code.google.com/p/xdebugtoolkit/)
 
+Upload .cg files and work with file list.
 
 Features
 --------
