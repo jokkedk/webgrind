@@ -8,7 +8,7 @@ It is possible that a larger number of kcachegrind features will be implemented 
 
 Generate a call graph using [xdebugtoolkit](http://code.google.com/p/xdebugtoolkit/)
 
-[![](http://wiki.jrfonseca.googlecode.com/git/gprof2dot_small.png)](http://wiki.jrfonseca.googlecode.com/git/gprof2dot.png)
+[![](http://xdebugtoolkit.googlecode.com/svn/wiki/symfony_debug.png)](http://xdebugtoolkit.googlecode.com/svn/wiki/symfony_debug.png)
 
 
 Features
@@ -26,6 +26,7 @@ Installation
 ------------
   # Download webgrind
   # Unzip package to favourite path accessible by webserver.
+  # chmod 0777 webgrind/tmp
   # Load webgrind in browser and start profiling
 
 See the [Installation page on Google Code](http://code.google.com/p/webgrind/wiki/Installation) for more
