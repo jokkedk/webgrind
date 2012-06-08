@@ -1,0 +1,2652 @@
+version: 0.9.6
+cmd: D:\Wwwroot\ci\index.php
+part: 1
+
+events: Time
+
+fl=php:internal
+fn=php::error_reporting
+12 10
+
+fl=php:internal
+fn=php::strpos
+63 2
+
+fl=php:internal
+fn=php::function_exists
+65 2
+
+fl=php:internal
+fn=php::dirname
+65 3
+
+fl=php:internal
+fn=php::realpath
+65 255
+
+fl=php:internal
+fn=php::dirname
+67 2
+
+fl=php:internal
+fn=php::realpath
+67 20
+
+fl=php:internal
+fn=php::pathinfo
+88 10
+
+fl=php:internal
+fn=php::define
+88 5
+
+fl=php:internal
+fn=php::define
+89 2
+
+fl=php:internal
+fn=php::pathinfo
+90 5
+
+fl=php:internal
+fn=php::define
+90 3
+
+fl=php:internal
+fn=php::define
+91 2
+
+fl=php:internal
+fn=php::is_dir
+93 374
+
+fl=php:internal
+fn=php::define
+104 2
+
+fl=php:internal
+fn=php::defined
+1 3
+
+fl=php:internal
+fn=php::define
+31 5
+
+fl=php:internal
+fn=php::defined
+1 1
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=require::D:\Wwwroot\ci\system\codeigniter\Common.php
+1 50
+cfn=php::defined
+calls=1 0 0
+1 1
+
+fl=php:internal
+fn=php::defined
+1 2
+
+fl=php:internal
+fn=php::defined
+39 1
+
+fl=php:internal
+fn=php::function_exists
+54 3
+
+fl=php:internal
+fn=php::function_exists
+79 1
+
+fl=D:\Wwwroot\ci\system\codeigniter\Compat.php
+fn=require::D:\Wwwroot\ci\system\codeigniter\Compat.php
+1 147
+cfn=php::defined
+calls=1 0 0
+1 2
+cfn=php::defined
+calls=1 0 0
+39 1
+cfn=php::function_exists
+calls=1 0 0
+54 3
+cfn=php::function_exists
+calls=1 0 0
+79 1
+
+fl=php:internal
+fn=php::defined
+1 1
+
+fl=php:internal
+fn=php::define
+16 5
+
+fl=php:internal
+fn=php::define
+17 3
+
+fl=php:internal
+fn=php::define
+18 2
+
+fl=php:internal
+fn=php::define
+19 3
+
+fl=php:internal
+fn=php::define
+30 3
+
+fl=php:internal
+fn=php::define
+31 4
+
+fl=php:internal
+fn=php::define
+32 3
+
+fl=php:internal
+fn=php::define
+33 4
+
+fl=php:internal
+fn=php::define
+34 3
+
+fl=php:internal
+fn=php::define
+35 2
+
+fl=php:internal
+fn=php::define
+36 3
+
+fl=php:internal
+fn=php::define
+37 2
+
+fl=D:\Wwwroot\ci\system\application\config\constants.php
+fn=require::D:\Wwwroot\ci\system\application\config\constants.php
+1 433
+cfn=php::defined
+calls=1 0 0
+1 1
+cfn=php::define
+calls=1 0 0
+16 5
+cfn=php::define
+calls=1 0 0
+17 3
+cfn=php::define
+calls=1 0 0
+18 2
+cfn=php::define
+calls=1 0 0
+19 3
+cfn=php::define
+calls=1 0 0
+30 3
+cfn=php::define
+calls=1 0 0
+31 4
+cfn=php::define
+calls=1 0 0
+32 3
+cfn=php::define
+calls=1 0 0
+33 4
+cfn=php::define
+calls=1 0 0
+34 3
+cfn=php::define
+calls=1 0 0
+35 2
+cfn=php::define
+calls=1 0 0
+36 3
+cfn=php::define
+calls=1 0 0
+37 2
+
+fl=php:internal
+fn=php::set_error_handler
+59 7
+
+fl=php:internal
+fn=php::set_magic_quotes_runtime
+60 1
+
+fl=php:internal
+fn=php::file_exists
+152 647
+
+fl=php:internal
+fn=php::defined
+1 5
+
+fl=D:\Wwwroot\ci\system\application\config\config.php
+fn=require::D:\Wwwroot\ci\system\application\config\config.php
+1 121
+cfn=php::defined
+calls=1 0 0
+1 5
+
+fl=php:internal
+fn=php::is_array
+159 1
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+181 5759
+cfn=php::file_exists
+calls=1 0 0
+152 647
+cfn=require::D:\Wwwroot\ci\system\application\config\config.php
+calls=1 0 0
+157 126
+cfn=php::is_array
+calls=1 0 0
+159 1
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=config_item
+101 64
+cfn=get_config
+calls=1 0 0
+181 6535
+
+fl=php:internal
+fn=php::file_exists
+101 808
+
+fl=php:internal
+fn=php::file_exists
+109 767
+
+fl=php:internal
+fn=php::defined
+1 2
+
+fl=D:\Wwwroot\ci\system\libraries\Benchmark.php
+fn=require::D:\Wwwroot\ci\system\libraries\Benchmark.php
+1 46
+cfn=php::defined
+calls=1 0 0
+1 2
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+68 1226
+cfn=config_item
+calls=1 0 0
+101 6599
+cfn=php::file_exists
+calls=1 0 0
+101 808
+cfn=php::file_exists
+calls=1 0 0
+109 767
+cfn=require::D:\Wwwroot\ci\system\libraries\Benchmark.php
+calls=1 0 0
+116 48
+
+fl=php:internal
+fn=php::microtime
+48 27
+
+fl=D:\Wwwroot\ci\system\libraries\Benchmark.php
+fn=CI_Benchmark->mark
+69 46
+cfn=php::microtime
+calls=1 0 0
+48 27
+
+fl=php:internal
+fn=php::microtime
+48 12
+
+fl=D:\Wwwroot\ci\system\libraries\Benchmark.php
+fn=CI_Benchmark->mark
+70 125
+cfn=php::microtime
+calls=1 0 0
+48 12
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=config_item
+101 9
+
+fl=php:internal
+fn=php::file_exists
+101 718
+
+fl=php:internal
+fn=php::file_exists
+109 576
+
+fl=php:internal
+fn=php::defined
+1 3
+
+fl=D:\Wwwroot\ci\system\libraries\Hooks.php
+fn=require::D:\Wwwroot\ci\system\libraries\Hooks.php
+1 47
+cfn=php::defined
+calls=1 0 0
+1 3
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=config_item
+101 9
+
+fl=php:internal
+fn=php::file_exists
+101 640
+
+fl=php:internal
+fn=php::file_exists
+109 664
+
+fl=php:internal
+fn=php::defined
+1 3
+
+fl=D:\Wwwroot\ci\system\libraries\Config.php
+fn=require::D:\Wwwroot\ci\system\libraries\Config.php
+1 50
+cfn=php::defined
+calls=1 0 0
+1 3
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+47 10
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 5
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+48 170
+cfn=get_config
+calls=1 0 0
+245 5
+
+fl=D:\Wwwroot\ci\system\libraries\Config.php
+fn=CI_Config->CI_Config
+136 90
+cfn=get_config
+calls=1 0 0
+47 10
+cfn=log_message
+calls=1 0 0
+48 175
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+56 1703
+cfn=config_item
+calls=1 0 0
+101 9
+cfn=php::file_exists
+calls=1 0 0
+101 640
+cfn=php::file_exists
+calls=1 0 0
+109 664
+cfn=require::D:\Wwwroot\ci\system\libraries\Config.php
+calls=1 0 0
+116 53
+cfn=CI_Config->CI_Config
+calls=1 0 0
+136 276
+
+fl=D:\Wwwroot\ci\system\libraries\Config.php
+fn=CI_Config->item
+61 13
+
+fl=D:\Wwwroot\ci\system\libraries\Hooks.php
+fn=CI_Hooks->_initialize
+42 97
+cfn=load_class
+calls=1 0 0
+56 3348
+cfn=CI_Config->item
+calls=1 0 0
+61 13
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 5
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+43 40
+cfn=get_config
+calls=1 0 0
+245 5
+
+fl=D:\Wwwroot\ci\system\libraries\Hooks.php
+fn=CI_Hooks->CI_Hooks
+136 82
+cfn=CI_Hooks->_initialize
+calls=1 0 0
+42 3458
+cfn=log_message
+calls=1 0 0
+43 45
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+78 1555
+cfn=config_item
+calls=1 0 0
+101 9
+cfn=php::file_exists
+calls=1 0 0
+101 718
+cfn=php::file_exists
+calls=1 0 0
+109 576
+cfn=require::D:\Wwwroot\ci\system\libraries\Hooks.php
+calls=1 0 0
+116 51
+cfn=CI_Hooks->CI_Hooks
+calls=1 0 0
+136 3586
+
+fl=D:\Wwwroot\ci\system\libraries\Hooks.php
+fn=CI_Hooks->_call_hook
+85 7
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+93 8
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=config_item
+101 6
+
+fl=php:internal
+fn=php::file_exists
+101 699
+
+fl=php:internal
+fn=php::file_exists
+109 561
+
+fl=php:internal
+fn=php::defined
+1 2
+
+fl=D:\Wwwroot\ci\system\libraries\URI.php
+fn=require::D:\Wwwroot\ci\system\libraries\URI.php
+1 55
+cfn=php::defined
+calls=1 0 0
+1 2
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+47 14
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 7
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+48 49
+cfn=get_config
+calls=1 0 0
+245 7
+
+fl=D:\Wwwroot\ci\system\libraries\URI.php
+fn=CI_URI->CI_URI
+136 84
+cfn=load_class
+calls=1 0 0
+47 14
+cfn=log_message
+calls=1 0 0
+48 56
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+94 2769
+cfn=config_item
+calls=1 0 0
+101 6
+cfn=php::file_exists
+calls=1 0 0
+101 699
+cfn=php::file_exists
+calls=1 0 0
+109 561
+cfn=require::D:\Wwwroot\ci\system\libraries\URI.php
+calls=1 0 0
+116 57
+cfn=CI_URI->CI_URI
+calls=1 0 0
+136 155
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=config_item
+101 8
+
+fl=php:internal
+fn=php::file_exists
+101 679
+
+fl=php:internal
+fn=php::file_exists
+109 690
+
+fl=php:internal
+fn=php::defined
+1 4
+
+fl=D:\Wwwroot\ci\system\libraries\Router.php
+fn=require::D:\Wwwroot\ci\system\libraries\Router.php
+1 61
+cfn=php::defined
+calls=1 0 0
+1 4
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+48 15
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+49 6
+
+fl=D:\Wwwroot\ci\system\libraries\Config.php
+fn=CI_Config->item
+69 16
+
+fl=php:internal
+fn=php::defined
+1 2
+
+fl=D:\Wwwroot\ci\system\application\config\routes.php
+fn=include::D:\Wwwroot\ci\system\application\config\routes.php
+1 49
+cfn=php::defined
+calls=1 0 0
+1 2
+
+fl=php:internal
+fn=php::is_array
+83 1
+
+fl=php:internal
+fn=php::strtolower
+88 3
+
+fl=D:\Wwwroot\ci\system\libraries\Config.php
+fn=CI_Config->item
+62 10
+
+fl=php:internal
+fn=php::strtoupper
+62 1
+
+fl=php:internal
+fn=php::is_array
+68 1
+
+fl=php:internal
+fn=php::count
+68 4
+
+fl=php:internal
+fn=php::getenv
+76 33
+
+fl=php:internal
+fn=php::trim
+77 3
+
+fl=php:internal
+fn=php::trim
+85 2
+
+fl=php:internal
+fn=php::getenv
+92 24
+
+fl=php:internal
+fn=php::trim
+93 1
+
+fl=D:\Wwwroot\ci\system\libraries\URI.php
+fn=CI_URI->_fetch_uri_string
+91 353
+cfn=CI_Config->item
+calls=1 0 0
+62 10
+cfn=php::strtoupper
+calls=1 0 0
+62 1
+cfn=php::is_array
+calls=1 0 0
+68 1
+cfn=php::count
+calls=1 0 0
+68 4
+cfn=php::getenv
+calls=1 0 0
+76 33
+cfn=php::trim
+calls=1 0 0
+77 3
+cfn=php::trim
+calls=1 0 0
+85 2
+cfn=php::getenv
+calls=1 0 0
+92 24
+cfn=php::trim
+calls=1 0 0
+93 1
+
+fl=php:internal
+fn=php::explode
+103 4
+
+fl=php:internal
+fn=php::file_exists
+197 34
+
+fl=D:\Wwwroot\ci\system\libraries\Router.php
+fn=CI_Router->_validate_request
+103 46
+cfn=php::file_exists
+calls=1 0 0
+197 34
+
+fl=D:\Wwwroot\ci\system\libraries\Router.php
+fn=CI_Router->set_class
+106 11
+
+fl=D:\Wwwroot\ci\system\libraries\Router.php
+fn=CI_Router->set_method
+107 4
+
+fl=php:internal
+fn=php::array_unshift
+255 3
+
+fl=php:internal
+fn=php::array_unshift
+256 2
+
+fl=D:\Wwwroot\ci\system\libraries\URI.php
+fn=CI_URI->_reindex_segments
+113 80
+cfn=php::array_unshift
+calls=1 0 0
+255 3
+cfn=php::array_unshift
+calls=1 0 0
+256 2
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 8
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+115 46
+cfn=get_config
+calls=1 0 0
+245 8
+
+fl=D:\Wwwroot\ci\system\libraries\Router.php
+fn=CI_Router->_set_routing
+50 1420
+cfn=CI_Config->item
+calls=1 0 0
+69 16
+cfn=include::D:\Wwwroot\ci\system\application\config\routes.php
+calls=1 0 0
+82 51
+cfn=php::is_array
+calls=1 0 0
+83 1
+cfn=php::strtolower
+calls=1 0 0
+88 3
+cfn=CI_URI->_fetch_uri_string
+calls=1 0 0
+91 436
+cfn=php::explode
+calls=1 0 0
+103 4
+cfn=CI_Router->_validate_request
+calls=1 0 0
+103 80
+cfn=CI_Router->set_class
+calls=1 0 0
+106 11
+cfn=CI_Router->set_method
+calls=1 0 0
+107 4
+cfn=CI_URI->_reindex_segments
+calls=1 0 0
+113 87
+cfn=log_message
+calls=1 0 0
+115 55
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 4
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+51 40
+cfn=get_config
+calls=1 0 0
+245 4
+
+fl=D:\Wwwroot\ci\system\libraries\Router.php
+fn=CI_Router->CI_Router
+136 196
+cfn=load_class
+calls=1 0 0
+48 15
+cfn=load_class
+calls=1 0 0
+49 6
+cfn=CI_Router->_set_routing
+calls=1 0 0
+50 2173
+cfn=log_message
+calls=1 0 0
+51 44
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+95 2395
+cfn=config_item
+calls=1 0 0
+101 8
+cfn=php::file_exists
+calls=1 0 0
+101 679
+cfn=php::file_exists
+calls=1 0 0
+109 690
+cfn=require::D:\Wwwroot\ci\system\libraries\Router.php
+calls=1 0 0
+116 65
+cfn=CI_Router->CI_Router
+calls=1 0 0
+136 2438
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=config_item
+101 6
+
+fl=php:internal
+fn=php::file_exists
+101 659
+
+fl=php:internal
+fn=php::file_exists
+109 616
+
+fl=php:internal
+fn=php::defined
+1 2
+
+fl=D:\Wwwroot\ci\system\libraries\Output.php
+fn=require::D:\Wwwroot\ci\system\libraries\Output.php
+1 57
+cfn=php::defined
+calls=1 0 0
+1 2
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 10
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+39 52
+cfn=get_config
+calls=1 0 0
+245 10
+
+fl=D:\Wwwroot\ci\system\libraries\Output.php
+fn=CI_Output->CI_Output
+136 44
+cfn=log_message
+calls=1 0 0
+39 62
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+96 2583
+cfn=config_item
+calls=1 0 0
+101 6
+cfn=php::file_exists
+calls=1 0 0
+101 659
+cfn=php::file_exists
+calls=1 0 0
+109 616
+cfn=require::D:\Wwwroot\ci\system\libraries\Output.php
+calls=1 0 0
+116 60
+cfn=CI_Output->CI_Output
+calls=1 0 0
+136 107
+
+fl=D:\Wwwroot\ci\system\libraries\Hooks.php
+fn=CI_Hooks->_call_hook
+104 9
+
+fl=D:\Wwwroot\ci\system\libraries\Config.php
+fn=CI_Config->item
+418 14
+
+fl=php:internal
+fn=php::is_dir
+420 702
+
+fl=php:internal
+fn=php::is_dir
+52 3
+
+fl=php:internal
+fn=php::rtrim
+54 4
+
+fl=php:internal
+fn=php::rand
+54 5
+
+fl=php:internal
+fn=php::md5
+54 10
+
+fl=php:internal
+fn=php::fopen
+56 5200
+
+fl=php:internal
+fn=php::fclose
+61 30
+
+fl=php:internal
+fn=php::chmod
+62 653
+
+fl=php:internal
+fn=php::unlink
+63 364
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=is_really_writable
+420 381
+cfn=php::is_dir
+calls=1 0 0
+52 3
+cfn=php::rtrim
+calls=1 0 0
+54 4
+cfn=php::rand
+calls=1 0 0
+54 5
+cfn=php::md5
+calls=1 0 0
+54 10
+cfn=php::fopen
+calls=1 0 0
+56 5200
+cfn=php::fclose
+calls=1 0 0
+61 30
+cfn=php::chmod
+calls=1 0 0
+62 653
+cfn=php::unlink
+calls=1 0 0
+63 364
+
+fl=D:\Wwwroot\ci\system\libraries\Config.php
+fn=CI_Config->item
+426 25
+
+fl=D:\Wwwroot\ci\system\libraries\Config.php
+fn=CI_Config->item
+427 9
+
+fl=php:internal
+fn=php::md5
+430 7
+
+fl=php:internal
+fn=php::file_exists
+432 764
+
+fl=D:\Wwwroot\ci\system\libraries\Output.php
+fn=CI_Output->_display_cache
+106 338
+cfn=CI_Config->item
+calls=1 0 0
+418 14
+cfn=php::is_dir
+calls=1 0 0
+420 702
+cfn=is_really_writable
+calls=1 0 0
+420 6653
+cfn=CI_Config->item
+calls=1 0 0
+426 25
+cfn=CI_Config->item
+calls=1 0 0
+427 9
+cfn=php::md5
+calls=1 0 0
+430 7
+cfn=php::file_exists
+calls=1 0 0
+432 764
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=config_item
+101 10
+
+fl=php:internal
+fn=php::file_exists
+101 597
+
+fl=php:internal
+fn=php::file_exists
+109 607
+
+fl=php:internal
+fn=php::defined
+1 4
+
+fl=D:\Wwwroot\ci\system\libraries\Input.php
+fn=require::D:\Wwwroot\ci\system\libraries\Input.php
+1 70
+cfn=php::defined
+calls=1 0 0
+1 4
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 10
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+65 57
+cfn=get_config
+calls=1 0 0
+245 10
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+67 9
+
+fl=D:\Wwwroot\ci\system\libraries\Config.php
+fn=CI_Config->item
+68 16
+
+fl=D:\Wwwroot\ci\system\libraries\Config.php
+fn=CI_Config->item
+69 7
+
+fl=php:internal
+fn=php::is_array
+99 1
+
+fl=php:internal
+fn=php::is_array
+99 2
+
+fl=php:internal
+fn=php::is_array
+99 2
+
+fl=php:internal
+fn=php::is_array
+99 2
+
+fl=php:internal
+fn=php::in_array
+110 5
+
+fl=php:internal
+fn=php::is_array
+115 0
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 2
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 0
+
+fl=php:internal
+fn=php::in_array
+110 3
+
+fl=php:internal
+fn=php::is_array
+115 1
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 2
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 2
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 2
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 2
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 2
+
+fl=php:internal
+fn=php::in_array
+110 3
+
+fl=php:internal
+fn=php::is_array
+115 1
+
+fl=php:internal
+fn=php::in_array
+110 3
+
+fl=php:internal
+fn=php::is_array
+115 0
+
+fl=php:internal
+fn=php::in_array
+110 5
+
+fl=php:internal
+fn=php::is_array
+115 2
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 1
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 0
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 0
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 1
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 2
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 2
+
+fl=php:internal
+fn=php::in_array
+110 2
+
+fl=php:internal
+fn=php::is_array
+115 0
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 1
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 1
+
+fl=php:internal
+fn=php::in_array
+110 3
+
+fl=php:internal
+fn=php::is_array
+115 0
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 0
+
+fl=php:internal
+fn=php::in_array
+110 5
+
+fl=php:internal
+fn=php::is_array
+115 1
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 1
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 1
+
+fl=php:internal
+fn=php::in_array
+110 3
+
+fl=php:internal
+fn=php::is_array
+115 1
+
+fl=php:internal
+fn=php::in_array
+110 5
+
+fl=php:internal
+fn=php::is_array
+115 1
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 2
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 1
+
+fl=php:internal
+fn=php::in_array
+110 4
+
+fl=php:internal
+fn=php::is_array
+115 0
+
+fl=php:internal
+fn=php::is_array
+99 2
+
+fl=php:internal
+fn=php::is_array
+99 1
+
+fl=php:internal
+fn=php::is_array
+99 2
+
+fl=php:internal
+fn=php::is_array
+170 2
+
+fl=D:\Wwwroot\ci\system\libraries\Input.php
+fn=CI_Input->_clean_input_data
+140 43
+cfn=php::is_array
+calls=1 0 0
+170 2
+
+fl=php:internal
+fn=php::is_array
+170 0
+
+fl=D:\Wwwroot\ci\system\libraries\Input.php
+fn=CI_Input->_clean_input_data
+151 40
+cfn=php::is_array
+calls=1 0 0
+170 0
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 5
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+153 43
+cfn=get_config
+calls=1 0 0
+245 5
+
+fl=D:\Wwwroot\ci\system\libraries\Input.php
+fn=CI_Input->_sanitize_globals
+70 2778
+cfn=php::is_array
+calls=1 0 0
+99 1
+cfn=php::is_array
+calls=1 0 0
+99 2
+cfn=php::is_array
+calls=1 0 0
+99 2
+cfn=php::is_array
+calls=1 0 0
+99 2
+cfn=php::in_array
+calls=1 0 0
+110 5
+cfn=php::is_array
+calls=1 0 0
+115 0
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 2
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 0
+cfn=php::in_array
+calls=1 0 0
+110 3
+cfn=php::is_array
+calls=1 0 0
+115 1
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 2
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 2
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 2
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 2
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 2
+cfn=php::in_array
+calls=1 0 0
+110 3
+cfn=php::is_array
+calls=1 0 0
+115 1
+cfn=php::in_array
+calls=1 0 0
+110 3
+cfn=php::is_array
+calls=1 0 0
+115 0
+cfn=php::in_array
+calls=1 0 0
+110 5
+cfn=php::is_array
+calls=1 0 0
+115 2
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 1
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 0
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 0
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 1
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 2
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 2
+cfn=php::in_array
+calls=1 0 0
+110 2
+cfn=php::is_array
+calls=1 0 0
+115 0
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 1
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 1
+cfn=php::in_array
+calls=1 0 0
+110 3
+cfn=php::is_array
+calls=1 0 0
+115 0
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 0
+cfn=php::in_array
+calls=1 0 0
+110 5
+cfn=php::is_array
+calls=1 0 0
+115 1
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 1
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 1
+cfn=php::in_array
+calls=1 0 0
+110 3
+cfn=php::is_array
+calls=1 0 0
+115 1
+cfn=php::in_array
+calls=1 0 0
+110 5
+cfn=php::is_array
+calls=1 0 0
+115 1
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 2
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 1
+cfn=php::in_array
+calls=1 0 0
+110 4
+cfn=php::is_array
+calls=1 0 0
+115 0
+cfn=php::is_array
+calls=1 0 0
+99 2
+cfn=php::is_array
+calls=1 0 0
+99 1
+cfn=php::is_array
+calls=1 0 0
+99 2
+cfn=CI_Input->_clean_input_data
+calls=1 0 0
+140 46
+cfn=CI_Input->_clean_input_data
+calls=1 0 0
+151 41
+cfn=log_message
+calls=1 0 0
+153 48
+
+fl=D:\Wwwroot\ci\system\libraries\Input.php
+fn=CI_Input->CI_Input
+136 393
+cfn=log_message
+calls=1 0 0
+65 67
+cfn=load_class
+calls=1 0 0
+67 9
+cfn=CI_Config->item
+calls=1 0 0
+68 16
+cfn=CI_Config->item
+calls=1 0 0
+69 7
+cfn=CI_Input->_sanitize_globals
+calls=1 0 0
+70 3105
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+118 4298
+cfn=config_item
+calls=1 0 0
+101 10
+cfn=php::file_exists
+calls=1 0 0
+101 597
+cfn=php::file_exists
+calls=1 0 0
+109 607
+cfn=require::D:\Wwwroot\ci\system\libraries\Input.php
+calls=1 0 0
+116 74
+cfn=CI_Input->CI_Input
+calls=1 0 0
+136 3600
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=config_item
+101 7
+
+fl=php:internal
+fn=php::file_exists
+101 736
+
+fl=php:internal
+fn=php::file_exists
+109 593
+
+fl=php:internal
+fn=php::defined
+1 1
+
+fl=D:\Wwwroot\ci\system\libraries\Language.php
+fn=require::D:\Wwwroot\ci\system\libraries\Language.php
+1 47
+cfn=php::defined
+calls=1 0 0
+1 1
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 8
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+39 49
+cfn=get_config
+calls=1 0 0
+245 8
+
+fl=D:\Wwwroot\ci\system\libraries\Language.php
+fn=CI_Language->CI_Language
+136 49
+cfn=log_message
+calls=1 0 0
+39 57
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+119 1398
+cfn=config_item
+calls=1 0 0
+101 7
+cfn=php::file_exists
+calls=1 0 0
+101 736
+cfn=php::file_exists
+calls=1 0 0
+109 593
+cfn=require::D:\Wwwroot\ci\system\libraries\Language.php
+calls=1 0 0
+116 49
+cfn=CI_Language->CI_Language
+calls=1 0 0
+136 107
+
+fl=php:internal
+fn=php::phpversion
+133 1
+
+fl=php:internal
+fn=php::floor
+133 5
+
+fl=php:internal
+fn=php::defined
+1 1
+
+fl=D:\Wwwroot\ci\system\codeigniter\Base5.php
+fn=require::D:\Wwwroot\ci\system\codeigniter\Base5.php
+1 43
+cfn=php::defined
+calls=1 0 0
+1 1
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=config_item
+101 8
+
+fl=php:internal
+fn=php::file_exists
+101 584
+
+fl=php:internal
+fn=php::file_exists
+109 761
+
+fl=php:internal
+fn=php::defined
+1 2
+
+fl=D:\Wwwroot\ci\system\libraries\Controller.php
+fn=require::D:\Wwwroot\ci\system\libraries\Controller.php
+1 48
+cfn=php::defined
+calls=1 0 0
+1 2
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+144 1310
+cfn=config_item
+calls=1 0 0
+101 8
+cfn=php::file_exists
+calls=1 0 0
+101 584
+cfn=php::file_exists
+calls=1 0 0
+109 761
+cfn=require::D:\Wwwroot\ci\system\libraries\Controller.php
+calls=1 0 0
+116 51
+
+fl=D:\Wwwroot\ci\system\libraries\Router.php
+fn=CI_Router->fetch_directory
+149 7
+
+fl=D:\Wwwroot\ci\system\libraries\Router.php
+fn=CI_Router->fetch_class
+149 3
+
+fl=php:internal
+fn=php::file_exists
+149 679
+
+fl=D:\Wwwroot\ci\system\libraries\Router.php
+fn=CI_Router->fetch_directory
+154 4
+
+fl=D:\Wwwroot\ci\system\libraries\Router.php
+fn=CI_Router->fetch_class
+154 3
+
+fl=D:\Wwwroot\ci\system\application\controllers\welcome.php
+fn=include::D:\Wwwroot\ci\system\application\controllers\welcome.php
+1 3
+
+fl=php:internal
+fn=php::microtime
+48 29
+
+fl=D:\Wwwroot\ci\system\libraries\Benchmark.php
+fn=CI_Benchmark->mark
+157 48
+cfn=php::microtime
+calls=1 0 0
+48 29
+
+fl=D:\Wwwroot\ci\system\libraries\Router.php
+fn=CI_Router->fetch_class
+169 2
+
+fl=D:\Wwwroot\ci\system\libraries\Router.php
+fn=CI_Router->fetch_class
+346 1
+
+fl=D:\Wwwroot\ci\system\libraries\Router.php
+fn=CI_Router->fetch_method
+170 45
+cfn=CI_Router->fetch_class
+calls=1 0 0
+346 1
+
+fl=php:internal
+fn=php::class_exists
+172 5
+
+fl=php:internal
+fn=php::strncmp
+174 2
+
+fl=php:internal
+fn=php::strtolower
+175 3
+
+fl=php:internal
+fn=php::get_class_methods
+175 10
+
+fl=php:internal
+fn=php::array_map
+175 20
+
+fl=php:internal
+fn=php::in_array
+175 3
+
+fl=D:\Wwwroot\ci\system\libraries\Hooks.php
+fn=CI_Hooks->_call_hook
+186 10
+
+fl=php:internal
+fn=php::microtime
+48 13
+
+fl=D:\Wwwroot\ci\system\libraries\Benchmark.php
+fn=CI_Benchmark->mark
+195 48
+cfn=php::microtime
+calls=1 0 0
+48 13
+
+fl=D:\Wwwroot\ci\system\codeigniter\Base5.php
+fn=CI_Base->CI_Base
+42 7
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+75 12
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+75 7
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+75 5
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+75 5
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+75 5
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+75 5
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+75 5
+
+fl=php:internal
+fn=php::phpversion
+80 1
+
+fl=php:internal
+fn=php::floor
+80 6
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=config_item
+101 7
+
+fl=php:internal
+fn=php::file_exists
+101 673
+
+fl=php:internal
+fn=php::file_exists
+109 600
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=_exception_handler
+0 13
+
+fl=php:internal
+fn=php::defined
+1 5
+
+fl=D:\Wwwroot\ci\system\libraries\Loader.php
+fn=require::D:\Wwwroot\ci\system\libraries\Loader.php
+1 78
+cfn=php::defined
+calls=1 0 0
+1 5
+
+fl=php:internal
+fn=php::phpversion
+54 2
+
+fl=php:internal
+fn=php::floor
+54 5
+
+fl=php:internal
+fn=php::ob_get_level
+56 2
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 10
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+58 53
+cfn=get_config
+calls=1 0 0
+245 10
+
+fl=D:\Wwwroot\ci\system\libraries\Loader.php
+fn=CI_Loader->CI_Loader
+136 159
+cfn=php::phpversion
+calls=1 0 0
+54 2
+cfn=php::floor
+calls=1 0 0
+54 5
+cfn=php::ob_get_level
+calls=1 0 0
+56 2
+cfn=log_message
+calls=1 0 0
+58 63
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=load_class
+82 9392
+cfn=config_item
+calls=1 0 0
+101 7
+cfn=php::file_exists
+calls=1 0 0
+101 673
+cfn=php::file_exists
+calls=1 0 0
+109 600
+cfn=_exception_handler
+calls=1 0 0
+0 13
+cfn=require::D:\Wwwroot\ci\system\libraries\Loader.php
+calls=1 0 0
+116 83
+cfn=CI_Loader->CI_Loader
+calls=1 0 0
+136 234
+
+fl=php:internal
+fn=php::defined
+1 2
+
+fl=D:\Wwwroot\ci\system\application\config\autoload.php
+fn=include_once::D:\Wwwroot\ci\system\application\config\autoload.php
+1 61
+cfn=php::defined
+calls=1 0 0
+1 2
+
+fl=php:internal
+fn=php::count
+957 5
+
+fl=php:internal
+fn=php::count
+969 2
+
+fl=php:internal
+fn=php::count
+969 1
+
+fl=php:internal
+fn=php::count
+969 3
+
+fl=php:internal
+fn=php::count
+983 2
+
+fl=php:internal
+fn=php::is_array
+117 2
+
+fl=D:\Wwwroot\ci\system\libraries\Loader.php
+fn=CI_Loader->model
+1009 50
+cfn=php::is_array
+calls=1 0 0
+117 2
+
+fl=D:\Wwwroot\ci\system\libraries\Loader.php
+fn=CI_Loader->_ci_autoloader
+83 2039
+cfn=include_once::D:\Wwwroot\ci\system\application\config\autoload.php
+calls=1 0 0
+949 64
+cfn=php::count
+calls=1 0 0
+957 5
+cfn=php::count
+calls=1 0 0
+969 2
+cfn=php::count
+calls=1 0 0
+969 1
+cfn=php::count
+calls=1 0 0
+969 3
+cfn=php::count
+calls=1 0 0
+983 2
+cfn=CI_Loader->model
+calls=1 0 0
+1009 52
+
+fl=D:\Wwwroot\ci\system\libraries\Controller.php
+fn=Controller->_ci_initialize
+43 468
+cfn=load_class
+calls=1 0 0
+75 12
+cfn=load_class
+calls=1 0 0
+75 7
+cfn=load_class
+calls=1 0 0
+75 5
+cfn=load_class
+calls=1 0 0
+75 5
+cfn=load_class
+calls=1 0 0
+75 5
+cfn=load_class
+calls=1 0 0
+75 5
+cfn=load_class
+calls=1 0 0
+75 5
+cfn=php::phpversion
+calls=1 0 0
+80 1
+cfn=php::floor
+calls=1 0 0
+80 6
+cfn=load_class
+calls=1 0 0
+82 11004
+cfn=CI_Loader->_ci_autoloader
+calls=1 0 0
+83 2171
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 6
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+44 45
+cfn=get_config
+calls=1 0 0
+245 6
+
+fl=D:\Wwwroot\ci\system\libraries\Controller.php
+fn=Controller->Controller
+7 154
+cfn=CI_Base->CI_Base
+calls=1 0 0
+42 7
+cfn=Controller->_ci_initialize
+calls=1 0 0
+43 13701
+cfn=log_message
+calls=1 0 0
+44 51
+
+fl=D:\Wwwroot\ci\system\application\controllers\welcome.php
+fn=Welcome->Welcome
+197 46
+cfn=Controller->Controller
+calls=1 0 0
+7 13915
+
+fl=D:\Wwwroot\ci\system\libraries\Hooks.php
+fn=CI_Hooks->_call_hook
+214 7
+
+fl=php:internal
+fn=php::method_exists
+217 4
+
+fl=php:internal
+fn=php::strtolower
+225 2
+
+fl=php:internal
+fn=php::get_class_methods
+225 14
+
+fl=php:internal
+fn=php::array_map
+225 20
+
+fl=php:internal
+fn=php::in_array
+225 4
+
+fl=php:internal
+fn=php::array_slice
+232 2
+
+fl=php:internal
+fn=php::is_object
+1063 1
+
+fl=D:\Wwwroot\ci\system\libraries\Loader.php
+fn=CI_Loader->_ci_object_to_array
+307 39
+cfn=php::is_object
+calls=1 0 0
+1063 1
+
+fl=php:internal
+fn=php::pathinfo
+608 8
+
+fl=php:internal
+fn=php::file_exists
+618 667
+
+fl=D:\Wwwroot\ci\system\libraries\Loader.php
+fn=CI_Loader->_ci_is_instance
+627 6
+
+fl=D:\Wwwroot\ci\system\codeigniter\Base5.php
+fn=CI_Base::get_instance
+50 5
+
+fl=D:\Wwwroot\ci\system\codeigniter\Base5.php
+fn=get_instance
+629 43
+cfn=CI_Base::get_instance
+calls=1 0 0
+50 5
+
+fl=php:internal
+fn=php::get_object_vars
+630 10
+
+fl=php:internal
+fn=php::is_array
+647 2
+
+fl=php:internal
+fn=php::array_merge
+649 4
+
+fl=php:internal
+fn=php::extract
+651 4
+
+fl=php:internal
+fn=php::ob_start
+665 9
+
+fl=php:internal
+fn=php::ini_get
+671 3
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+181 6
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=config_item
+671 53
+cfn=get_config
+calls=1 0 0
+181 6
+
+fl=D:\Wwwroot\ci\system\application\views\welcome_message.php
+fn=include::D:\Wwwroot\ci\system\application\views\welcome_message.php
+1 7
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 5
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+680 46
+cfn=get_config
+calls=1 0 0
+245 5
+
+fl=php:internal
+fn=php::ob_get_level
+700 0
+
+fl=php:internal
+fn=php::ob_get_contents
+708 4
+
+fl=D:\Wwwroot\ci\system\libraries\Output.php
+fn=CI_Output->append_output
+708 9
+
+fl=php:internal
+fn=php::ob_end_clean
+709 4
+
+fl=D:\Wwwroot\ci\system\libraries\Loader.php
+fn=CI_Loader->_ci_load
+307 1045
+cfn=php::pathinfo
+calls=1 0 0
+608 8
+cfn=php::file_exists
+calls=1 0 0
+618 667
+cfn=CI_Loader->_ci_is_instance
+calls=1 0 0
+627 6
+cfn=get_instance
+calls=1 0 0
+629 48
+cfn=php::get_object_vars
+calls=1 0 0
+630 10
+cfn=php::is_array
+calls=1 0 0
+647 2
+cfn=php::array_merge
+calls=1 0 0
+649 4
+cfn=php::extract
+calls=1 0 0
+651 4
+cfn=php::ob_start
+calls=1 0 0
+665 9
+cfn=php::ini_get
+calls=1 0 0
+671 3
+cfn=config_item
+calls=1 0 0
+671 60
+cfn=include::D:\Wwwroot\ci\system\application\views\welcome_message.php
+calls=1 0 0
+677 7
+cfn=log_message
+calls=1 0 0
+680 52
+cfn=php::ob_get_level
+calls=1 0 0
+700 0
+cfn=php::ob_get_contents
+calls=1 0 0
+708 4
+cfn=CI_Output->append_output
+calls=1 0 0
+708 9
+cfn=php::ob_end_clean
+calls=1 0 0
+709 4
+
+fl=D:\Wwwroot\ci\system\libraries\Loader.php
+fn=CI_Loader->view
+12 130
+cfn=CI_Loader->_ci_object_to_array
+calls=1 0 0
+307 41
+cfn=CI_Loader->_ci_load
+calls=1 0 0
+307 1949
+
+fl=D:\Wwwroot\ci\system\application\controllers\welcome.php
+fn=Welcome->index
+0 56
+cfn=CI_Loader->view
+calls=1 0 0
+12 2120
+
+fl=php:internal
+fn=php::call_user_func_array
+232 45
+cfn=Welcome->index
+calls=1 0 0
+0 2177
+
+fl=php:internal
+fn=php::microtime
+48 26
+
+fl=D:\Wwwroot\ci\system\libraries\Benchmark.php
+fn=CI_Benchmark->mark
+237 46
+cfn=php::microtime
+calls=1 0 0
+48 26
+
+fl=D:\Wwwroot\ci\system\libraries\Hooks.php
+fn=CI_Hooks->_call_hook
+244 7
+
+fl=D:\Wwwroot\ci\system\libraries\Hooks.php
+fn=CI_Hooks->_call_hook
+252 5
+
+fl=php:internal
+fn=php::microtime
+81 14
+
+fl=php:internal
+fn=php::explode
+84 5
+
+fl=php:internal
+fn=php::explode
+85 1
+
+fl=php:internal
+fn=php::number_format
+87 10
+
+fl=D:\Wwwroot\ci\system\libraries\Benchmark.php
+fn=CI_Benchmark->elapsed_time
+272 172
+cfn=php::microtime
+calls=1 0 0
+81 14
+cfn=php::explode
+calls=1 0 0
+84 5
+cfn=php::explode
+calls=1 0 0
+85 1
+cfn=php::number_format
+calls=1 0 0
+87 10
+
+fl=php:internal
+fn=php::str_replace
+273 7
+
+fl=php:internal
+fn=php::function_exists
+275 4
+
+fl=php:internal
+fn=php::memory_get_usage
+275 2
+
+fl=php:internal
+fn=php::round
+275 2
+
+fl=php:internal
+fn=php::str_replace
+276 4
+
+fl=D:\Wwwroot\ci\system\libraries\Config.php
+fn=CI_Config->item
+281 11
+
+fl=php:internal
+fn=php::count
+295 4
+
+fl=php:internal
+fn=php::function_exists
+308 3
+
+fl=D:\Wwwroot\ci\system\codeigniter\Base5.php
+fn=CI_Base::get_instance
+50 4
+
+fl=D:\Wwwroot\ci\system\codeigniter\Base5.php
+fn=get_instance
+319 43
+cfn=CI_Base::get_instance
+calls=1 0 0
+50 4
+
+fl=php:internal
+fn=php::method_exists
+345 4
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 5
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+354 76
+cfn=get_config
+calls=1 0 0
+245 5
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=get_config
+245 3
+
+fl=D:\Wwwroot\ci\system\codeigniter\Common.php
+fn=log_message
+355 39
+cfn=get_config
+calls=1 0 0
+245 3
+
+fl=D:\Wwwroot\ci\system\libraries\Output.php
+fn=CI_Output->_display
+254 522
+cfn=CI_Benchmark->elapsed_time
+calls=1 0 0
+272 203
+cfn=php::str_replace
+calls=1 0 0
+273 7
+cfn=php::function_exists
+calls=1 0 0
+275 4
+cfn=php::memory_get_usage
+calls=1 0 0
+275 2
+cfn=php::round
+calls=1 0 0
+275 2
+cfn=php::str_replace
+calls=1 0 0
+276 4
+cfn=CI_Config->item
+calls=1 0 0
+281 11
+cfn=php::count
+calls=1 0 0
+295 4
+cfn=php::function_exists
+calls=1 0 0
+308 3
+cfn=get_instance
+calls=1 0 0
+319 47
+cfn=php::method_exists
+calls=1 0 0
+345 4
+cfn=log_message
+calls=1 0 0
+354 81
+cfn=log_message
+calls=1 0 0
+355 42
+
+fl=D:\Wwwroot\ci\system\libraries\Hooks.php
+fn=CI_Hooks->_call_hook
+262 5
+
+fl=php:internal
+fn=php::class_exists
+269 10
+
+fl=D:\Wwwroot\ci\system\codeigniter\CodeIgniter.php
+fn=require_once::D:\Wwwroot\ci\system\codeigniter\CodeIgniter.php
+1 7412
+cfn=php::defined
+calls=1 0 0
+1 3
+cfn=php::define
+calls=1 0 0
+31 5
+cfn=require::D:\Wwwroot\ci\system\codeigniter\Common.php
+calls=1 0 0
+38 51
+cfn=require::D:\Wwwroot\ci\system\codeigniter\Compat.php
+calls=1 0 0
+45 158
+cfn=require::D:\Wwwroot\ci\system\application\config\constants.php
+calls=1 0 0
+52 476
+cfn=php::set_error_handler
+calls=1 0 0
+59 7
+cfn=php::set_magic_quotes_runtime
+calls=1 0 0
+60 1
+cfn=load_class
+calls=1 0 0
+68 9452
+cfn=CI_Benchmark->mark
+calls=1 0 0
+69 73
+cfn=CI_Benchmark->mark
+calls=1 0 0
+70 138
+cfn=load_class
+calls=1 0 0
+78 6496
+cfn=CI_Hooks->_call_hook
+calls=1 0 0
+85 7
+cfn=load_class
+calls=1 0 0
+93 8
+cfn=load_class
+calls=1 0 0
+94 4252
+cfn=load_class
+calls=1 0 0
+95 6278
+cfn=load_class
+calls=1 0 0
+96 4034
+cfn=CI_Hooks->_call_hook
+calls=1 0 0
+104 9
+cfn=CI_Output->_display_cache
+calls=1 0 0
+106 8515
+cfn=load_class
+calls=1 0 0
+118 9189
+cfn=load_class
+calls=1 0 0
+119 2892
+cfn=php::phpversion
+calls=1 0 0
+133 1
+cfn=php::floor
+calls=1 0 0
+133 5
+cfn=require::D:\Wwwroot\ci\system\codeigniter\Base5.php
+calls=1 0 0
+140 45
+cfn=load_class
+calls=1 0 0
+144 2716
+cfn=CI_Router->fetch_directory
+calls=1 0 0
+149 7
+cfn=CI_Router->fetch_class
+calls=1 0 0
+149 3
+cfn=php::file_exists
+calls=1 0 0
+149 679
+cfn=CI_Router->fetch_directory
+calls=1 0 0
+154 4
+cfn=CI_Router->fetch_class
+calls=1 0 0
+154 3
+cfn=include::D:\Wwwroot\ci\system\application\controllers\welcome.php
+calls=1 0 0
+154 3
+cfn=CI_Benchmark->mark
+calls=1 0 0
+157 77
+cfn=CI_Router->fetch_class
+calls=1 0 0
+169 2
+cfn=CI_Router->fetch_method
+calls=1 0 0
+170 46
+cfn=php::class_exists
+calls=1 0 0
+172 5
+cfn=php::strncmp
+calls=1 0 0
+174 2
+cfn=php::strtolower
+calls=1 0 0
+175 3
+cfn=php::get_class_methods
+calls=1 0 0
+175 10
+cfn=php::array_map
+calls=1 0 0
+175 20
+cfn=php::in_array
+calls=1 0 0
+175 3
+cfn=CI_Hooks->_call_hook
+calls=1 0 0
+186 10
+cfn=CI_Benchmark->mark
+calls=1 0 0
+195 61
+cfn=Welcome->Welcome
+calls=1 0 0
+197 13962
+cfn=CI_Hooks->_call_hook
+calls=1 0 0
+214 7
+cfn=php::method_exists
+calls=1 0 0
+217 4
+cfn=php::strtolower
+calls=1 0 0
+225 2
+cfn=php::get_class_methods
+calls=1 0 0
+225 14
+cfn=php::array_map
+calls=1 0 0
+225 20
+cfn=php::in_array
+calls=1 0 0
+225 4
+cfn=php::array_slice
+calls=1 0 0
+232 2
+cfn=php::call_user_func_array
+calls=1 0 0
+232 2222
+cfn=CI_Benchmark->mark
+calls=1 0 0
+237 72
+cfn=CI_Hooks->_call_hook
+calls=1 0 0
+244 7
+cfn=CI_Hooks->_call_hook
+calls=1 0 0
+252 5
+cfn=CI_Output->_display
+calls=1 0 0
+254 942
+cfn=CI_Hooks->_call_hook
+calls=1 0 0
+262 5
+cfn=php::class_exists
+calls=1 0 0
+269 10
+
+fl=D:\Wwwroot\ci\index.php
+fn={main}
+
+summary: 84418
+
+0 3249
+cfn=php::error_reporting
+calls=1 0 0
+12 10
+cfn=php::strpos
+calls=1 0 0
+63 2
+cfn=php::function_exists
+calls=1 0 0
+65 2
+cfn=php::dirname
+calls=1 0 0
+65 3
+cfn=php::realpath
+calls=1 0 0
+65 255
+cfn=php::dirname
+calls=1 0 0
+67 2
+cfn=php::realpath
+calls=1 0 0
+67 20
+cfn=php::pathinfo
+calls=1 0 0
+88 10
+cfn=php::define
+calls=1 0 0
+88 5
+cfn=php::define
+calls=1 0 0
+89 2
+cfn=php::pathinfo
+calls=1 0 0
+90 5
+cfn=php::define
+calls=1 0 0
+90 3
+cfn=php::define
+calls=1 0 0
+91 2
+cfn=php::is_dir
+calls=1 0 0
+93 374
+cfn=php::define
+calls=1 0 0
+104 2
+cfn=require_once::D:\Wwwroot\ci\system\codeigniter\CodeIgniter.php
+calls=1 0 0
+115 80464
+

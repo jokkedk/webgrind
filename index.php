@@ -6,7 +6,7 @@
 
 class Webgrind_MasterConfig
 {
-    static $webgrindVersion = '1.1';
+    static $webgrindVersion = '1.2';
 }
 
 require './config.php';
@@ -156,6 +156,70 @@ try {
     		$response = @file_get_contents('http://jokke.dk/webgrindupdate.json?version='.Webgrind_Config::$webgrindVersion);
     		echo $response;
     	break;
+		case 'upload_file':
+			$error = "";
+			$msg = "";
+			$file = "";
+			$fileElementName = 'uploadFile';
+			if( (!empty($_FILES[$fileElementName]['error'])) || empty($_FILES[$fileElementName]['tmp_name']) || $_FILES[$fileElementName]['tmp_name'] == 'none')
+			{
+				$error = 'No file was uploaded.';
+			}
+			else 
+			{
+				$pathInfo 	= pathinfo($_FILES[$fileElementName]['name']);
+				$ext 		= $pathInfo['extension'];
+				if ($ext == 'cg')
+				{
+					$success = move_uploaded_file($_FILES[$fileElementName]['tmp_name'], Webgrind_Config::$profilerDir.$_FILES[$fileElementName]['name']);		
+					if (!$success) 
+					{
+						$error = 'No file was moved.';
+					}
+					else
+					{
+						$file = $_FILES[$fileElementName]['name'];
+					}
+				}
+				else 
+				{
+					$error = 'Upload only *.cg files.';
+				}
+			}
+			echo json_encode(array(
+				'file' => $file, 
+				'error' => $error,
+				'msg' => $msg
+			));
+		break;
+		case 'del_file':
+			$host 			= $_SERVER['HTTP_REFERER'];
+			$file 			= $_GET['file'];
+			$pathFile 		= Webgrind_Config::$profilerDir.$file;
+			
+			$success = unlink($pathFile);
+			echo json_encode(array(
+				'success' => $success
+			));
+		break;	
+		case 'get_image':
+			$host = $_SERVER['HTTP_REFERER'];
+			$file 			= $_GET['file'];
+			$dir 			= dirname ( __FILE__ );
+			$pathFix 		= $dir . '/xdebugtoolkit/fix-profile.sh';
+			$pathCg2dot 	= $dir . '/xdebugtoolkit/cg2dot.py';
+			$tdir 			= $dir . '/tmp/';
+			$pathFile 		= Webgrind_Config::$profilerDir.$file;
+			$pathFileFix 	= $tdir . $file;
+			$pathFilePng  	= $tdir . 'schema.png';
+			$command 		= $pathFix.' '.$pathFile.' '.$pathFileFix.' 2>&1';
+			exec($command, $output, $result);
+			$command = 'python2.6 '.$pathCg2dot.' '.$pathFileFix.'  | dot -Tpng -o'.$pathFilePng;
+			exec($command, $output, $result);
+			var_dump($command, $output, $result);
+			unlink($pathFileFix);
+			header('Location: '.$host.'tmp/schema.png');
+		break;	    	
     	default:
             $welcome = '';
             if (!file_exists(Webgrind_Config::storageDir()) || !is_writable(Webgrind_Config::storageDir())) {

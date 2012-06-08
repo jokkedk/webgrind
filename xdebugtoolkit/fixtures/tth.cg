@@ -1,0 +1,1332 @@
+
+==== NEW PROFILING FILE ==============================================
+version: 0.9.6
+cmd: D:\Wwwroot\TTH\tests2.php
+part: 1
+
+events: Time
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=require_once::D:\Wwwroot\TTH\tth.php
+1 4
+
+fl=php:internal
+fn=php::str_repeat
+5 4
+
+fl=php:internal
+fn=php::file_put_contents
+5 998
+
+fl=php:internal
+fn=php::fopen
+19 385
+
+fl=php:internal
+fn=php::feof
+23 4
+
+fl=php:internal
+fn=php::fread
+24 15
+
+fl=php:internal
+fn=php::is_null
+66 1
+
+fl=php:internal
+fn=php::function_exists
+67 4
+
+fl=php:internal
+fn=php::hash_algos
+67 22
+
+fl=php:internal
+fn=php::in_array
+67 6
+
+fl=php:internal
+fn=php::hash
+70 46
+
+fl=php:internal
+fn=php::str_split
+91 5
+
+fl=php:internal
+fn=php::strrev
+94 2
+
+fl=php:internal
+fn=php::strrev
+94 1
+
+fl=php:internal
+fn=php::strrev
+94 0
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::tigerfix
+70 134
+cfn=php::str_split
+calls=1 0 0
+91 5
+cfn=php::strrev
+calls=1 0 0
+94 2
+cfn=php::strrev
+calls=1 0 0
+94 1
+cfn=php::strrev
+calls=1 0 0
+94 0
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::tiger
+26 380
+cfn=php::is_null
+calls=1 0 0
+66 1
+cfn=php::function_exists
+calls=1 0 0
+67 4
+cfn=php::hash_algos
+calls=1 0 0
+67 22
+cfn=php::in_array
+calls=1 0 0
+67 6
+cfn=php::hash
+calls=1 0 0
+70 46
+cfn=TTH::tigerfix
+calls=1 0 0
+70 144
+
+fl=php:internal
+fn=php::feof
+23 2
+
+fl=php:internal
+fn=php::fread
+24 15
+
+fl=php:internal
+fn=php::is_null
+66 2
+
+fl=php:internal
+fn=php::hash
+70 5
+
+fl=php:internal
+fn=php::str_split
+91 2
+
+fl=php:internal
+fn=php::strrev
+94 0
+
+fl=php:internal
+fn=php::strrev
+94 0
+
+fl=php:internal
+fn=php::strrev
+94 2
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::tigerfix
+70 117
+cfn=php::str_split
+calls=1 0 0
+91 2
+cfn=php::strrev
+calls=1 0 0
+94 0
+cfn=php::strrev
+calls=1 0 0
+94 0
+cfn=php::strrev
+calls=1 0 0
+94 2
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::tiger
+26 97
+cfn=php::is_null
+calls=1 0 0
+66 2
+cfn=php::hash
+calls=1 0 0
+70 5
+cfn=TTH::tigerfix
+calls=1 0 0
+70 123
+
+fl=php:internal
+fn=php::is_null
+66 2
+
+fl=php:internal
+fn=php::hash
+70 5
+
+fl=php:internal
+fn=php::str_split
+91 4
+
+fl=php:internal
+fn=php::strrev
+94 1
+
+fl=php:internal
+fn=php::strrev
+94 0
+
+fl=php:internal
+fn=php::strrev
+94 1
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::tigerfix
+70 113
+cfn=php::str_split
+calls=1 0 0
+91 4
+cfn=php::strrev
+calls=1 0 0
+94 1
+cfn=php::strrev
+calls=1 0 0
+94 0
+cfn=php::strrev
+calls=1 0 0
+94 1
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::tiger
+29 89
+cfn=php::is_null
+calls=1 0 0
+66 2
+cfn=php::hash
+calls=1 0 0
+70 5
+cfn=TTH::tigerfix
+calls=1 0 0
+70 121
+
+fl=php:internal
+fn=php::round
+31 2
+
+fl=php:internal
+fn=php::feof
+23 2
+
+fl=php:internal
+fn=php::round
+38 2
+
+fl=php:internal
+fn=php::round
+38 4
+
+fl=php:internal
+fn=php::round
+49 0
+
+fl=php:internal
+fn=php::round
+49 1
+
+fl=php:internal
+fn=php::fclose
+52 27
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 2
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 2
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 2
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::base32encode
+54 1515
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 2
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 2
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 2
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::getTTH
+6 742
+cfn=php::fopen
+calls=1 0 0
+19 385
+cfn=php::feof
+calls=1 0 0
+23 4
+cfn=php::fread
+calls=1 0 0
+24 15
+cfn=TTH::tiger
+calls=1 0 0
+26 607
+cfn=php::feof
+calls=1 0 0
+23 2
+cfn=php::fread
+calls=1 0 0
+24 15
+cfn=TTH::tiger
+calls=1 0 0
+26 230
+cfn=TTH::tiger
+calls=1 0 0
+29 219
+cfn=php::round
+calls=1 0 0
+31 2
+cfn=php::feof
+calls=1 0 0
+23 2
+cfn=php::round
+calls=1 0 0
+38 2
+cfn=php::round
+calls=1 0 0
+38 4
+cfn=php::round
+calls=1 0 0
+49 0
+cfn=php::round
+calls=1 0 0
+49 1
+cfn=php::fclose
+calls=1 0 0
+52 27
+cfn=TTH::base32encode
+calls=1 0 0
+54 1590
+
+fl=D:\Wwwroot\TTH\tests2.php
+fn={main}
+
+summary: 6373
+
+0 1513
+cfn=require_once::D:\Wwwroot\TTH\tth.php
+calls=1 0 0
+3 4
+cfn=php::str_repeat
+calls=1 0 0
+5 4
+cfn=php::file_put_contents
+calls=1 0 0
+5 998
+cfn=TTH::getTTH
+calls=1 0 0
+6 3853
+
+
+==== NEW PROFILING FILE ==============================================
+version: 0.9.6
+cmd: D:\Wwwroot\TTH\tests2.php
+part: 1
+
+events: Time
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=require_once::D:\Wwwroot\TTH\tth.php
+1 4
+
+fl=php:internal
+fn=php::str_repeat
+5 3
+
+fl=php:internal
+fn=php::file_put_contents
+5 4836
+
+fl=php:internal
+fn=php::fopen
+19 293
+
+fl=php:internal
+fn=php::feof
+23 4
+
+fl=php:internal
+fn=php::fread
+24 17
+
+fl=php:internal
+fn=php::is_null
+66 3
+
+fl=php:internal
+fn=php::function_exists
+67 4
+
+fl=php:internal
+fn=php::hash_algos
+67 22
+
+fl=php:internal
+fn=php::in_array
+67 6
+
+fl=php:internal
+fn=php::hash
+70 45
+
+fl=php:internal
+fn=php::str_split
+91 5
+
+fl=php:internal
+fn=php::strrev
+94 1
+
+fl=php:internal
+fn=php::strrev
+94 2
+
+fl=php:internal
+fn=php::strrev
+94 0
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::tigerfix
+70 129
+cfn=php::str_split
+calls=1 0 0
+91 5
+cfn=php::strrev
+calls=1 0 0
+94 1
+cfn=php::strrev
+calls=1 0 0
+94 2
+cfn=php::strrev
+calls=1 0 0
+94 0
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::tiger
+26 261
+cfn=php::is_null
+calls=1 0 0
+66 3
+cfn=php::function_exists
+calls=1 0 0
+67 4
+cfn=php::hash_algos
+calls=1 0 0
+67 22
+cfn=php::in_array
+calls=1 0 0
+67 6
+cfn=php::hash
+calls=1 0 0
+70 45
+cfn=TTH::tigerfix
+calls=1 0 0
+70 140
+
+fl=php:internal
+fn=php::feof
+23 1
+
+fl=php:internal
+fn=php::fread
+24 17
+
+fl=php:internal
+fn=php::is_null
+66 1
+
+fl=php:internal
+fn=php::hash
+70 5
+
+fl=php:internal
+fn=php::str_split
+91 3
+
+fl=php:internal
+fn=php::strrev
+94 1
+
+fl=php:internal
+fn=php::strrev
+94 1
+
+fl=php:internal
+fn=php::strrev
+94 1
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::tigerfix
+70 113
+cfn=php::str_split
+calls=1 0 0
+91 3
+cfn=php::strrev
+calls=1 0 0
+94 1
+cfn=php::strrev
+calls=1 0 0
+94 1
+cfn=php::strrev
+calls=1 0 0
+94 1
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::tiger
+26 91
+cfn=php::is_null
+calls=1 0 0
+66 1
+cfn=php::hash
+calls=1 0 0
+70 5
+cfn=TTH::tigerfix
+calls=1 0 0
+70 121
+
+fl=php:internal
+fn=php::is_null
+66 1
+
+fl=php:internal
+fn=php::hash
+70 5
+
+fl=php:internal
+fn=php::str_split
+91 2
+
+fl=php:internal
+fn=php::strrev
+94 0
+
+fl=php:internal
+fn=php::strrev
+94 2
+
+fl=php:internal
+fn=php::strrev
+94 1
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::tigerfix
+70 112
+cfn=php::str_split
+calls=1 0 0
+91 2
+cfn=php::strrev
+calls=1 0 0
+94 0
+cfn=php::strrev
+calls=1 0 0
+94 2
+cfn=php::strrev
+calls=1 0 0
+94 1
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::tiger
+29 89
+cfn=php::is_null
+calls=1 0 0
+66 1
+cfn=php::hash
+calls=1 0 0
+70 5
+cfn=TTH::tigerfix
+calls=1 0 0
+70 120
+
+fl=php:internal
+fn=php::round
+31 1
+
+fl=php:internal
+fn=php::feof
+23 3
+
+fl=php:internal
+fn=php::round
+38 2
+
+fl=php:internal
+fn=php::round
+38 3
+
+fl=php:internal
+fn=php::round
+49 2
+
+fl=php:internal
+fn=php::round
+49 2
+
+fl=php:internal
+fn=php::fclose
+52 25
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 2
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 2
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 2
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 2
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 0
+
+fl=php:internal
+fn=php::ord
+115 0
+
+fl=php:internal
+fn=php::strlen
+113 1
+
+fl=php:internal
+fn=php::ord
+115 2
+
+fl=php:internal
+fn=php::strlen
+113 2
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 2
+
+fl=php:internal
+fn=php::ord
+115 1
+
+fl=php:internal
+fn=php::strlen
+113 2
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::base32encode
+54 1478
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 2
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 2
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 2
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 2
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 0
+cfn=php::ord
+calls=1 0 0
+115 0
+cfn=php::strlen
+calls=1 0 0
+113 1
+cfn=php::ord
+calls=1 0 0
+115 2
+cfn=php::strlen
+calls=1 0 0
+113 2
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 2
+cfn=php::ord
+calls=1 0 0
+115 1
+cfn=php::strlen
+calls=1 0 0
+113 2
+
+fl=D:\Wwwroot\TTH\tth.php
+fn=TTH::getTTH
+6 636
+cfn=php::fopen
+calls=1 0 0
+19 293
+cfn=php::feof
+calls=1 0 0
+23 4
+cfn=php::fread
+calls=1 0 0
+24 17
+cfn=TTH::tiger
+calls=1 0 0
+26 483
+cfn=php::feof
+calls=1 0 0
+23 1
+cfn=php::fread
+calls=1 0 0
+24 17
+cfn=TTH::tiger
+calls=1 0 0
+26 221
+cfn=TTH::tiger
+calls=1 0 0
+29 217
+cfn=php::round
+calls=1 0 0
+31 1
+cfn=php::feof
+calls=1 0 0
+23 3
+cfn=php::round
+calls=1 0 0
+38 2
+cfn=php::round
+calls=1 0 0
+38 3
+cfn=php::round
+calls=1 0 0
+49 2
+cfn=php::round
+calls=1 0 0
+49 2
+cfn=php::fclose
+calls=1 0 0
+52 25
+cfn=TTH::base32encode
+calls=1 0 0
+54 1564
+
+fl=D:\Wwwroot\TTH\tests2.php
+fn={main}
+
+summary: 9670
+
+0 1327
+cfn=require_once::D:\Wwwroot\TTH\tth.php
+calls=1 0 0
+3 4
+cfn=php::str_repeat
+calls=1 0 0
+5 3
+cfn=php::file_put_contents
+calls=1 0 0
+5 4836
+cfn=TTH::getTTH
+calls=1 0 0
+6 3499
+
