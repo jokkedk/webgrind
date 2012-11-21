@@ -81,6 +81,7 @@
 
             var data = {};
             data.op = 'delete_profiles';
+            $("#trace_view").hide();
             $("#hello_message").html('Deleting your saved profiles').show();
             $.getJSON("index.php",
                 data,
