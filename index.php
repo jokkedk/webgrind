@@ -66,14 +66,14 @@ try {
                 }
 
             }
-            //usort($functions,'costCmp');
+            usort($functions,'costCmp');
 
             $result['functions'] = array();
             foreach($functions as $function){
                 $function['file'] = urlencode($function['file']);
                 $result['functions'][] = $function;
             }
-
+            
             $result['summedInvocationCount'] = $reader->getFunctionCount();
             $result['summedRunTime'] = $reader->formatCost($reader->getHeader('summary'), 'msec');
             $result['dataFile'] = $dataFile;
@@ -149,6 +149,20 @@ try {
         case 'version_info':
             $response = @file_get_contents('http://jokke.dk/webgrindupdate.json?version='.Webgrind_Config::$webgrindVersion);
             echo $response;
+        break;
+        case 'delete_profiles':
+            $fh = Webgrind_FileHandler::getInstance();
+
+            $deleted = array();
+            foreach ($fh->files as $f) {
+                $deleted[] = $f['absoluteFilename'];
+                unlink($f['absoluteFilename']);
+            }
+            echo json_encode(
+                array(
+                    'deleted' => $deleted
+                )
+            );
         break;
         default:
             $welcome = '';
