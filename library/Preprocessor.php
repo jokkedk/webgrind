@@ -58,10 +58,21 @@ class Webgrind_Preprocessor
 		
 		
 		// Read information into memory
+		$entryCount = 0;
 		while(($line = fgets($in))){
 			if(substr($line,0,3)==='fl='){
 				// Found invocation of function. Read functionname
 				list($function) = fscanf($in,"fn=%[^\n\r]s");
+				// Special case for ENTRY_POINT - it contains summary header
+				if(self::ENTRY_POINT == $function){
+					fgets($in);				
+					$headers[] = fgets($in);
+					fgets($in);
+					if ($entryCount > 0) {
+						$function = $function . " ($entryCount)";
+					}
+					$entryCount++;
+				}
 				if(!isset($functions[$function])){
 					$functions[$function] = array(
                         'filename'              => substr(trim($line),3), 
@@ -75,12 +86,6 @@ class Webgrind_Preprocessor
 					);
 				} 
 				$functions[$function]['invocationCount']++;
-				// Special case for ENTRY_POINT - it contains summary header
-				if(self::ENTRY_POINT == $function){
-					fgets($in);				
-					$headers[] = fgets($in);
-					fgets($in);
-				}
 				// Cost line
 				list($lnr, $cost) = fscanf($in,"%d %d");
 				$functions[$function]['line'] = $lnr;
