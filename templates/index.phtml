@@ -323,7 +323,7 @@
                 var row;
                 $('#function_table').children('tbody').children('tr').each(function(){
                     row = $(this);
-                    if (row.find('td:eq(1) a').text().match(reg))
+                    if (row.find('td:eq(2) a').text().match(reg))
                         row.css('display', 'table-row');
                     else
                         row.css('display', 'none');
