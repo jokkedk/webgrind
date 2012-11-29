@@ -32,6 +32,12 @@ class Webgrind_Reader
 	 * Length of a function information block
 	 */
 	const FUNCTIONINFORMATION_LENGTH = 6;	
+
+	const FORMAT_PERCENT = 'percent';
+
+	const FORMAT_MSEC = 'msec';
+
+	const FORMAT_USEC = 'usec';
 	
     /**
 	 * Address of the headers in the data file
@@ -123,9 +129,15 @@ class Webgrind_Reader
    		    'invocationCount'=>$invocationCount,
 			'calledFromInfoCount'=>$calledFromCount,
 			'subCallInfoCount'=>$subCallCount
-   		);            
+   		);
+   		
         $result['summedSelfCost'] = $this->formatCost($result['summedSelfCost']);
         $result['summedInclusiveCost'] = $this->formatCost($result['summedInclusiveCost']);
+
+        $result['summedSelfCostPercent'] = $this->formatCost($summedSelfCost, self::FORMAT_PERCENT);
+        $result['summedInclusiveCostPercent'] = $this->formatCost($summedInclusiveCost, self::FORMAT_PERCENT);
+        $result['summedSelfCostMSec'] = $this->formatCost($summedSelfCost, self::FORMAT_MSEC);
+        $result['summedInclusiveCostMSec'] = $this->formatCost($summedInclusiveCost, self::FORMAT_MSEC);
 
 		return $result;
 	}

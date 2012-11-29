@@ -71,6 +71,8 @@ try {
             $result['functions'] = array();
             foreach($functions as $function){
                 $function['file'] = urlencode($function['file']);
+                $function['averageSelfCost'] = $function['summedSelfCostMSec'] / $function['invocationCount'];
+                $function['averageInclusiveCost'] = $function['summedInclusiveCostMSec'] / $function['invocationCount'];
                 $result['functions'][] = $function;
             }
             

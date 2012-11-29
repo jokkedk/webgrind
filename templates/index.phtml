@@ -66,7 +66,7 @@
                     $("#trace_view").show();
                     
                     $("#function_table").trigger('update');
-                    $("#function_table").trigger("sorton",[[[4,1]]]);
+                    $("#function_table").trigger("sorton",[[[5,1]]]);
                     
                     $('#callfilter').trigger('keyup');
                 }
@@ -229,6 +229,7 @@
                         <td> \
                             <img src="img/call_'+data.humanKind+'.png" title="'+data.humanKind+'"> \
                         </td> \
+                        <td class="nr">'+data.nr+'</td> \
                         <td> \
                             <a href="javascript:toggleCallInfo('+data.nr+')"> \
                                 <img id="fold_marker_'+data.nr+'" src="img/right.gif">&nbsp;&nbsp;'+data.functionName+' \
@@ -237,8 +238,12 @@
                         </td> \
                         <td>'+openLink+'</td> \
                         <td class="nr">'+data.invocationCount+'</td> \
-                        <td class="nr">'+data.summedSelfCost+'</td> \
-                        <td class="nr">'+data.summedInclusiveCost+'</td> \
+                        <td class="nr">'+data.averageSelfCost.toFixed(2)+'ms</td> \
+                        <td class="nr">'+data.averageInclusiveCost.toFixed(2)+'ms</td> \
+                        <td class="nr">'+data.summedSelfCostPercent+'%</td> \
+                        <td class="nr">'+data.summedInclusiveCostPercent+'%</td> \
+                        <td class="nr">'+data.summedSelfCostMSec+'ms</td> \
+                        <td class="nr">'+data.summedInclusiveCostMSec+'ms</td> \
                     </tr> \
             ';
         }
@@ -268,6 +273,17 @@
             );          
             
         }
+
+        $.tablesorter.addParser({
+            id : 'ms',
+            is : function(s) {
+                return false;
+            },
+            format: function(s) {
+                return parseFloat(s.toLowerCase().replace(/ms$/,''));
+            },
+            type: 'numeric'
+        });
         
         $(document).ready(function() { 
             
@@ -280,12 +296,16 @@
                 widgets: ['zebra'],
                 sortInitialOrder: 'desc',
                 headers: { 
-                    1: { 
-                        sorter: false 
-                    },
-                    2: {
-                        sorter: false
-                    }
+                    3:{sorter: false},
+                    5:{sorter:'ms'},
+                    6:{sorter:'ms'},
+                    7:{sorter:'percent'},
+                    8:{sorter:'percent'},
+                    8:{sorter:'ms'},
+                    10:{sorter:'ms'}
+                },
+                textExtraction : function(node) {
+                    return $.trim($(node).text());
                 }
             });
             $("#function_table").bind("sortStart",sortBlock).bind("sortEnd",$.unblockUI);
@@ -321,19 +341,15 @@
         </div>
         <div id="options">
             <form method="get" onsubmit="update();return false;">
-                <div style="float:right;margin-left:10px">
-                    <input type="submit" value="update"/>
-                    <input type="button" onclick="deleteProfiles();return false;" value="clear profiles"/>
-                </div>
-                <div style="float:right;">
-                    <label style="margin:0 5px">in</label>
-                    <select id="costFormat" name="costFormat">
-                        <option value="percent" <?php echo (Webgrind_Config::$defaultCostformat=='percent') ? 'selected' : ''?>>percent</option>
-                        <option value="msec" <?php echo (Webgrind_Config::$defaultCostformat=='msec') ? 'selected' : ''?>>milliseconds</option>
-                        <option value="usec" <?php echo (Webgrind_Config::$defaultCostformat=='usec') ? 'selected' : ''?>>microseconds</option>
+                <div style="float:left">
+                    <label style="margin:0 5px">Show</label>
+                    <select id="showFraction" name="showFraction">
+                        <?php for($i=100; $i>0; $i-=10):?>
+                        <option value="<?php echo $i/100?>" <?php if ($i==Webgrind_Config::$defaultFunctionPercentage):?>selected="selected"<?php endif;?>><?php echo $i?>%</option>
+                        <?php endfor;?>
                     </select>
                 </div>
-                <div style="float:right;">
+                <div style="float:left;">
                     <label style="margin:0 5px">of</label>
                     <select id="dataFile" name="dataFile" style="width:200px">
                         <option value="0">Auto (newest)</option>
@@ -342,18 +358,14 @@
                             <option value="<?php echo $trace['filename']?>"><?php echo str_replace(array('%i','%f','%s','%m'),array($trace['invokeUrl'],$trace['filename'],$trace['filesize'],$trace['mtime']),Webgrind_Config::$traceFileListFormat); ?></option>
                         <?php endforeach;?>
                     </select>
-                    <img class="list_reload" src="img/reload.png" onclick="reloadFilelist()">
+                    <img class="list_reload" src="img/reload.png" title="Reload File List" onclick="reloadFilelist()">
                 </div>
-                <div style="float:right">
-                    <label style="margin:0 5px">Show</label>
-                    <select id="showFraction" name="showFraction">
-                        <?php for($i=100; $i>0; $i-=10):?>
-                        <option value="<?php echo $i/100?>" <?php if ($i==Webgrind_Config::$defaultFunctionPercentage):?>selected="selected"<?php endif;?>><?php echo $i?>%</option>
-                        <?php endfor;?>
-                    </select>
+                <div style="float:left;margin-left:10px">
+                    <input type="submit" value="update"/>
+                    <input type="button" onclick="deleteProfiles();return false;" value="clear profiles"/>
                 </div>
                 <div style="clear:both;"></div>     
-                <div style="margin:0 70px">
+                <div style="">
                     <input type="checkbox" name="hideInternals" value="1" <?php echo (Webgrind_Config::$defaultHideInternalFunctions==1) ? 'checked' : ''?> id="hideInternals">
                     <label for="hideInternals">Hide PHP functions</label>
                 </div>
@@ -379,12 +391,17 @@
             <table class="tablesorter" id="function_table" cellspacing="0">
                 <thead>
                     <tr>
-                        <th> </th>
-                        <th><span>Function</span></th>
-                        <th> </th>
-                        <th><span>Invocation Count</span></th>
-                        <th><span>Total Self Cost</span></th>
-                        <th><span>Total Inclusive Cost</span></th>
+                        <th title="Type of function"> </th>
+                        <th title="Function Order"> </th>
+                        <th title="Function Name"><span>Function</span></th>
+                        <th title="View Source"> </th>
+                        <th title="Number of times the function was called"><span>Invocation Count</span></th>
+                        <th title="Average time running function (not including subcalls)"><span>Avg. Self Cost</span></th>
+                        <th title="Average time running function and all children functions"><span>Avg. Inclusive Cost</span></th>
+                        <th title="Total percentage of time spent running this function"><span>Total Self Cost (%)</span></th>
+                        <th title="Total percentage of time spent running this and children functions"><span>Total Inclusive Cost (%)</span></th>
+                        <th title="Total time spent running this function"><span>Total Self Cost (ms)</span></th>
+                        <th title="Total time spent running this and children functions"><span>Total Inclusive Cost (ms)</span></th>
                     </tr>
                 </thead>
                 <tbody>
