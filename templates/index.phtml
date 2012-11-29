@@ -162,9 +162,8 @@
             $("#"+idPrefix+functionNr).tablesorter({
                 widgets: ['zebra'],
                 headers: { 
-                    3: { 
-                        sorter: false 
-                    }
+                    2: {sorter: 'ms'},
+                    3: {sorter: false}
                 }                           
             });
             $("#"+idPrefix+functionNr).bind("sortStart",sortBlock).bind("sortEnd",$.unblockUI);
