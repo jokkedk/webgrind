@@ -18,7 +18,7 @@
         function getOptions(specificFile){
             var options = new Object();
             options.dataFile = specificFile || $("#dataFile").val();
-            options.costFormat = $('#costFormat').val();
+            options.costFormat = $('[name="costFormat"]').val();
             options.showFraction = $("#showFraction").val();
             options.hideInternals = $('#hideInternals').attr('checked') ? 1 : 0;
             return options;
@@ -128,7 +128,7 @@
         
         function loadCallInfo(functionNr){          
             $.getJSON("index.php",
-                {'op':'callinfo_list', 'file':currentDataFile, 'functionNr':functionNr, 'costFormat':$("#costFormat").val()},
+                {'op':'callinfo_list', 'file':currentDataFile, 'functionNr':functionNr, 'costFormat':$("[name='costFormat']").val()},
                 function(data){
                     if (data.error) {
                         $("#hello_message").html(data.error);
@@ -188,7 +188,7 @@
                         +($("#callinfo_area_"+data.functionNr).length ? '<img src="img/right.gif">&nbsp;&nbsp;<a href="javascript:openCallInfo('+data.functionNr+')">'+data.callerFunctionName+'</a>' : '<img src="img/blank.gif">&nbsp;&nbsp;'+data.callerFunctionName)
                         + ' @ '+data.line+'</td> \
                         <td class="nr">'+data.callCount+'</td> \
-                        <td class="nr">'+data.summedCallCost+'</td> \
+                        <td class="nr">'+data.summedCallCost+'ms</td> \
                         <td><a title="Open file and show line" href="'+sprintf(fileUrlFormat,data.file,data.line)+'" target="_blank"><img src="img/file_line.png" alt="O"></a></td> \
                     </tr>';
             
@@ -342,6 +342,7 @@
         </div>
         <div id="options">
             <form method="get" onsubmit="update();return false;">
+                <input type="hidden" name="costFormat" value="msec" />
                 <div style="float:left">
                     <label style="margin:0 5px">Show</label>
                     <select id="showFraction" name="showFraction">
