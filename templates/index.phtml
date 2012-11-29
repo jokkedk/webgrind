@@ -320,10 +320,11 @@
             
             $("#callfilter").keyup(function(){
                 var reg = new RegExp($(this).val(), 'i');
-                var row;
+                var row, text;
                 $('#function_table').children('tbody').children('tr').each(function(){
                     row = $(this);
-                    if (row.find('td:eq(2) a').text().match(reg))
+                    text = $.trim(row.find('td:eq(2) a').text());
+                    if (text.match(reg))
                         row.css('display', 'table-row');
                     else
                         row.css('display', 'none');
@@ -387,7 +388,7 @@
                 <div><input type="button" name="graph" value="Show Call Graph" onclick="showCallGraph()"></div>
             </div>
             <div style="clear:both"></div>
-            Filter: <input type="text" style="width:150px" id="callfilter"> (regex too)
+            Filter: <input type="text" style="width:150px" id="callfilter"> (regex too) You can filter out php, include, and requires with <b>^[^php::|include::|include_once::|require::|require_once::]</b>
             <table class="tablesorter" id="function_table" cellspacing="0">
                 <thead>
                     <tr>
