@@ -39,6 +39,12 @@ class Webgrind_Config extends Webgrind_MasterConfig {
 	* Path to graphviz dot executable
 	*/	
 	static $dotExecutable = '/usr/local/bin/dot';
+
+	/**
+	 * Image type of graph to output
+	 * Can be png or svg
+	 */
+	static $graphImageType = 'png';
 		
 	/**
 	* sprintf compatible format for generating links to source files. 

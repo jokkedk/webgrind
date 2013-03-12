@@ -145,10 +145,16 @@ try {
                 $files = Webgrind_FileHandler::getInstance()->getTraceList();
                 $dataFile = $files[0]['filename'];
             }
-            header("Content-Type: image/png");
-            $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.png';
+
+            if (Webgrind_Config::$graphImageType == 'svg') {
+                header("Content-Type: image/svg+xml");
+            } else {
+                header("Content-Type: image/".Webgrind_Config::$graphImageType);
+            }
+
+            $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.'.Webgrind_Config::$graphImageType;
 		    if (!file_exists($filename)) {
-				shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -Tpng -o ' . $filename);
+				shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -T'.Webgrind_Config::$graphImageType.' -o ' . $filename);
 			}
 			readfile($filename);
 		break;
