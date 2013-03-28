@@ -101,3 +101,10 @@ class Webgrind_Config extends Webgrind_MasterConfig {
 	    return realpath(sys_get_temp_dir()).'/';
 	}
 }
+
+if(!is_executable(Webgrind_Config::$dotExecutable)) {
+	Webgrind_Config::$dotExecutable = exec('which dot');
+}
+if(!is_executable(Webgrind_Config::$pythonExecutable)) {
+	Webgrind_Config::$pythonExecutable = exec('which python');
+}
