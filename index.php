@@ -158,6 +158,9 @@ try {
                 $files = Webgrind_FileHandler::getInstance()->getTraceList();
                 $dataFile = $files[0]['filename'];
             }
+            if (!preg_match('/^[\d\s\w\._-]+$/D', $dataFile)) {
+                throw new Exception('Invalid data file given');
+            }
             header('Content-Type: text/plain');
             header('Content-Disposition: attachment; filename="' . $dataFile . '.out"');
             readfile(Webgrind_Config::xdebugOutputDir() . $dataFile);
