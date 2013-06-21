@@ -22,9 +22,9 @@ Mailing list is available through the [webgrind google group](http://groups.goog
 
 Installation
 ------------
-  # Download webgrind
-  # Unzip package to favourite path accessible by webserver.
-  # Load webgrind in browser and start profiling
+  1. Download webgrind
+  2. Unzip package to favourite path accessible by webserver.
+  3. Load webgrind in browser and start profiling
 
 See the [Installation page on Google Code](http://code.google.com/p/webgrind/wiki/Installation) for more
 
