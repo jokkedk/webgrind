@@ -3,6 +3,8 @@
  * @author Jacob Oettinger
  * @author Joakim Nygård
  */
+ini_set('xdebug.profiler_enable', 0);
+ini_set('xdebug.profiler_enable_trigger', 0);
 
 class Webgrind_MasterConfig
 {
