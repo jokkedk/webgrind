@@ -145,10 +145,25 @@ try {
                 $files = Webgrind_FileHandler::getInstance()->getTraceList();
                 $dataFile = $files[0]['filename'];
             }
-            header("Content-Type: image/png");
-            $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.png';
+            switch (get('output_format')) {
+                case 'svg':
+                    $output_format = 'svg';
+                    header("Content-Type: image/svg+xml");
+                    break;
+                case 'ps':
+                    $output_format = 'ps';
+                    header("Content-Type: application/postscript");
+                    break;
+                case 'png':
+                default:
+                    $output_format = 'png';
+                    header("Content-Type: image/png");
+                    break;
+            }
+            $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.'.$output_format;
+            header('Content-Disposition: filename=webgrind_call_graph.'.$output_format);
 		    if (!file_exists($filename)) {
-				shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -Tpng -o ' . $filename);
+				shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -T' . $output_format . '  -o ' . $filename);
 			}
 			readfile($filename);
 		break;
