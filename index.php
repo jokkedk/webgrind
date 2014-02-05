@@ -152,6 +152,19 @@ try {
 			}
 			readfile($filename);
 		break;
+        case 'download':
+            $dataFile = get('dataFile');
+            if($dataFile == '0'){
+                $files = Webgrind_FileHandler::getInstance()->getTraceList();
+                $dataFile = $files[0]['filename'];
+            }
+            if (!preg_match('/^[\d\s\w\._-]+$/D', $dataFile)) {
+                throw new Exception('Invalid data file given');
+            }
+            header('Content-Type: text/plain');
+            header('Content-Disposition: attachment; filename="' . $dataFile . '.out"');
+            readfile(Webgrind_Config::xdebugOutputDir() . $dataFile);
+        break;
     	case 'version_info':
     		$response = @file_get_contents('http://jokke.dk/webgrindupdate.json?version='.Webgrind_Config::$webgrindVersion);
     		echo $response;
