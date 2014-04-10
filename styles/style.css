@@ -164,8 +164,37 @@ img.list_reload {
 	border-right: 1px solid gray;
 }
 
+.line {
+	display: block;
+	padding: 0;
+	margin: 0;
+	font-family: monospace;
+}
+	.line .line-num {
+		display: inline-block;
+		border-right: 1px solid #999;
+padding-right: .5em;
+		color: #999;
+	}
+	.line:hover {
+		background-color: #ffd;
+	}
+	.line.emph {
+		background-color: #dff;
+
 .line_emph {
-	background-color: #bbbbff;
+position: relative;
+}
+.line_emph:before {
+display: block;
+content: " ";
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: #bbffff;
+z-index: -1;
 }
 a.load_invocations {
 	display: none;

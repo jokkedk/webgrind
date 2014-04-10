@@ -11,7 +11,7 @@
 	</title>
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() { 
-			$('div#'+location.hash.substr(1)).addClass('line_emph');
+			$('#'+location.hash.substr(1)).addClass('emph');
 		});
 
 	</script>
@@ -28,24 +28,47 @@
     <div id="main">
     	<h2><?php echo $file?></h2>
         <br>
-        <?php if ($message==''):?>
-            <?php $source = highlight_file($file, true); ?>
-    	<table border="0">
-            <tr>
-                <td align="right" valign="top"><code>
-                <?php 
-                foreach ($lines = explode('<br />', $source) as $num => $line) {
-                    $num++;
-                    echo "<span class='num' name='line$num' id='line$num'>$num</span>";
-                }
-                ?>
-                </code></td>
-                <td valign="top" nowrap="nowrap"><?php echo $source; ?></td>
-            </tr>
-    	</table>    	
-        <?php else:?>
-        	<p><b><?php echo $message?></b></p>
-        <?php endif?>
+<?php
+       echo "</span></code>";
+        if ($message=='') {
+		//Strip code and first span
+		$hl = highlight_file($file, true);
+		$code = substr($hl, 36, -15);
+		//Split lines
+		$lines = explode('<br />', $code);
+		//Count
+		$lineCount = count($lines);
+		//Calc pad length
+		$padLength = strlen($lineCount);
+
+		$lastSpan = '';
+		//Loop lines
+		foreach($lines as $i => $line) {
+			unset( $openSpan );
+
+			//Create line number
+			$lineNumber = str_pad($i + 1,  $padLength, '0', STR_PAD_LEFT);
+			// Keep the last open span:
+			if( preg_match( '#.*(<span[^>]+>)#', $line, $matches ) ) {
+				$openSpan = '';
+				if( !preg_match('#</span>\s*$#', $line ) ) {
+					$openSpan = $matches[1];
+					$line .= '</span>';
+				}
+			}
+			//Print line
+			printf('<code id="line%s" class="line"><span class="line-num">%s</span> %s%s</code>', $lineNumber, $lineNumber, $lastSpan, $line);
+
+			if( isset( $openSpan ) ) {
+				$lastSpan = $openSpan;
+			}
+		}
+	}
+        //Close span
+ 
+	else { ?>
+		<p><b><?php echo $message?></b></p>
+	<?php } ?>
     </div>
 </body>
 </html>
