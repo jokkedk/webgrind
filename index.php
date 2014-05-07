@@ -59,7 +59,8 @@ try {
                         $humanKind = 'procedural';
                     }
                 }
-                if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
+
+                if ((!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) && (!(int)get('hideZendLib',0) || !preg_match("/^Zend_/", $functionInfo['functionName']))) {
                     $shownTotal += $functionInfo['summedSelfCost'];
                     $functions[$i] = $functionInfo;
                     $functions[$i]['nr'] = $i;

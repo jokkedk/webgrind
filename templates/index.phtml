@@ -21,6 +21,7 @@
 			options.costFormat = $('#costFormat').val();
 			options.showFraction = $("#showFraction").val();
 			options.hideInternals = $('#hideInternals').attr('checked') ? 1 : 0;
+      options.hideZendLib = $('#hideZendLib').attr('checked') ? 1 : 0;
 			return options;
 		}
 		
@@ -325,6 +326,8 @@
             	<div style="margin:0 70px">
             	    <input type="checkbox" name="hideInternals" value="1" <?php echo (Webgrind_Config::$defaultHideInternalFunctions==1) ? 'checked' : ''?> id="hideInternals">
             	    <label for="hideInternals">Hide PHP functions</label>
+                  <input type="checkbox" name="hideZendLib" value="1" <?php echo (Webgrind_Config::$defaultHideZendLibFunctions==1) ? 'checked' : ''?> id="hideZendLib">
+            	    <label for="hideZendLib">Hide Zend Library functions</label>
             	</div>
             </form>
         </div>
