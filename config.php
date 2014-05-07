@@ -24,11 +24,12 @@ class Webgrind_Config extends Webgrind_MasterConfig {
 	*/
 	static $preprocessedSuffix = '.webgrind';
 	
-	static $defaultTimezone = 'Europe/Copenhagen';
+	static $defaultTimezone = 'Europe/Berlin';
 	static $dateFormat = 'Y-m-d H:i:s';
 	static $defaultCostformat = 'percent'; // 'percent', 'usec' or 'msec'
 	static $defaultFunctionPercentage = 90;
 	static $defaultHideInternalFunctions = false;
+  static $defaultHideZendLibFunctions = false;
 
 	/**
 	* Path to python executable
