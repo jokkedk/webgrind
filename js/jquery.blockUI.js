@@ -101,7 +101,7 @@ $.unblockUI = function(opts) {
  */
 $.fn.block = function(msg, css, opts) {
     return this.each(function() {
-		if (!this.$pos_checked) {
+        if (!this.$pos_checked) {
             if ($.css(this,"position") == 'static')
                 this.style.position = 'relative';
             if ($.browser.msie) this.style.zoom = 1; // force 'hasLayout' in IE
@@ -349,7 +349,7 @@ $.blockUI.impl = {
         if (e) e.focus();
     },
     center: function(el) {
-		var p = el.parentNode, s = el.style;
+        var p = el.parentNode, s = el.style;
         var l = ((p.offsetWidth - el.offsetWidth)/2) - this.sz(p,'borderLeftWidth');
         var t = ((p.offsetHeight - el.offsetHeight)/2) - this.sz(p,'borderTopWidth');
         s.left = l > 0 ? (l+'px') : '0';
