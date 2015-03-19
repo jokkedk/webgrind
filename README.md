@@ -12,9 +12,7 @@ Features
   * Track time spent in functions by self cost or inclusive cost. Inclusive cost is time inside function + calls to other functions.
   * See if time is spent in internal or user functions.
   * See where any function was called from and which functions it calls.
-  * Generate a call graph using [gprof2dot.py](http://code.google.com/p/jrfonseca/wiki/Gprof2Dot)
-
-[![](http://wiki.jrfonseca.googlecode.com/git/gprof2dot_small.png)](http://wiki.jrfonseca.googlecode.com/git/gprof2dot.png)
+  * Generate a call graph using [gprof2dot.py](https://github.com/jrfonseca/gprof2dot)
 
 Suggestions for improvements and new features are more than welcome - this is just a start.
 
@@ -26,7 +24,7 @@ Installation
   2. Unzip package to favourite path accessible by webserver.
   3. Load webgrind in browser and start profiling
 
-See the [Installation page on Google Code](http://code.google.com/p/webgrind/wiki/Installation) for more
+See the [Installation Wiki page](https://github.com/jokkedk/webgrind/wiki/Installation) for more
 
 Credits
 -------
