@@ -73,8 +73,9 @@
 			);
 		}
 
-		function showCallGraph() {
+		function showCallGraph(output_format) {
 			vars = getOptions();
+			vars.output_format = output_format;
 			vars.op = 'function_graph';
 			delete vars.costFormat;
 			delete vars.hideInternals;
@@ -341,7 +342,12 @@
         	<div style="float:right;">
         	    <div id="breakdown" style="margin-bottom:5px;width:320px;height:20px"></div>
         	    <span id="invocation_sum"></span> different functions called in <span id="runtime_sum"></span> milliseconds (<span id="runs"></span> runs, <span id="shown_sum"></span> shown)
-				<div><input type="button" name="graph" value="Show Call Graph" onclick="showCallGraph()"></div>
+                <div>
+                    Call Graph
+                    <input type="button" name="graph_png" value="png" onclick="showCallGraph('png')">
+                    <input type="button" name="graph_ps" value="ps" onclick="showCallGraph('ps')">
+				    <input type="button" name="graph_svg" value="svg" onclick="showCallGraph('svg')">
+                </div>
         	</div>
         	<div style="clear:both"></div>
         	Filter: <input type="text" style="width:150px" id="callfilter"> (regex too)
