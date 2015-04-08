@@ -34,6 +34,43 @@ class Webgrind_Preprocessor
 	 */
 	const ENTRY_POINT = '{main}';
 
+  /**
+   * Xdebug version 2.3.0 changed the structure of the profiling files it outputs to use name compression.
+   * This helper method decompresses the file.
+   * 
+   * @see http://valgrind.org/docs/manual/cl-format.html#cl-format.overview.compression1
+   * @param resource $in A file pointer to the Callgrind file to read
+   * @return resource $out A file pointer to the decompressed Callgrind file
+   */
+  static function decompressFile($in){
+    $map = array();
+    $maxMem = 32 * 1024 * 1024;
+    $out = fopen("php://temp/maxmemory:$maxMem", 'r+');
+
+    while(($line = fgets($in, 4096)) !== false){
+      $matches = array();
+
+      // check if the line defines a mapping
+      if(preg_match('/^(\w+)=(\(\d+\)) (.+)$/', $line, $matches)){
+        $key = ltrim($matches[1].$matches[2], 'c');
+        $map[$key] = $matches[3];
+        fputs($out, $matches[1].'='.$matches[3]."\n");
+      }
+      // check if the line uses a mapping
+      elseif(preg_match('/^(\w+)=(\(\d+\))$/', $line, $matches)){
+        $key = ltrim($matches[1].$matches[2], 'c');
+        fputs($out, $matches[1].'='.$map[$key]."\n");
+      }
+      // otherwise just pass the line through as is
+      else{
+        fputs($out, $line);
+      }
+    }
+
+    rewind($out);
+    return $out;
+  }
+
 
 	/**
 	 * Extract information from $inFile and store in preprocessed form in $outFile
@@ -44,12 +81,16 @@ class Webgrind_Preprocessor
 	 **/
 	static function parse($inFile, $outFile)
 	{
-		$in = @fopen($inFile, 'rb');
-		if(!$in)
-			throw new Exception('Could not open '.$inFile.' for reading.');
-		$out = @fopen($outFile, 'w+b');
-		if(!$out)
-			throw new Exception('Could not open '.$outFile.' for writing.');
+    $in1 = @fopen($inFile, 'rb');
+    if(!$in1)
+      throw new Exception('Could not open '.$inFile.' for reading.');
+    $out = @fopen($outFile, 'w+b');
+    if(!$out)
+      throw new Exception('Could not open '.$outFile.' for writing.');
+
+    // decompress the file
+    $in = Webgrind_Preprocessor::decompressFile($in1);
+    fclose($in1);
 		
 		$nextFuncNr = 0;
 		$functions = array();
