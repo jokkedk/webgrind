@@ -62,9 +62,10 @@ class Webgrind_Preprocessor
 			if(substr($line,0,3)==='fl='){
 				// Found invocation of function. Read functionname
 				list($function) = fscanf($in,"fn=%[^\n\r]s");
+            $function = self::getCompressedName($function, 0);
 				if(!isset($functions[$function])){
 					$functions[$function] = array(
-                        'filename'              => substr(trim($line),3), 
+                        'filename'              => self::getCompressedName(substr(trim($line),3), 1),
                         'invocationCount'       => 0,
                         'nr'                    => $nextFuncNr++,
                         'count'                 => 0,
@@ -89,7 +90,7 @@ class Webgrind_Preprocessor
 			} else if(substr($line,0,4)==='cfn=') {
 				
 				// Found call to function. ($function should contain function call originates from)
-				$calledFunctionName = substr(trim($line),4);
+				$calledFunctionName = self::getCompressedName(substr(trim($line),4), 0);
 				// Skip call line
 				fgets($in);
 				// Cost line
@@ -157,5 +158,23 @@ class Webgrind_Preprocessor
 		}
 		
 	}
-	
+
+   protected static function getCompressedName($name, $type=0)
+   {
+      global $compressedNames;
+      if(preg_match("/\((\d+)\)(.+)?/", $name, $matches))
+      {
+         $functionIndex = $matches[1];
+         if(isset($compressedNames[$type][$functionIndex]) && isset($matches[2]) == false)
+         {
+            $name = $compressedNames[$type][$functionIndex];
+         }
+         else
+         {
+            $name = trim($matches[2]);
+            $compressedNames[$type][$functionIndex] = $name;
+         }
+      }
+      return $name;
+   }
 }
