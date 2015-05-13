@@ -146,21 +146,38 @@ try {
                 $files = Webgrind_FileHandler::getInstance()->getTraceList();
                 $dataFile = $files[0]['filename'];
             }
-            $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.png';
             $is_win = stripos(PHP_OS, 'winnt') !== false;
+            switch (get('output_format')) {
+                case 'svg':
+                    $output_format = 'svg';
+                    $content_type = "Content-Type: image/svg+xml";
+                    break;
+                case 'ps':
+                    $output_format = 'ps';
+                    $content_type = "Content-Type: application/postscript";
+                    break;
+                case 'png':
+                default:
+                    $output_format = 'png';
+                    $content_type = "Content-Type: image/png";
+                    break;
+            }
+            $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.'.$output_format;
 		    if (!file_exists($filename)) {
                 $cmd = '"'.Webgrind_Config::$pythonExecutable
                     .'" library/gprof2dot.py -n '.$showFraction.' -f callgrind "'.Webgrind_Config::xdebugOutputDir().$dataFile
-                    .'" | "'.Webgrind_Config::$dotExecutable.'" -Tpng -o "' . $filename . '"';
+                    .'" | "'.Webgrind_Config::$dotExecutable.'" -T'.$output_format.' -o "' . $filename . '"';
                 if ($is_win)
                     $cmd = str_replace('/', DIRECTORY_SEPARATOR, $cmd);
 
 				$stdout = shell_exec($cmd);
 			}
+            
             if (!file_exists($filename)) {
                 echo "$cmd <b style=\"color: red\">failed</b>";
             } else {
-                header("Content-Type: image/png");
+                header('Content-Disposition: filename=webgrind_call_graph.'.$output_format);
+                header($content_type);
             }
 			readfile($filename);
 		break;
