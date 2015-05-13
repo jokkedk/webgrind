@@ -27,7 +27,7 @@ class Webgrind_Config extends Webgrind_MasterConfig {
 	static $defaultTimezone = 'Europe/Copenhagen';
 	static $dateFormat = 'Y-m-d H:i:s';
 	static $defaultCostformat = 'percent'; // 'percent', 'usec' or 'msec'
-	static $defaultFunctionPercentage = 90;
+	static $defaultFunctionPercentage = 95;
 	static $defaultHideInternalFunctions = false;
 
 	/**

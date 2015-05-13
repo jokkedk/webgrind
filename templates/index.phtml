@@ -333,9 +333,10 @@
             	<div style="float:right">
             		<label style="margin:0 5px">Show</label>
             		<select id="showFraction" name="showFraction">
-            			<?php for($i=100; $i>0; $i-=10):?>
-            			<option value="<?php echo $i/100?>" <?php if ($i==Webgrind_Config::$defaultFunctionPercentage):?>selected="selected"<?php endif;?>><?php echo $i?>%</option>
-            			<?php endfor;?>
+            			<?php $steps = array(100, 98, 95, 90, 75, 50, 25, 10);
+            				foreach ($steps as $i) : ?>
+            					<option value="<?php echo $i/100?>" <?php if ($i==Webgrind_Config::$defaultFunctionPercentage):?>selected="selected"<?php endif;?>><?php echo $i?>%</option>
+            			<?php endforeach;?>
             		</select>
             	</div>
             	<div style="clear:both;"></div>    	
