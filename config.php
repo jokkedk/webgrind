@@ -24,6 +24,12 @@ class Webgrind_Config extends Webgrind_MasterConfig {
      */
     static $preprocessedSuffix = '.webgrind';
 
+    /**
+     * Image type of graph to output
+     * Can be png or svg
+     */
+    static $graphImageType = 'png';
+
     static $defaultTimezone = 'Europe/Copenhagen';
     static $dateFormat = 'Y-m-d H:i:s';
     static $defaultCostformat = 'percent'; // 'percent', 'usec' or 'msec'

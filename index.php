@@ -45,7 +45,7 @@ try {
                 if (false !== strpos($functionInfo['functionName'], 'php::')) {
                     $breakdown['internal'] += $functionInfo['summedSelfCost'];
                     $humanKind = 'internal';
-                } elseif (false !== strpos($functionInfo['functionName'], 'require_once::') ||
+                } else if (false !== strpos($functionInfo['functionName'], 'require_once::') ||
                           false !== strpos($functionInfo['functionName'], 'require::') ||
                           false !== strpos($functionInfo['functionName'], 'include_once::') ||
                           false !== strpos($functionInfo['functionName'], 'include::')) {
@@ -102,7 +102,7 @@ try {
 
             $result = array('calledFrom'=>array(), 'subCalls'=>array());
             $foundInvocations = 0;
-            for($i=0;$i<$function['calledFromInfoCount'];$i++){
+            for ($i=0; $i<$function['calledFromInfoCount']; $i++) {
                 $invo = $reader->getCalledFromInfo($functionNr, $i);
                 $foundInvocations += $invo['callCount'];
                 $callerInfo = $reader->getFunctionInfo($invo['functionNr']);
@@ -126,13 +126,13 @@ try {
             $file = get('file');
             $line = get('line');
 
-            if($file && $file!=''){
+            if ($file && $file!='') {
                 $message = '';
-                if(!file_exists($file)){
+                if (!file_exists($file)) {
                     $message = $file.' does not exist.';
-                } else if(!is_readable($file)){
+                } else if (!is_readable($file)) {
                     $message = $file.' is not readable.';
-                } else if(is_dir($file)){
+                } else if (is_dir($file)) {
                     $message = $file.' is a directory.';
                 }
             } else {
@@ -144,14 +144,20 @@ try {
         case 'function_graph':
             $dataFile = get('dataFile');
             $showFraction = 100 - intval(get('showFraction') * 100);
-            if($dataFile == '0'){
+            if ($dataFile == '0') {
                 $files = Webgrind_FileHandler::getInstance()->getTraceList();
                 $dataFile = $files[0]['filename'];
             }
-            header("Content-Type: image/png");
-            $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.png';
+
+            if (Webgrind_Config::$graphImageType == 'svg') {
+                header("Content-Type: image/svg+xml");
+            } else {
+                header("Content-Type: image/".Webgrind_Config::$graphImageType);
+            }
+
+            $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.'.Webgrind_Config::$graphImageType;
             if (!file_exists($filename)) {
-                shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -Tpng -o ' . $filename);
+                shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -T'.Webgrind_Config::$graphImageType.' -o ' . $filename);
             }
             readfile($filename);
         break;

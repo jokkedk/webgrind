@@ -88,7 +88,7 @@ class Webgrind_Preprocessor
                     $functions[$index]['summedSelfCost'] += $cost;
                     $functions[$index]['summedInclusiveCost'] += $cost;
                 }
-            } elseif (substr($line,0,4)==='cfn=') {
+            } else if (substr($line,0,4)==='cfn=') {
                 // Found call to function. ($function should contain function call originates from)
                 $calledFunctionName = substr(trim($line),4);
                 // Skip call line
@@ -115,7 +115,7 @@ class Webgrind_Preprocessor
                 $functions[$index]['subCallInformation'][$calledKey]['callCount']++;
                 $functions[$index]['subCallInformation'][$calledKey]['summedCallCost'] += $cost;
 
-            } elseif (strpos($line,': ')!==false) {
+            } else if (strpos($line,': ')!==false) {
                 // Found header
                 $headers[] = $line;
             }
@@ -129,7 +129,7 @@ class Webgrind_Preprocessor
         // Make room for function addresses
         fseek($out,self::NR_SIZE*$functionCount, SEEK_CUR);
         $functionAddresses = array();
-        foreach($functions as $index=>$function){
+        foreach ($functions as $index=>$function) {
             $functionAddresses[] = ftell($out);
             $calledFromCount = sizeof($function['calledFromInformation']);
             $subCallCount = sizeof($function['subCallInformation']);
