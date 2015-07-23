@@ -157,6 +157,13 @@ try {
 
             $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.'.Webgrind_Config::$graphImageType;
             if (!file_exists($filename)) {
+                // Add enclosing quotes if needed
+                foreach (array('pythonExecutable', 'dotExecutable') as $exe) {
+                    $item =& Webgrind_Config::$$exe;
+                    if (strpos($item, ' ') !== false && !preg_match('/^".+"$/', $item)) {
+                        $item = '"'.$item.'"';
+                    }
+                }
                 shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -T'.Webgrind_Config::$graphImageType.' -o ' . $filename);
             }
             readfile($filename);
