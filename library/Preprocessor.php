@@ -42,37 +42,25 @@ class Webgrind_Preprocessor
      * @param string $outFile File to write preprocessed data to
      * @return void
      */
-    static function parse($inFile, $outFile) {
+    static function parse($inFile, $outFile)
+    {
         $in = @fopen($inFile, 'rb');
-        if(!$in)
+        if (!$in)
             throw new Exception('Could not open '.$inFile.' for reading.');
         $out = @fopen($outFile, 'w+b');
-        if(!$out)
+        if (!$out)
             throw new Exception('Could not open '.$outFile.' for writing.');
 
         $nextFuncNr = 0;
+        $functionNames = array();
         $functions = array();
         $headers = array();
-        $calls = array();
 
         // Read information into memory
         while (($line = fgets($in))) {
             if (substr($line,0,3)==='fl=') {
                 // Found invocation of function. Read functionname
-                list($function) = fscanf($in,"fn=%[^\n\r]s");
-                if (!isset($functions[$function])) {
-                    $functions[$function] = array(
-                        'filename'              => substr(trim($line),3),
-                        'invocationCount'       => 0,
-                        'nr'                    => $nextFuncNr++,
-                        'count'                 => 0,
-                        'summedSelfCost'        => 0,
-                        'summedInclusiveCost'   => 0,
-                        'calledFromInformation' => array(),
-                        'subCallInformation'    => array()
-                    );
-                }
-                $functions[$function]['invocationCount']++;
+                fscanf($in,"fn=%[^\n\r]s",$function);
                 // Special case for ENTRY_POINT - it contains summary header
                 if (self::ENTRY_POINT == $function) {
                     fgets($in);
@@ -80,37 +68,60 @@ class Webgrind_Preprocessor
                     fgets($in);
                 }
                 // Cost line
-                list($lnr, $cost) = fscanf($in,"%d %d");
-                $functions[$function]['line'] = $lnr;
-                $functions[$function]['summedSelfCost'] += $cost;
-                $functions[$function]['summedInclusiveCost'] += $cost;
+                fscanf($in,"%d %d",$lnr,$cost);
+
+                if (!isset($functionNames[$function])) {
+                    $index = $nextFuncNr++;
+                    $functionNames[$function] = $index;
+                    $functions[$index] = array(
+                        'filename'              => substr(trim($line),3),
+                        'line'                  => $lnr,
+                        'invocationCount'       => 1,
+                        'summedSelfCost'        => $cost,
+                        'summedInclusiveCost'   => $cost,
+                        'calledFromInformation' => array(),
+                        'subCallInformation'    => array()
+                    );
+                } else {
+                    $index = $functionNames[$function];
+                    $functions[$index]['invocationCount']++;
+                    $functions[$index]['summedSelfCost'] += $cost;
+                    $functions[$index]['summedInclusiveCost'] += $cost;
+                }
             } elseif (substr($line,0,4)==='cfn=') {
                 // Found call to function. ($function should contain function call originates from)
                 $calledFunctionName = substr(trim($line),4);
                 // Skip call line
                 fgets($in);
                 // Cost line
-                list($lnr, $cost) = fscanf($in,"%d %d");
+                fscanf($in,"%d %d",$lnr,$cost);
 
-                $functions[$function]['summedInclusiveCost'] += $cost;
+                $functions[$index]['summedInclusiveCost'] += $cost;
 
-                if (!isset($functions[$calledFunctionName]['calledFromInformation'][$function.':'.$lnr]))
-                    $functions[$calledFunctionName]['calledFromInformation'][$function.':'.$lnr] = array('functionNr'=>$functions[$function]['nr'],'line'=>$lnr,'callCount'=>0,'summedCallCost'=>0);
-
-                $functions[$calledFunctionName]['calledFromInformation'][$function.':'.$lnr]['callCount']++;
-                $functions[$calledFunctionName]['calledFromInformation'][$function.':'.$lnr]['summedCallCost'] += $cost;
-
-                if (!isset($functions[$function]['subCallInformation'][$calledFunctionName.':'.$lnr])){
-                    $functions[$function]['subCallInformation'][$calledFunctionName.':'.$lnr] = array('functionNr'=>$functions[$calledFunctionName]['nr'],'line'=>$lnr,'callCount'=>0,'summedCallCost'=>0);
+                $calledIndex = $functionNames[$calledFunctionName];
+                $key = $index.$lnr;
+                if (!isset($functions[$calledIndex]['calledFromInformation'][$key])) {
+                    $functions[$calledIndex]['calledFromInformation'][$key] = array('line'=>$lnr,'callCount'=>0,'summedCallCost'=>0);
                 }
 
-                $functions[$function]['subCallInformation'][$calledFunctionName.':'.$lnr]['callCount']++;
-                $functions[$function]['subCallInformation'][$calledFunctionName.':'.$lnr]['summedCallCost'] += $cost;
+                $functions[$calledIndex]['calledFromInformation'][$key]['callCount']++;
+                $functions[$calledIndex]['calledFromInformation'][$key]['summedCallCost'] += $cost;
+
+                $calledKey = $calledIndex.$lnr;
+                if (!isset($functions[$index]['subCallInformation'][$calledKey])) {
+                    $functions[$index]['subCallInformation'][$calledKey] = array('functionNr'=>$calledIndex,'line'=>$lnr,'callCount'=>0,'summedCallCost'=>0);
+                }
+
+                $functions[$index]['subCallInformation'][$calledKey]['callCount']++;
+                $functions[$index]['subCallInformation'][$calledKey]['summedCallCost'] += $cost;
+
             } elseif (strpos($line,': ')!==false) {
                 // Found header
                 $headers[] = $line;
             }
         }
+
+        $functionNames = array_flip($functionNames);
 
         // Write output
         $functionCount = sizeof($functions);
@@ -118,21 +129,21 @@ class Webgrind_Preprocessor
         // Make room for function addresses
         fseek($out,self::NR_SIZE*$functionCount, SEEK_CUR);
         $functionAddresses = array();
-        foreach ($functions as $functionName => $function) {
+        foreach($functions as $index=>$function){
             $functionAddresses[] = ftell($out);
             $calledFromCount = sizeof($function['calledFromInformation']);
             $subCallCount = sizeof($function['subCallInformation']);
             fwrite($out, pack(self::NR_FORMAT.'*', $function['line'], $function['summedSelfCost'], $function['summedInclusiveCost'], $function['invocationCount'], $calledFromCount, $subCallCount));
             // Write called from information
             foreach ((array)$function['calledFromInformation'] as $call) {
-                fwrite($out, pack(self::NR_FORMAT.'*', $call['functionNr'], $call['line'], $call['callCount'], $call['summedCallCost']));
+                fwrite($out, pack(self::NR_FORMAT.'*', $index, $call['line'], $call['callCount'], $call['summedCallCost']));
             }
             // Write sub call information
             foreach ((array)$function['subCallInformation'] as $call) {
                 fwrite($out, pack(self::NR_FORMAT.'*', $call['functionNr'], $call['line'], $call['callCount'], $call['summedCallCost']));
             }
 
-            fwrite($out, $function['filename']."\n".$functionName."\n");
+            fwrite($out, $function['filename']."\n".$functionNames[$index]."\n");
         }
         $headersPos = ftell($out);
         // Write headers
