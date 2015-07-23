@@ -5,7 +5,7 @@
  * Information from the callgrind file is extracted and written in a binary format for
  * fast random access.
  *
- * @see http://code.google.com/p/webgrind/wiki/PreprocessedFormat
+ * @see https://github.com/jokkedk/webgrind/wiki/Preprocessed-Format
  * @see http://valgrind.org/docs/manual/cl-format.html
  * @package Webgrind
  * @author Jacob Oettinger
@@ -61,6 +61,7 @@ class Webgrind_Preprocessor
             if (substr($line,0,3)==='fl=') {
                 // Found invocation of function. Read functionname
                 fscanf($in,"fn=%[^\n\r]s",$function);
+                $function = self::getCompressedName($function, false);
                 // Special case for ENTRY_POINT - it contains summary header
                 if (self::ENTRY_POINT == $function) {
                     fgets($in);
@@ -74,7 +75,7 @@ class Webgrind_Preprocessor
                     $index = $nextFuncNr++;
                     $functionNames[$function] = $index;
                     $functions[$index] = array(
-                        'filename'              => substr(trim($line),3),
+                        'filename'              => self::getCompressedName(substr(trim($line),3), true),
                         'line'                  => $lnr,
                         'invocationCount'       => 1,
                         'summedSelfCost'        => $cost,
@@ -90,7 +91,7 @@ class Webgrind_Preprocessor
                 }
             } else if (substr($line,0,4)==='cfn=') {
                 // Found call to function. ($function should contain function call originates from)
-                $calledFunctionName = substr(trim($line),4);
+                $calledFunctionName = self::getCompressedName(substr(trim($line),4), false);
                 // Skip call line
                 fgets($in);
                 // Cost line
@@ -160,6 +161,25 @@ class Webgrind_Preprocessor
         foreach ($functionAddresses as $address) {
             fwrite($out, pack(self::NR_FORMAT, $address));
         }
+    }
+
+    /**
+     * Extract information from $inFile and store in preprocessed form in $outFile
+     *
+     * @param string $name String to parse (either a filename or function name line)
+     * @param int $isFile True if this is a filename line (since files and functions have their own symbol tables)
+     * @return void
+     **/
+    static function getCompressedName($name, $isFile) {
+        global $compressedNames;
+        if (!preg_match("/\((\d+)\)(.+)?/", $name, $matches)) {
+            return $name;
+        }
+        $functionIndex = $matches[1];
+        if (!isset($compressedNames[$isFile][$functionIndex]) || isset($matches[2])) {
+            $compressedNames[$isFile][$functionIndex] = trim($matches[2]);
+        }
+        return $compressedNames[$isFile][$functionIndex];
     }
 
 }
