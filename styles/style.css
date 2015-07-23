@@ -164,9 +164,18 @@ img.list_reload {
 	border-right: 1px solid gray;
 }
 
-.line_emph {
-	background-color: #bbbbff;
+.line {
+	display: block;
 }
+
+.line:hover {
+	background-color: #ffd;
+}
+
+.line.emph {
+	background-color: #dff;
+}
+
 a.load_invocations {
 	display: none;
 	background-color: #999;

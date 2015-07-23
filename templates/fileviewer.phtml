@@ -11,7 +11,7 @@
 	</title>
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
-			$('div#'+location.hash.substr(1)).addClass('line_emph');
+			$('#'+location.hash.substr(1)).addClass('emph');
 		});
 	</script>
 
@@ -27,21 +27,45 @@
 	<div id="main">
 		<h2><?php echo $file?></h2>
 		<br>
-		<?php if ($message==''):?>
-			<?php $source = highlight_file($file, true); ?>
-		<table border="0">
-			<tr>
-				<td align="right" valign="top"><code>
-				<?php
-				foreach ($lines = explode('<br />', $source) as $num => $line) {
-					$num++;
-					echo "<span class='num' name='line$num' id='line$num'>$num</span>";
-				}
-				?>
-				</code></td>
-				<td valign="top" nowrap="nowrap"><?php echo $source; ?></td>
-			</tr>
-		</table>
+		<?php if ($message==''): ?>
+			<table border="0">
+				<tr>
+					<td align="right" valign="top"><code>
+						<?php
+						//Strip code and first span
+						$hl = highlight_file($file, true);
+						$code = substr($hl, 36, -15);
+						//Split lines
+						$lines = explode('<br />', $code);
+
+						foreach ($lines as $num => $line) {
+							$num++;
+							echo "<span class='num'>$num</span>";
+						}
+						?>
+					</code></td>
+					<td valign="top" nowrap="nowrap">
+						<?php
+						$openSpan = '';
+						foreach ($lines as $num => $line) {
+							$num++;
+							if (!$line) {
+								$line = '<br />';
+							}
+							if (!preg_match('#</span>\s*$#', $line)) {
+								$line .= '</span>';
+							}
+
+							echo "<code id='line$num' class='line'>$openSpan$line</code>";
+
+							if (preg_match('#.*(<span[^>]+>)#', $line, $matches)) {
+								$openSpan = $matches[1];
+							}
+						}
+						?>
+					</td>
+				</tr>
+			</table>
 		<?php else:?>
 			<p><b><?php echo $message?></b></p>
 		<?php endif?>
