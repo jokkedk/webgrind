@@ -174,6 +174,24 @@ try {
             echo $response;
         break;
 
+        case 'clear_files':
+            $files = Webgrind_FileHandler::getInstance()->getTraceList();
+            if (!$files) {
+                echo json_encode(array('done' => 'no files found'));
+                break;
+            }
+            $format = array();
+            foreach ($files as $file) {
+                unlink(Webgrind_Config::xdebugOutputDir().$file['filename']);
+                $format[] = preg_quote($file['filename'], '/');
+            }
+            $files = preg_grep('/'.implode('|', $format).'/', scandir(Webgrind_Config::storageDir()));
+            foreach ($files as $file) {
+                unlink(Webgrind_Config::storageDir().$file);
+            }
+            echo json_encode(array('done' => true));
+        break;
+
         default:
             $welcome = '';
             if (!file_exists(Webgrind_Config::storageDir()) || !is_writable(Webgrind_Config::storageDir())) {

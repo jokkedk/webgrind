@@ -276,6 +276,21 @@
 			);
 		}
 
+		function clearFiles() {
+			$.getJSON("index.php",
+				{'op':'clear_files'},
+				function(data) {
+					if (data.error) {
+						$("#hello_message").html(data.error);
+						$("#hello_message").show();
+						return;
+					}
+					reloadFilelist();
+				}
+			);
+		}
+
+
 		$(document).ready(function() {
 			$.blockUI.defaults.pageMessage = '<div class="block_box"><h1>Loading...</h1><p>Loading information from server. If the callgrind file is large this may take some time.</p></div>';
 			$.blockUI.defaults.overlayCSS =  { backgroundColor: '#fff', opacity: '0' };
@@ -367,6 +382,7 @@
 				<div style="margin:0 70px">
 					<input type="checkbox" name="hideInternals" value="1" <?php echo (Webgrind_Config::$defaultHideInternalFunctions==1) ? 'checked' : ''?> id="hideInternals">
 					<label for="hideInternals">Hide PHP functions</label>
+					<input type="button" value="clear files" onclick="clearFiles()">
 				</div>
 			</form>
 		</div>
