@@ -224,7 +224,7 @@
 
 		function functionTableRow(data, linkToFunctionLine) {
 			if (data.file=='php%3Ainternal') {
-				openLink = '<a title="Lookup function" href="<?php echo ini_get('xdebug.manual_url')?>/'+data.functionName.substr(5)+'" target="_blank"><img src="img/file.png" alt="O"></a>';;
+				openLink = '<a title="Lookup function" href="http://php.net/'+data.functionName.substr(5).replace("->",".")+'" target="_blank"><img src="img/file.png" alt="O"></a>';
 			} else {
 				if (linkToFunctionLine) {
 					openLink = '<a title="Open file and show line" href="'+sprintf(fileUrlFormat, data.file, data.line)+'" target="_blank"><img src="img/file_line.png" alt="O"></a>';
