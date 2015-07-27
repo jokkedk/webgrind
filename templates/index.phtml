@@ -319,12 +319,17 @@
 			setTimeout(checkVersion,100);
 			<?php endif?>
 
+			$("#negateFilter").change(function(){
+				$('#callfilter').trigger('keyup');
+			});
+
 			$("#callfilter").keyup(function(){
 				var reg = new RegExp($(this).val(), 'i');
+				var negate = $("#negateFilter").is(':checked');
 				var row;
 				$('#function_table').children('tbody').children('tr').each(function(){
 					row = $(this);
-					if (row.find('td:eq(1) a').text().match(reg))
+					if (!row.find('td:eq(1) a').text().match(reg) == negate)
 						row.css('display', 'table-row');
 					else
 						row.css('display', 'none');
@@ -403,6 +408,8 @@
 			</div>
 			<div style="clear:both"></div>
 			Filter: <input type="text" style="width:150px" id="callfilter"> (regex too)
+			<input type="checkbox" name="negateFilter" value="0" id="negateFilter">
+			<label for="negateFilter">Invert filter</label>
 			<table class="tablesorter" id="function_table" cellspacing="0">
 				<thead>
 					<tr>
