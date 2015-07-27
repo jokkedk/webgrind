@@ -114,16 +114,17 @@ class Webgrind_Reader
         $file = $this->readLine();
         $function = $this->readLine();
 
-           $result = array(
-            'file'=>$file,
-            'line'=>$line,
-               'functionName'=>$function,
-               'summedSelfCost'=>$summedSelfCost,
-               'summedInclusiveCost'=>$summedInclusiveCost,
-               'invocationCount'=>$invocationCount,
-            'calledFromInfoCount'=>$calledFromCount,
-            'subCallInfoCount'=>$subCallCount
-           );
+        $result = array(
+            'file'                => $file,
+            'line'                => $line,
+            'functionName'        => $function,
+            'summedSelfCost'      => $summedSelfCost,
+            'summedInclusiveCost' => $summedInclusiveCost,
+            'invocationCount'     => $invocationCount,
+            'calledFromInfoCount' => $calledFromCount,
+            'subCallInfoCount'    => $subCallCount
+        );
+        $result['summedSelfCostRaw'] = $result['summedSelfCost'];
         $result['summedSelfCost'] = $this->formatCost($result['summedSelfCost']);
         $result['summedInclusiveCost'] = $this->formatCost($result['summedInclusiveCost']);
 
@@ -147,10 +148,10 @@ class Webgrind_Reader
         $data = $this->read(self::CALLINFORMATION_LENGTH);
 
         $result = array(
-            'functionNr'=>$data[0],
-            'line'=>$data[1],
-            'callCount'=>$data[2],
-            'summedCallCost'=>$data[3]
+            'functionNr'     => $data[0],
+            'line'           => $data[1],
+            'callCount'      => $data[2],
+            'summedCallCost' => $data[3]
         );
 
         $result['summedCallCost'] = $this->formatCost($result['summedCallCost']);
@@ -173,10 +174,10 @@ class Webgrind_Reader
         $data = $this->read(self::CALLINFORMATION_LENGTH);
 
         $result = array(
-            'functionNr'=>$data[0],
-            'line'=>$data[1],
-            'callCount'=>$data[2],
-            'summedCallCost'=>$data[3]
+            'functionNr'     => $data[0],
+            'line'           => $data[1],
+            'callCount'      => $data[2],
+            'summedCallCost' => $data[3]
         );
 
         $result['summedCallCost'] = $this->formatCost($result['summedCallCost']);

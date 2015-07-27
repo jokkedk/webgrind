@@ -43,25 +43,25 @@ try {
 
 
                 if (false !== strpos($functionInfo['functionName'], 'php::')) {
-                    $breakdown['internal'] += $functionInfo['summedSelfCost'];
+                    $breakdown['internal'] += $functionInfo['summedSelfCostRaw'];
                     $humanKind = 'internal';
                 } else if (false !== strpos($functionInfo['functionName'], 'require_once::') ||
                           false !== strpos($functionInfo['functionName'], 'require::') ||
                           false !== strpos($functionInfo['functionName'], 'include_once::') ||
                           false !== strpos($functionInfo['functionName'], 'include::')) {
-                    $breakdown['include'] += $functionInfo['summedSelfCost'];
+                    $breakdown['include'] += $functionInfo['summedSelfCostRaw'];
                     $humanKind = 'include';
                 } else {
                     if (false !== strpos($functionInfo['functionName'], '->') || false !== strpos($functionInfo['functionName'], '::')) {
-                        $breakdown['class'] += $functionInfo['summedSelfCost'];
+                        $breakdown['class'] += $functionInfo['summedSelfCostRaw'];
                         $humanKind = 'class';
                     } else {
-                        $breakdown['procedural'] += $functionInfo['summedSelfCost'];
+                        $breakdown['procedural'] += $functionInfo['summedSelfCostRaw'];
                         $humanKind = 'procedural';
                     }
                 }
                 if (!(int)get('hideInternals', 0) || strpos($functionInfo['functionName'], 'php::') === false) {
-                    $shownTotal += $functionInfo['summedSelfCost'];
+                    $shownTotal += $functionInfo['summedSelfCostRaw'];
                     $functions[$i] = $functionInfo;
                     $functions[$i]['nr'] = $i;
                     $functions[$i]['humanKind'] = $humanKind;
@@ -75,7 +75,7 @@ try {
             $result['functions'] = array();
             foreach($functions as $function){
 
-                $remainingCost -= $function['summedSelfCost'];
+                $remainingCost -= $function['summedSelfCostRaw'];
                 $function['file'] = urlencode($function['file']);
                 $result['functions'][] = $function;
                 if($remainingCost<0)
@@ -198,8 +198,8 @@ function get($param, $default=false){
 }
 
 function costCmp($a, $b){
-    $a = $a['summedSelfCost'];
-    $b = $b['summedSelfCost'];
+    $a = $a['summedSelfCostRaw'];
+    $b = $b['summedSelfCostRaw'];
 
     if ($a == $b) {
         return 0;
