@@ -102,7 +102,7 @@ class Webgrind_Preprocessor
                 $calledIndex = $functionNames[$calledFunctionName];
                 $key = $index.$lnr;
                 if (!isset($functions[$calledIndex]['calledFromInformation'][$key])) {
-                    $functions[$calledIndex]['calledFromInformation'][$key] = array('line'=>$lnr,'callCount'=>0,'summedCallCost'=>0);
+                    $functions[$calledIndex]['calledFromInformation'][$key] = array('functionNr'=>$index,'line'=>$lnr,'callCount'=>0,'summedCallCost'=>0);
                 }
 
                 $functions[$calledIndex]['calledFromInformation'][$key]['callCount']++;
@@ -137,7 +137,7 @@ class Webgrind_Preprocessor
             fwrite($out, pack(self::NR_FORMAT.'*', $function['line'], $function['summedSelfCost'], $function['summedInclusiveCost'], $function['invocationCount'], $calledFromCount, $subCallCount));
             // Write called from information
             foreach ((array)$function['calledFromInformation'] as $call) {
-                fwrite($out, pack(self::NR_FORMAT.'*', $index, $call['line'], $call['callCount'], $call['summedCallCost']));
+                fwrite($out, pack(self::NR_FORMAT.'*', $call['functionNr'], $call['line'], $call['callCount'], $call['summedCallCost']));
             }
             // Write sub call information
             foreach ((array)$function['subCallInformation'] as $call) {
