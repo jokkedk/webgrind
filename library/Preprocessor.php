@@ -51,6 +51,8 @@ class Webgrind_Preprocessor
         if (!$out)
             throw new Exception('Could not open '.$outFile.' for writing.');
 
+        $proxyFunctions = array_flip(Webgrind_Config::$proxyFunctions);
+        $proxyQueue = array();
         $nextFuncNr = 0;
         $functionNames = array();
         $functions = array();
@@ -74,6 +76,9 @@ class Webgrind_Preprocessor
                 if (!isset($functionNames[$function])) {
                     $index = $nextFuncNr++;
                     $functionNames[$function] = $index;
+                    if (isset($proxyFunctions[$function])) {
+                        $proxyQueue[$index] = array();
+                    }
                     $functions[$index] = array(
                         'filename'              => self::getCompressedName(substr(trim($line),3), true),
                         'line'                  => $lnr,
@@ -90,16 +95,34 @@ class Webgrind_Preprocessor
                     $functions[$index]['summedInclusiveCost'] += $cost;
                 }
             } else if (substr($line,0,4)==='cfn=') {
-                // Found call to function. ($function should contain function call originates from)
+                // Found call to function. ($function/$index should contain function call originates from)
                 $calledFunctionName = self::getCompressedName(substr(trim($line),4), false);
                 // Skip call line
                 fgets($in);
                 // Cost line
                 fscanf($in,"%d %d",$lnr,$cost);
 
-                $functions[$index]['summedInclusiveCost'] += $cost;
+                // Current function is a proxy -> skip
+                if (isset($proxyQueue[$index])) {
+                    $proxyQueue[$index][] = array(
+                        'calledIndex' => $functionNames[$calledFunctionName],
+                        'lnr'         => $lnr,
+                        'cost'        => $cost,
+                    );
+                    continue;
+                }
 
                 $calledIndex = $functionNames[$calledFunctionName];
+                // Called a proxy
+                if (isset($proxyQueue[$calledIndex])) {
+                    $data = array_shift($proxyQueue[$calledIndex]);
+                    $calledIndex = $data['calledIndex'];
+                    $lnr = $data['lnr'];
+                    $cost = $data['cost'];
+                }
+
+                $functions[$index]['summedInclusiveCost'] += $cost;
+
                 $key = $index.$lnr;
                 if (!isset($functions[$calledIndex]['calledFromInformation'][$key])) {
                     $functions[$calledIndex]['calledFromInformation'][$key] = array('functionNr'=>$index,'line'=>$lnr,'callCount'=>0,'summedCallCost'=>0);

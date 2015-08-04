@@ -66,6 +66,17 @@ class Webgrind_Config extends Webgrind_MasterConfig {
      */
     static $traceFileListFormat = '%i (%f) [%s]';
 
+    /**
+     * Proxy functions are stepped over transparently. Functions listed here
+     * MUST make exactly one (though not necessarily the same one) function
+     * call per execution.
+     */
+    static $proxyFunctions = array( // resolve dynamic function calls in-place
+        'php::call_user_func',
+        'php::call_user_func_array',
+    );
+    //static $proxyFunctions = array(); // do not skip any functions
+
 
     #########################
     # BELOW NOT FOR EDITING #
