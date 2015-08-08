@@ -46,22 +46,38 @@ class Webgrind_FileHandler{
 	
 	/**
 	 * Get the value of the cmd header in $file
+	 * Return false if the file is invalid
 	 *
-	 * @return void string
+	 * @return void string|false
 	 */	
 	private function getInvokeUrl($file){
 	    if (preg_match('/.webgrind$/', $file)) 
 	        return 'Webgrind internal';
 
+	    if (!is_file($file))
+	        return FALSE;
+
+	    $fp = @fopen($file, 'r');
+	    if ($fp === FALSE)
+	        return FALSE;
+
+	    $xdPresent = FALSE;
+
 		// Grab name of invoked file. 
-	    $fp = fopen($file, 'r');
         $invokeUrl = '';
         while ((($line = fgets($fp)) !== FALSE) && !strlen($invokeUrl)){
             if (preg_match('/^cmd: (.*)$/', $line, $parts)){
                 $invokeUrl = isset($parts[1]) ? $parts[1] : '';
             }
+            if (strpos($line, 'creator: xdebug') !== FALSE){
+                $xdPresent = TRUE;
+            }
         }
         fclose($fp);
+        
+	    if ($xdPresent === FALSE)
+	        return FALSE;
+        
         if (!strlen($invokeUrl)) 
             $invokeUrl = 'Unknown!';
 
@@ -96,7 +112,11 @@ class Webgrind_FileHandler{
 			if ($selfFile == realpath($absoluteFilename))
 				continue;
 				
-			$invokeUrl = rtrim($this->getInvokeUrl($absoluteFilename));
+			$invokeUrl = $this->getInvokeUrl($absoluteFilename);
+			if ($invokeUrl === FALSE)
+			    continue;
+			
+			$invokeUrl = rtrim($invokeUrl);
 			if (Webgrind_Config::$hideWebgrindProfiles && $invokeUrl == dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'index.php')
 			    continue;
 			
