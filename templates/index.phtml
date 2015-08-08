@@ -69,12 +69,15 @@
 					$("#function_table").trigger("sorton",[[[4,1]]]);
 					
 					$('#callfilter').trigger('keyup');
+                    if (window.location.hash.length > 2)
+                        openCallInfo(window.location.hash.replace(/[^0-9]/g, ''));
 				}
 			);
 		}
 
-		function showCallGraph() {
+		function showCallGraph(output_format) {
 			vars = getOptions();
+			vars.output_format = output_format;
 			vars.op = 'function_graph';
 			delete vars.costFormat;
 			delete vars.hideInternals;
@@ -114,6 +117,7 @@
 
 					
 					callInfoLoaded[functionNr] = true;
+					window.location.hash = "#callinfo_a_"+functionNr;
 				}
 			);				
 		
@@ -165,26 +169,34 @@
 		}
 				
 		function toggleCallInfo(functionNr){
-			if(!callInfoLoaded[functionNr]){
-				loadCallInfo(functionNr);
-			}					
-			
-			$("#callinfo_area_"+functionNr).toggle();
-			current = $("#fold_marker_"+functionNr).get(0).src;
-			if(current.substr(current.lastIndexOf('/')+1) == 'right.gif')
-				$("#fold_marker_"+functionNr).get(0).src = 'img/down.gif';
-			else
-				$("#fold_marker_"+functionNr).get(0).src = 'img/right.gif';
+			var $ciar = $("#callinfo_area_"+functionNr);
+			var fmimg = $("#fold_marker_"+functionNr).get(0);
+			var current = $("#fold_marker_"+functionNr).get(0).src;
+			if ($ciar.is(":visible")){
+				$ciar.hide();
+				fmimg.src = 'img/right.gif';
+			} else {
+				if(!callInfoLoaded[functionNr]){
+					loadCallInfo(functionNr);
+				} else {
+					window.location.hash = "#callinfo_a_"+functionNr;
+				}
+				$ciar.show();
+				fmimg.src = 'img/down.gif';
+			}
 		}
-		
+        
 		function openCallInfo(functionNr) {
 			var areaEl = $("#callinfo_area_"+functionNr);
 			if (areaEl.length) {
     			if (areaEl.is(":hidden")) toggleCallInfo(functionNr);
-    			window.scrollTo(0, areaEl.parent().offset().top);
+                else window.location.hash = "#callinfo_a_"+functionNr;
+                window.scrollTo(0, areaEl.parent().offset().top);
+                setTimeout(function(){areaEl.parent().parent().css({'background-color' : '#DFECE0'})}, 300);
+                setTimeout(function(){areaEl.parent().parent().css({'background-color' : ''})}, 600);
     		}
 		}
-		
+
 		function functionTableRow(data, linkToFunctionLine){
 			if (data.file=='php%3Ainternal') {
 			    openLink = '<a title="Lookup function" href="<?php echo ini_get('xdebug.manual_url')?>/'+data.functionName.substr(5)+'" target="_blank"><img src="img/file.png" alt="O"></a>';;
@@ -200,7 +212,7 @@
 			                <img src="img/call_'+data.humanKind+'.png" title="'+data.humanKind+'"> \
 			            </td> \
 						<td> \
-							<a href="javascript:toggleCallInfo('+data.nr+')"> \
+							<a id="callinfo_a_'+data.nr+'" href="javascript:toggleCallInfo('+data.nr+')"> \
 								<img id="fold_marker_'+data.nr+'" src="img/right.gif">&nbsp;&nbsp;'+data.functionName+' \
 							</a> \
 							<div class="callinfo_area" id="callinfo_area_'+data.nr+'"></div> \
@@ -261,7 +273,7 @@
 			$("#function_table").bind("sortStart",sortBlock).bind("sortEnd",$.unblockUI);
 			
 			if(document.location.hash) {
-				update(document.location.hash.substr(1));
+				update();
 			}
 			
 			<?php if(Webgrind_Config::$checkVersion):?>
@@ -279,6 +291,12 @@
 			            row.css('display', 'none');
 			    });
     		});
+            
+            if (typeof window.addEventListener == "function")
+                window.addEventListener("hashchange", function(e) {
+                    if (window.location.hash.length > 2)
+                        openCallInfo(window.location.hash.replace(/[^0-9]/g, ''));
+                });
 		});
 		
 	</script>
@@ -290,7 +308,7 @@
             <p>profiling in the browser</p>
         </div>
         <div id="options">
-            <form method="get" onsubmit="update();return false;">
+            <form method="get" onsubmit="window.location.hash='';update();return false;">
             	<div style="float:right;margin-left:10px">
             	    <input type="submit" value="update">
             	</div>
@@ -316,9 +334,10 @@
             	<div style="float:right">
             		<label style="margin:0 5px">Show</label>
             		<select id="showFraction" name="showFraction">
-            			<?php for($i=100; $i>0; $i-=10):?>
-            			<option value="<?php echo $i/100?>" <?php if ($i==Webgrind_Config::$defaultFunctionPercentage):?>selected="selected"<?php endif;?>><?php echo $i?>%</option>
-            			<?php endfor;?>
+            			<?php $steps = array(100, 98, 95, 90, 75, 50, 25, 10);
+            				foreach ($steps as $i) : ?>
+            					<option value="<?php echo $i/100?>" <?php if ($i==Webgrind_Config::$defaultFunctionPercentage):?>selected="selected"<?php endif;?>><?php echo $i?>%</option>
+            			<?php endforeach;?>
             		</select>
             	</div>
             	<div style="clear:both;"></div>    	
@@ -341,7 +360,12 @@
         	<div style="float:right;">
         	    <div id="breakdown" style="margin-bottom:5px;width:320px;height:20px"></div>
         	    <span id="invocation_sum"></span> different functions called in <span id="runtime_sum"></span> milliseconds (<span id="runs"></span> runs, <span id="shown_sum"></span> shown)
-				<div><input type="button" name="graph" value="Show Call Graph" onclick="showCallGraph()"></div>
+                <div>
+                    Call Graph
+                    <input type="button" name="graph_png" value="png" onclick="showCallGraph('png')">
+                    <input type="button" name="graph_ps" value="ps" onclick="showCallGraph('ps')">
+				    <input type="button" name="graph_svg" value="svg" onclick="showCallGraph('svg')">
+                </div>
         	</div>
         	<div style="clear:both"></div>
         	Filter: <input type="text" style="width:150px" id="callfilter"> (regex too)

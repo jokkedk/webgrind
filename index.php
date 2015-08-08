@@ -4,6 +4,7 @@
  * @author Joakim Nygård
  */
 
+header("Content-Type: text/html; charset=utf-8");
 class Webgrind_MasterConfig
 {
     static $webgrindVersion = '1.1';
@@ -90,7 +91,7 @@ try {
 
             $creator = preg_replace('/[^0-9\.]/', '', $reader->getHeader('creator'));
             $result['linkToFunctionLine'] = version_compare($creator, '2.1') > 0;
-            
+
             echo json_encode($result);
         break;
         case 'callinfo_list':
@@ -145,11 +146,39 @@ try {
                 $files = Webgrind_FileHandler::getInstance()->getTraceList();
                 $dataFile = $files[0]['filename'];
             }
-            header("Content-Type: image/png");
-            $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.png';
+            $is_win = stripos(PHP_OS, 'winnt') !== false;
+            switch (get('output_format')) {
+                case 'svg':
+                    $output_format = 'svg';
+                    $content_type = "Content-Type: image/svg+xml";
+                    break;
+                case 'ps':
+                    $output_format = 'ps';
+                    $content_type = "Content-Type: application/postscript";
+                    break;
+                case 'png':
+                default:
+                    $output_format = 'png';
+                    $content_type = "Content-Type: image/png";
+                    break;
+            }
+            $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.'.$output_format;
 		    if (!file_exists($filename)) {
-				shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -Tpng -o ' . $filename);
+                $cmd = '"'.Webgrind_Config::$pythonExecutable
+                    .'" library/gprof2dot.py -n '.$showFraction.' -f callgrind "'.Webgrind_Config::xdebugOutputDir().$dataFile
+                    .'" | "'.Webgrind_Config::$dotExecutable.'" -T'.$output_format.' -o "' . $filename . '"';
+                if ($is_win)
+                    $cmd = str_replace('/', DIRECTORY_SEPARATOR, $cmd);
+
+				$stdout = shell_exec($cmd);
 			}
+            
+            if (!file_exists($filename)) {
+                echo "$cmd <b style=\"color: red\">failed</b>";
+            } else {
+                header('Content-Disposition: filename=webgrind_call_graph.'.$output_format);
+                header($content_type);
+            }
 			readfile($filename);
 		break;
     	case 'version_info':
