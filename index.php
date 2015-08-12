@@ -24,12 +24,12 @@ if (ini_get('date.timezone') == '')
 try {
     switch (get('op')) {
         case 'file_list':
-            echo json_encode(Webgrind_FileHandler::getInstance()->getTraceList());
+            sendJson(Webgrind_FileHandler::getInstance()->getTraceList());
             break;
 
         case 'function_list':
             $dataFile = get('dataFile');
-            if($dataFile=='0'){
+            if ($dataFile=='0') {
                 $files = Webgrind_FileHandler::getInstance()->getTraceList();
                 $dataFile = $files[0]['filename'];
             }
@@ -40,7 +40,6 @@ try {
 
             for ($i=0; $i<$reader->getFunctionCount(); $i++) {
                 $functionInfo = $reader->getFunctionInfo($i);
-
 
                 if (false !== strpos($functionInfo['functionName'], 'php::')) {
                     $breakdown['internal'] += $functionInfo['summedSelfCostRaw'];
@@ -92,7 +91,7 @@ try {
             $creator = preg_replace('/[^0-9\.]/', '', $reader->getHeader('creator'));
             $result['linkToFunctionLine'] = version_compare($creator, '2.1') > 0;
 
-            echo json_encode($result);
+            sendJson($result);
         break;
 
         case 'callinfo_list':
@@ -119,7 +118,7 @@ try {
                 $invo['callerFunctionName'] = $callInfo['functionName'];
                 $result['subCalls'][] = $invo;
             }
-        echo json_encode($result);
+            sendJson($result);
         break;
 
         case 'fileviewer':
@@ -177,7 +176,7 @@ try {
         case 'clear_files':
             $files = Webgrind_FileHandler::getInstance()->getTraceList();
             if (!$files) {
-                echo json_encode(array('done' => 'no files found'));
+                sendJson(array('done' => 'no files found'));
                 break;
             }
             $format = array();
@@ -189,7 +188,7 @@ try {
             foreach ($files as $file) {
                 unlink(Webgrind_Config::storageDir().$file);
             }
-            echo json_encode(array('done' => true));
+            sendJson(array('done' => true));
         break;
 
         default:
@@ -207,11 +206,11 @@ try {
             require 'templates/index.phtml';
     }
 } catch (Exception $e) {
-    echo json_encode(array('error' => $e->getMessage().'<br>'.$e->getFile().', line '.$e->getLine()));
+    sendJson(array('error' => $e->getMessage().'<br>'.$e->getFile().', line '.$e->getLine()));
     return;
 }
 
-function get($param, $default=false){
+function get($param, $default=false) {
     return (isset($_GET[$param])? $_GET[$param] : $default);
 }
 
@@ -223,4 +222,9 @@ function costCmp($a, $b){
         return 0;
     }
     return ($a > $b) ? -1 : 1;
+}
+
+function sendJson($object) {
+    header('Content-type: application/json');
+    echo json_encode($object);
 }
