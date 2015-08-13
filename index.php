@@ -169,7 +169,8 @@ try {
         break;
 
         case 'version_info':
-            $response = @file_get_contents('http://jokke.dk/webgrindupdate.json?version='.Webgrind_Config::$webgrindVersion);
+            header('Content-type: application/json');
+            $response = @file_get_contents('http://alpha0010.github.io/webgrind/webgrindupdate.json?version='.Webgrind_Config::$webgrindVersion);
             echo $response;
         break;
 
