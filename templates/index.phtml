@@ -55,12 +55,11 @@
 					var breakdown_sum = data.breakdown['internal']+data.breakdown['procedural']+data.breakdown['class']+data.breakdown['include'];
 					$("#breakdown").html(
 						'<img src="img/gradient_left.png" height="20" width="10">'+
-						'<img src="img/gradient_internal.png" height="20" width="'+Math.floor(data.breakdown['internal']/breakdown_sum*300)+'">'+
-						'<img src="img/gradient_include.png" height="20" width="'+Math.floor(data.breakdown['include']/breakdown_sum*300)+'">'+
-						'<img src="img/gradient_class.png" height="20" width="'+Math.floor(data.breakdown['class']/breakdown_sum*300)+'">'+
-						'<img src="img/gradient_procedural.png" height="20" width="'+Math.floor(data.breakdown['procedural']/breakdown_sum*300)+'">'+
-						'<img src="img/gradient_right.png" height="20" width="10">'+
-						'<div title="internal functions, include/require, class methods and procedural functions." style="position:relative;top:-20px;left:10px;width:301px;height:19px"></div>'
+						'<img src="img/gradient_internal.png" title="internal functions" height="20" width="'+Math.floor(data.breakdown['internal']/breakdown_sum*300)+'">'+
+						'<img src="img/gradient_include.png" title="include/require" height="20" width="'+Math.floor(data.breakdown['include']/breakdown_sum*300)+'">'+
+						'<img src="img/gradient_class.png" title="class methods" height="20" width="'+Math.floor(data.breakdown['class']/breakdown_sum*300)+'">'+
+						'<img src="img/gradient_procedural.png" title="procedural functions" height="20" width="'+Math.floor(data.breakdown['procedural']/breakdown_sum*300)+'">'+
+						'<img src="img/gradient_right.png" height="20" width="10">'
 					);
 
 					$("#hello_message").hide();
@@ -405,6 +404,7 @@
 			<div id="version_info">&nbsp;</div>
 			<?php endif?>
 			Copyright © 2008-2011 Jacob Oettinger &amp; Joakim Nygård. <a href="http://github.com/jokkedk/webgrind/">webgrind homepage</a>
+			<a href="http://github.com/alpha0010/webgrind/">dev fork</a>
 		</div>
 	</div>
 </body>

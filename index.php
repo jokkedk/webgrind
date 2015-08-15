@@ -169,9 +169,11 @@ try {
         break;
 
         case 'version_info':
-            header('Content-type: application/json');
             $response = @file_get_contents('http://alpha0010.github.io/webgrind/webgrindupdate.json?version='.Webgrind_Config::$webgrindVersion);
-            echo $response;
+            if ($response) {
+                header('Content-type: application/json');
+                echo $response;
+            }
         break;
 
         case 'clear_files':

@@ -28,7 +28,7 @@ class Webgrind_Config extends Webgrind_MasterConfig {
      * Image type of graph to output
      * Can be png or svg
      */
-    static $graphImageType = 'png';
+    static $graphImageType = 'svg';
 
     static $defaultTimezone = 'Europe/Copenhagen';
     static $dateFormat = 'Y-m-d H:i:s';
