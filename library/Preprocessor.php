@@ -51,6 +51,11 @@ class Webgrind_Preprocessor
         if (!$out)
             throw new Exception('Could not open '.$outFile.' for writing.');
 
+        // If possible, use the binary preprocessor
+        if (self::binaryParse($inFile, $outFile)) {
+            return;
+        }
+
         $proxyFunctions = array_flip(Webgrind_Config::$proxyFunctions);
         $proxyQueue = array();
         $nextFuncNr = 0;
@@ -61,7 +66,7 @@ class Webgrind_Preprocessor
         // Read information into memory
         while (($line = fgets($in))) {
             if (substr($line,0,3)==='fl=') {
-                // Found invocation of function. Read functionname
+                // Found invocation of function. Read function name
                 fscanf($in,"fn=%[^\n\r]s",$function);
                 $function = self::getCompressedName($function, false);
                 // Special case for ENTRY_POINT - it contains summary header
@@ -193,7 +198,8 @@ class Webgrind_Preprocessor
      * @param int $isFile True if this is a filename line (since files and functions have their own symbol tables)
      * @return void
      **/
-    static function getCompressedName($name, $isFile) {
+    static function getCompressedName($name, $isFile)
+    {
         global $compressedNames;
         if (!preg_match("/\((\d+)\)(.+)?/", $name, $matches)) {
             return $name;
@@ -203,6 +209,29 @@ class Webgrind_Preprocessor
             $compressedNames[$isFile][$functionIndex] = trim($matches[2]);
         }
         return $compressedNames[$isFile][$functionIndex];
+    }
+
+    /**
+     * Extract information from $inFile and store in preprocessed form in $outFile
+     * using the (~20x) faster binary preprocessor
+     *
+     * @param string $inFile Callgrind file to read
+     * @param string $outFile File to write preprocessed data to
+     * @return bool True if binary preprocessor was executed
+     */
+    static function binaryParse($inFile, $outFile)
+    {
+        $preprocessor = Webgrind_Config::$binaryPreprocessor;
+        if (!is_executable($preprocessor)) {
+            return false;
+        }
+
+        $cmd = escapeshellarg($preprocessor).' '.escapeshellarg($inFile).' '.escapeshellarg($outFile);
+        foreach (Webgrind_Config::$proxyFunctions as $function) {
+            $cmd .= ' '.escapeshellarg($function);
+        }
+        exec($cmd);
+        return true;
     }
 
 }

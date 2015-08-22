@@ -117,4 +117,32 @@ class Webgrind_Config extends Webgrind_MasterConfig {
         }
         return realpath(sys_get_temp_dir()).'/';
     }
+
+    /**
+     * Binary version of the preprocessor (for faster preprocessing)
+     *
+     * If the proper tools are installed and the bin dir is writeable for php,
+     * automatically compile it (when necessary).
+     * Automatic compilation disabled if `bin/make-failed` exists.
+     * Run `make` in the webgrind root directory to manually compile.
+     */
+    static function getBinaryPreprocessor() {
+        $localBin = __DIR__.'/bin/';
+        $makeFailed = $localBin.'make-failed';
+        if (is_writable($localBin) && !file_exists($makeFailed)) {
+            $make = '/usr/bin/make';
+            if (is_executable($make)) {
+                $cwd = getcwd();
+                chdir(__DIR__);
+                exec($make, $output, $retval);
+                chdir($cwd);
+                if ($retval != 0) {
+                    touch($makeFailed);
+                }
+            } else {
+                touch($makeFailed);
+            }
+        }
+        return $localBin.'preprocessor';
+    }
 }

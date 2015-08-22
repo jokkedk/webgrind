@@ -149,9 +149,9 @@ try {
             }
 
             if (Webgrind_Config::$graphImageType == 'svg') {
-                header("Content-Type: image/svg+xml");
+                header('Content-Type: image/svg+xml');
             } else {
-                header("Content-Type: image/".Webgrind_Config::$graphImageType);
+                header('Content-Type: image/'.Webgrind_Config::$graphImageType);
             }
 
             $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.'.Webgrind_Config::$graphImageType;
@@ -217,7 +217,7 @@ function get($param, $default=false) {
     return (isset($_GET[$param])? $_GET[$param] : $default);
 }
 
-function costCmp($a, $b){
+function costCmp($a, $b) {
     $a = $a['summedSelfCostRaw'];
     $b = $b['summedSelfCostRaw'];
 
