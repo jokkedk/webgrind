@@ -221,7 +221,7 @@ class Webgrind_Preprocessor
      */
     static function binaryParse($inFile, $outFile)
     {
-        $preprocessor = Webgrind_Config::$binaryPreprocessor;
+        $preprocessor = Webgrind_Config::getBinaryPreprocessor();
         if (!is_executable($preprocessor)) {
             return false;
         }
