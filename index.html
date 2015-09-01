@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Webgrind by alpha0010</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Webgrind</h1>
+        <p>Xdebug Profiling Web Frontend in PHP</p>
+
+        <p class="view"><a href="https://github.com/alpha0010/webgrind">View the Project on GitHub <small>alpha0010/webgrind</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/alpha0010/webgrind/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/alpha0010/webgrind/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/alpha0010/webgrind">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>
+<a id="webgrind" class="anchor" href="#webgrind" aria-hidden="true"><span class="octicon octicon-link"></span></a>Webgrind</h2>
+
+<hr>
+
+<p>Webgrind is a <a href="http://www.xdebug.org">Xdebug</a> profiling web frontend in PHP5. It implements a subset of the features of <a href="http://kcachegrind.sourceforge.net/html/Home.html">kcachegrind</a> and installs in seconds and works on all platforms. For quick'n'dirty optimizations it does the job.</p>
+
+<p>It is possible that a larger number of kcachegrind features will be implemented in the future, bringing webgrind closer to completing one of the <a href="http://wiki.php.net/gsoc/2008#xdebug_profiling_web_frontend">suggested PHP Google Summer of Code 2008</a>. At this point nothing has been planned, though.</p>
+
+<h3>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h3>
+
+<hr>
+
+<ul>
+<li>Super simple, cross platform installation - obviously :)</li>
+<li>Track time spent in functions by self cost or inclusive cost. Inclusive cost is time inside function + calls to other functions.</li>
+<li>See if time is spent in internal or user functions.</li>
+<li>See where any function was called from and which functions it calls.</li>
+<li>Generate a call graph using <a href="https://github.com/jrfonseca/gprof2dot">gprof2dot.py</a>
+</li>
+</ul>
+
+<p>Suggestions for improvements and new features are more than welcome - this is just a start.</p>
+
+<p>Mailing list is available through the <a href="http://groups.google.com/group/webgrind-general/topics">webgrind google group</a>.</p>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
+
+<hr>
+
+<ol>
+<li>Download webgrind</li>
+<li>Unzip package to favourite path accessible by webserver</li>
+<li>Load webgrind in browser and start profiling</li>
+<li>(Optional) under linux, run <code>make</code> in the unzipped folder to enable faster preprocessing</li>
+</ol>
+
+<p>See the <a href="https://github.com/jokkedk/webgrind/wiki/Installation">Installation Wiki page</a> for more.</p>
+
+<h3>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h3>
+
+<hr>
+
+<p>Webgrind is written by <a href="http://jokke.dk">Joakim Nygård</a> and <a href="http://oettinger.dk">Jacob Oettinger</a>. It would not have been possible without the great tool that Xdebug is thanks to <a href="http://www.derickrethans.nl">Derick Rethans</a>.</p>
+
+<p>This project is a development fork of the <a href="https://github.com/jokkedk/webgrind">stalled upstream</a>.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/alpha0010">alpha0010</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
