@@ -186,38 +186,31 @@ class Webgrind_Reader
     }
 
     /**
-     * Returns array of defined headers
-     *
-     * @return array Headers in format array('header name'=>'header value')
-     */
-    function getHeaders() {
-        if ($this->headers==null) { // Cache headers
-            $this->seek($this->headersPos);
-            $this->headers['runs'] = 0;
-            while ($line=$this->readLine()) {
-                $parts = explode(': ',$line);
-                if ($parts[0] == 'summary') {
-                    $this->headers['runs']++;
-                    if (isset($this->headers['summary']))
-                        $this->headers['summary'] += $parts[1];
-                    else
-                        $this->headers['summary'] = $parts[1];
-                } else {
-                    $this->headers[$parts[0]] = $parts[1];
-                }
-            }
-        }
-        return $this->headers;
-    }
-
-    /**
      * Returns value of a single header
      *
      * @return string Header value
      */
     function getHeader($header) {
-        $headers = $this->getHeaders();
-        return isset($headers[$header]) ? $headers[$header] : '';
+        if ($this->headers==null) { // Cache headers
+            $this->seek($this->headersPos);
+            $this->headers = array(
+                'runs'    => 0,
+                'summary' => '',
+                'cmd'     => '',
+                'creator' => '',
+            );
+            while ($line=$this->readLine()) {
+                $parts = explode(': ',$line);
+                if ($parts[0] == 'summary') {
+                    $this->headers['runs']++;
+                    $this->headers['summary'] += $parts[1];
+                } else {
+                    $this->headers[$parts[0]] = $parts[1];
+                }
+            }
+        }
+
+        return $this->headers[$header];
     }
 
     /**
