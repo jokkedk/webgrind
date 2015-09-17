@@ -1,5 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-	"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -7,45 +6,40 @@
 	<script src="js/jquery.scrollTo.js" type="text/javascript" charset="utf-8"></script>
 	<link rel="stylesheet" type="text/css" href="styles/style.css">
 	<title>
-		webgrind - fileviewer: <?php echo $file?>
+		webgrind - fileviewer: <?=$file?>
 	</title>
 	<script type="text/javascript" charset="utf-8">
-		$(document).ready(function() { 
-			$('div#'+location.hash.substr(1)).addClass('line_emph');
+		$(document).ready(function() {
+			if($('#line_emph').length > 0) $.scrollTo($('#line_emph')[0].getBoundingClientRect().top + document.body.scrollTop - 100 + 'px');
 		});
-
 	</script>
-	
 </head>
 <body>
-    <div id="head">
-        <div id="logo">
-            <h1>webgrind<sup style="font-size:10px">v<?php echo Webgrind_Config::$webgrindVersion?></sup></h1>
-            <p>profiling in the browser</p>
-        </div>
-        <div style="clear:both;"></div>
-    </div>
-    <div id="main">
-    	<h2><?php echo $file?></h2>
-        <br>
-        <?php if ($message==''):?>
-            <?php $source = highlight_file($file, true); ?>
-    	<table border="0">
-            <tr>
-                <td align="right" valign="top"><code>
-                <?php 
-                foreach ($lines = explode('<br />', $source) as $num => $line) {
-                    $num++;
-                    echo "<span class='num' name='line$num' id='line$num'>$num</span>";
-                }
-                ?>
-                </code></td>
-                <td valign="top" nowrap="nowrap"><?php echo $source; ?></td>
-            </tr>
-    	</table>    	
-        <?php else:?>
-        	<p><b><?php echo $message?></b></p>
-        <?php endif?>
-    </div>
+<div id="head">
+	<div id="logo">
+		<h1>webgrind<sup style="font-size:10px">v<?=Webgrind_Config::$webgrindVersion?></sup></h1>
+		<p>profiling in the browser</p>
+	</div>
+	<div style="clear:both;"></div>
+</div>
+<div id="main">
+	<h2 style="margin-bottom: 0px;"><?=$file?></h2>
+	<?if ($message==''):?>
+		<table border="0"><tr>
+				<td>
+					<span class="num">
+						<pre style="margin-top:0; margin-bottom:0;"><?=$lines?></pre>
+					</span>
+				</td>
+				<td style="padding-top:14px;">
+					<code style="overflow-x: auto; white-space: nowrap">
+						<pre style="margin-top:0; margin-bottom:0;"><?=$code?></pre>
+					</code>
+				</td>
+			</tr></table>
+	<?else:?>
+		<p><b><?=$message?></b></p>
+	<?endif?>
+</div>
 </body>
 </html>
