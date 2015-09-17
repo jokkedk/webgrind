@@ -6,7 +6,6 @@ require('Preprocessor.php');
  * Class handling access to data-files(original and preprocessed) for webgrind.
  * @author Jacob Oettinger
  * @author Joakim Nygård
- * @author Kotlyarov Nikolay
  */
 class Webgrind_FileHandler {
     private static $singleton = null;

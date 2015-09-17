@@ -10,7 +10,6 @@
  * @see     http://valgrind.org/docs/manual/cl-format.html
  * @package Webgrind
  * @author  Jacob Oettinger
- * @author  Kotlyarov Nikolay
  **/
 class Webgrind_Preprocessor {
 

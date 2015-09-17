@@ -5,7 +5,6 @@
  *
  * @package Webgrind
  * @author  Jacob Oettinger
- * @author  Kotlyarov Nikolay
  **/
 class Webgrind_Reader {
     /**

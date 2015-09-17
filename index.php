@@ -3,7 +3,6 @@
 /**
  * @author Jacob Oettinger
  * @author Joakim Nygård
- * @author Kotlyarov Nikolay
  */
 class Webgrind_MasterConfig {
     static $webgrindVersion = '1.1';
