@@ -54,24 +54,46 @@ class Webgrind_Preprocessor
 		$nextFuncNr = 0;
 		$functions = array();
 		$headers = array();
-		$calls = array();
-		
+		$nameCompression = false;
+		$fn = [];
+		$fl = [];
 		
 		// Read information into memory
 		while(($line = fgets($in))){
 			if(substr($line,0,3)==='fl='){
 				// Found invocation of function. Read functionname
 				list($function) = fscanf($in,"fn=%[^\n\r]s");
+				if($nameCompression) {
+					$matches = [];
+					preg_match('/^\(([\d]+)\)\s{0,1}(.*)/', $function, $matches);
+					if(isset($fn[$matches[1]])) {
+						$function = $fn[$matches[1]];
+					}else{
+						$function = $matches[2];
+						$fn[$matches[1]] = $function;
+					}
+				}
+				$filename = substr(trim($line),3);
+				if($nameCompression) {
+					$matches = [];
+					preg_match('/^\(([\d]+)\)\s{0,1}(.*)/', $filename, $matches);
+					if(isset($fl[$matches[1]])) {
+						$filename = $fl[$matches[1]];
+					}else{
+						$filename = $matches[2];
+						$fl[$matches[1]] = $filename;
+					}
+				}
 				if(!isset($functions[$function])){
 					$functions[$function] = array(
-                        'filename'              => substr(trim($line),3), 
-                        'invocationCount'       => 0,
-                        'nr'                    => $nextFuncNr++,
-                        'count'                 => 0,
-                        'summedSelfCost'        => 0,
-                        'summedInclusiveCost'   => 0,
-                        'calledFromInformation' => array(),
-                        'subCallInformation'    => array()
+						'filename'		=> $filename,
+						'invocationCount'	=> 0,
+						'nr'			=> $nextFuncNr++,
+						'count'			=> 0,
+						'summedSelfCost'	=> 0,
+						'summedInclusiveCost'	=> 0,
+						'calledFromInformation'	=> array(),
+						'subCallInformation'	=> array()
 					);
 				} 
 				$functions[$function]['invocationCount']++;
@@ -90,6 +112,10 @@ class Webgrind_Preprocessor
 				
 				// Found call to function. ($function should contain function call originates from)
 				$calledFunctionName = substr(trim($line),4);
+				if($nameCompression) {
+					$calledFunctionName = $fn[trim($calledFunctionName, '()')];
+				}
+
 				// Skip call line
 				fgets($in);
 				// Cost line
@@ -109,11 +135,13 @@ class Webgrind_Preprocessor
 				
 				$functions[$function]['subCallInformation'][$calledFunctionName.':'.$lnr]['callCount']++;
 				$functions[$function]['subCallInformation'][$calledFunctionName.':'.$lnr]['summedCallCost'] += $cost;
-				
-				
 			} else if(strpos($line,': ')!==false){
 				// Found header
 				$headers[] = $line;
+				if (substr($line, 0, 8) == 'creator:') {
+					$creatorVersion = preg_replace('/[^0-9\.]/', '', substr($line, 9));
+					$nameCompression = ($creatorVersion >= '2.3');
+				}
 			}
 		}
 			
