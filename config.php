@@ -44,7 +44,7 @@ class Webgrind_Config extends Webgrind_MasterConfig {
     /**
      * Path to graphviz dot executable
      */
-    static $dotExecutable = '/usr/local/bin/dot';
+    static $dotExecutable = '/usr/bin/dot';
 
     /**
      * sprintf compatible format for generating links to source files.

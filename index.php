@@ -123,7 +123,6 @@ try {
 
         case 'fileviewer':
             $file = get('file');
-            $line = get('line');
 
             if ($file && $file!='') {
                 $message = '';
@@ -148,12 +147,6 @@ try {
                 $dataFile = $files[0]['filename'];
             }
 
-            if (Webgrind_Config::$graphImageType == 'svg') {
-                header('Content-Type: image/svg+xml');
-            } else {
-                header('Content-Type: image/'.Webgrind_Config::$graphImageType);
-            }
-
             $filename = Webgrind_Config::storageDir().$dataFile.'-'.$showFraction.Webgrind_Config::$preprocessedSuffix.'.'.Webgrind_Config::$graphImageType;
             if (!file_exists($filename)) {
                 // Add enclosing quotes if needed
@@ -163,7 +156,23 @@ try {
                         $item = '"'.$item.'"';
                     }
                 }
-                shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction.' -f callgrind '.Webgrind_Config::xdebugOutputDir().''.$dataFile.' | '.Webgrind_Config::$dotExecutable.' -T'.Webgrind_Config::$graphImageType.' -o ' . $filename);
+                shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction
+                           .' -f callgrind '.Webgrind_Config::xdebugOutputDir().$dataFile.' | '
+                           .Webgrind_Config::$dotExecutable.' -T'.Webgrind_Config::$graphImageType.' -o '.$filename);
+            }
+
+            if (!file_exists($filename)) {
+                $file = $filename;
+                $message = 'Unable to generate <u>'.$file.'</u> via python: <u>'.Webgrind_Config::$pythonExecutable
+                          .'</u> and dot: <u>'.Webgrind_Config::$dotExecutable.'</u>. Please update config.php.';
+                require 'templates/fileviewer.phtml';
+                break;
+            }
+
+            if (Webgrind_Config::$graphImageType == 'svg') {
+                header('Content-Type: image/svg+xml');
+            } else {
+                header('Content-Type: image/'.Webgrind_Config::$graphImageType);
             }
             readfile($filename);
         break;
