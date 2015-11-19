@@ -1,5 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-	"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -41,10 +40,19 @@
 				<tr>
 					<td align="right" valign="top"><code>
 						<?php
-						//Strip code and first span
+						// Strip code and first span
 						$hl = highlight_file($file, true);
 						$code = substr($hl, 36, -15);
-						//Split lines
+						// Wrap missing spans
+						$code = preg_replace(
+							array('#([^>])<span#', '#</span>([^<])#'),
+							array('\1</span><span', '</span><span>\1'),
+							$code
+						);
+						if ($code[0] != '<') {
+							$code = '<span>'.$code;
+						}
+						// Split lines
 						$lines = explode('<br />', $code);
 
 						foreach ($lines as $num => $line) {
@@ -67,7 +75,7 @@
 
 							echo "<code id='line$num' class='line'>$openSpan$line</code>";
 
-							if (preg_match('#.*(<span[^>]+>)#', $line, $matches)) {
+							if (preg_match('#.*(<span[^>]*>)#', $line, $matches)) {
 								$openSpan = $matches[1];
 							}
 						}
