@@ -288,7 +288,10 @@ private:
             name.erase(0, idx + 2);
             compressedNames[isFile][functionIndex] = name;
         } else {
-            name = compressedNames[isFile][functionIndex];
+            std::map<int, std::string>::iterator nmIt = compressedNames[isFile].find(functionIndex);
+            if (nmIt != compressedNames[isFile].end()) {
+                name = nmIt->second; // should always exist for valid files
+            }
         }
     }
 

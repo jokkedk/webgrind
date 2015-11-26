@@ -205,8 +205,10 @@ class Webgrind_Preprocessor
             return $name;
         }
         $functionIndex = $matches[1];
-        if (!isset($compressedNames[$isFile][$functionIndex]) || isset($matches[2])) {
+        if (isset($matches[2])) {
             $compressedNames[$isFile][$functionIndex] = trim($matches[2]);
+        } else if (!isset($compressedNames[$isFile][$functionIndex])) {
+            return $name; // should not happen - is file valid?
         }
         return $compressedNames[$isFile][$functionIndex];
     }
