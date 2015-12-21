@@ -15,7 +15,7 @@
 		var currentDataFile = null;
 		var callInfoLoaded = new Array();
 		var disableAjaxBlock = false;
-		function getOptions(specificFile){
+		function getOptions(specificFile) {
 			var options = new Object();
 			options.dataFile = specificFile || $("#dataFile").val();
 			options.costFormat = $('#costFormat').val();
@@ -65,7 +65,16 @@
 					$("#trace_view").show();
 
 					$("#function_table").trigger('update');
-					$("#function_table").trigger("sorton",[[[4,1]]]);
+					<?php
+					$sortCol = 0;
+					foreach (Webgrind_Config::$tableFields as $idx => $field) {
+						if (strpos($field, 'Cost') !== FALSE) {
+							$sortCol = 3 + $idx;
+							break;
+						}
+					}
+					?>
+					$("#function_table").trigger("sorton",[[[<?php echo $sortCol?>,1]]]);
 
 					$('#callfilter').trigger('keyup');
 					if (window.location.hash.length > 2)
@@ -214,10 +223,18 @@
 							<div class="callinfo_area" id="callinfo_area_'+data.nr+'"></div> \
 						</td> \
 						<td>'+openLink+'</td> \
-						<td class="nr">'+data.invocationCount+'</td> \
-						<td class="nr">'+data.summedSelfCost+'</td> \
-						<td class="nr">'+sprintf("%.2f", data.summedSelfCost/data.invocationCount)+'</td> \
-						<td class="nr">'+data.summedInclusiveCost+'</td> \
+						<?php
+						$dataCodes = array(
+							'Invocation Count'       => 'data.invocationCount',
+							'Total Self Cost'        => 'data.summedSelfCost',
+							'Average Self Cost'      => 'sprintf("%.2f", data.summedSelfCost/data.invocationCount)',
+							'Total Inclusive Cost'   => 'data.summedInclusiveCost',
+							'Average Inclusive Cost' => 'sprintf("%.2f", data.summedInclusiveCost/data.invocationCount)',
+						);
+						foreach (Webgrind_Config::$tableFields as $field) {
+							echo "<td class=\"nr\">'+$dataCodes[$field]+'</td> \\\n\t\t\t\t\t\t";
+						}
+						?>
 					</tr> \
 			';
 		}
@@ -387,10 +404,9 @@
 						<th> </th>
 						<th><span>Function</span></th>
 						<th> </th>
-						<th><span>Invocation Count</span></th>
-						<th><span>Total Self Cost</span></th>
-						<th><span>Average Self Cost</span></th>
-						<th><span>Total Inclusive Cost</span></th>
+						<?php foreach(Webgrind_Config::$tableFields as $field):?>
+						<th><span><?php echo $field?></span></th>
+						<?php endforeach;?>
 					</tr>
 				</thead>
 				<tbody>

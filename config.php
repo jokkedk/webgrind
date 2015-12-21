@@ -77,6 +77,17 @@ class Webgrind_Config extends Webgrind_MasterConfig {
     );
     //static $proxyFunctions = array(); // do not skip any functions
 
+    /**
+     * Specify which fields display, and the order to display them. Uncomment
+     * entries to enable, move entries to change order.
+     */
+    static $tableFields = array(
+        'Invocation Count',
+        'Total Self Cost',
+        //'Average Self Cost',
+        'Total Inclusive Cost',
+        //'Average Inclusive Cost',
+    );
 
     #########################
     # BELOW NOT FOR EDITING #
