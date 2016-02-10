@@ -72,19 +72,17 @@ try {
                     $functions[$i]['nr'] = $i;
                     $functions[$i]['humanKind'] = $humanKind;
                 }
-
             }
             usort($functions,'costCmp');
 
             $remainingCost = $shownTotal*get('showFraction');
 
             $result['functions'] = array();
-            foreach($functions as $function){
-
+            foreach ($functions as $function) {
                 $remainingCost -= $function['summedSelfCostRaw'];
                 $function['file'] = urlencode($function['file']);
                 $result['functions'][] = $function;
-                if($remainingCost<0)
+                if ($remainingCost<0)
                     break;
             }
             $result['summedInvocationCount'] = $reader->getFunctionCount();
@@ -164,8 +162,8 @@ try {
                     }
                 }
                 shell_exec(Webgrind_Config::$pythonExecutable.' library/gprof2dot.py -n '.$showFraction
-                           .' -f callgrind '.Webgrind_Config::xdebugOutputDir().$dataFile.' | '
-                           .Webgrind_Config::$dotExecutable.' -T'.Webgrind_Config::$graphImageType.' -o '.$filename);
+                           .' -f callgrind '.escapeshellarg(Webgrind_Config::xdebugOutputDir().$dataFile).' | '
+                           .Webgrind_Config::$dotExecutable.' -T'.Webgrind_Config::$graphImageType.' -o '.escapeshellarg($filename));
             }
 
             if (!file_exists($filename)) {
