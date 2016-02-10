@@ -4,6 +4,13 @@
  * @author Joakim Nygård
  */
 
+// Handle static files with PHP built-in webserver
+if (PHP_SAPI == 'cli-server') {
+    if (is_file(realpath(__DIR__ . $_SERVER['REQUEST_URI']))) {
+        return false;
+    }
+}
+
 class Webgrind_MasterConfig
 {
     static $webgrindVersion = '1.3';
