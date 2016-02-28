@@ -17,7 +17,7 @@ class Webgrind_Config extends Webgrind_MasterConfig {
 	* If empty, will use system tmp folder or xdebug tmp
 	*/
 	static $storageDir = '';
-	static $profilerDir = '/tmp';
+	static $profilerDir = '/var/www/tmp';
 	
 	/**
 	* Suffix for preprocessed files
