@@ -173,3 +173,9 @@ a.load_invocations {
 	border: 1px solid #333;
 	padding: 2px;
 }
+
+#explanation {}
+#explanation ul {
+	list-style-type: none;
+	padding: 0;
+}
