@@ -1,10 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-	"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<title>webgrind</title>
 	<link rel="stylesheet" type="text/css" href="styles/style.css">
+	<link rel="shortcut icon" type="image/ico" href="favicon.ico">
 	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery.blockUI.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery.tablesorter.js" type="text/javascript" charset="utf-8"></script>
@@ -15,7 +15,7 @@
 		var currentDataFile = null;
 		var callInfoLoaded = new Array();
 		var disableAjaxBlock = false;
-		function getOptions(specificFile){
+		function getOptions(specificFile) {
 			var options = new Object();
 			options.dataFile = specificFile || $("#dataFile").val();
 			options.costFormat = $('#costFormat').val();
@@ -23,21 +23,21 @@
 			options.hideInternals = $('#hideInternals').attr('checked') ? 1 : 0;
 			return options;
 		}
-		
-		function update(specificFile){
+
+		function update(specificFile) {
 			vars = getOptions(specificFile);
 			vars.op = 'function_list';
 			$.getJSON("index.php",
 				vars,
-				function(data){
-				    if (data.error) {
-				        $("#hello_message").html(data.error);
-				        $("#hello_message").show();
-				        return;
-				    }
+				function(data) {
+					if (data.error) {
+						$("#hello_message").html(data.error);
+						$("#hello_message").show();
+						return;
+					}
 					callInfoLoaded = new Array();
 					$("#function_table tbody").empty();
-					for(i=0;i<data.functions.length;i++){
+					for (i=0; i<data.functions.length; i++) {
 						callInfoLoaded[data.functions[i].nr] = false;
 						$("#function_table tbody").append(functionTableRow(data.functions[i], data.linkToFunctionLine));
 					}
@@ -50,25 +50,35 @@
 					$("#invocation_sum").html(data.summedInvocationCount);
 					$("#runtime_sum").html(data.summedRunTime);
 					$("#runs").html(data.runs);
-					
+
 					var breakdown_sum = data.breakdown['internal']+data.breakdown['procedural']+data.breakdown['class']+data.breakdown['include'];
-                    $("#breakdown").html(
-                        '<img src="img/gradient_left.png" height="20" width="10">'+
-                        '<img src="img/gradient_internal.png" height="20" width="'+Math.floor(data.breakdown['internal']/breakdown_sum*300)+'">'+
-                        '<img src="img/gradient_include.png" height="20" width="'+Math.floor(data.breakdown['include']/breakdown_sum*300)+'">'+
-                        '<img src="img/gradient_class.png" height="20" width="'+Math.floor(data.breakdown['class']/breakdown_sum*300)+'">'+
-                        '<img src="img/gradient_procedural.png" height="20" width="'+Math.floor(data.breakdown['procedural']/breakdown_sum*300)+'">'+
-                        '<img src="img/gradient_right.png" height="20" width="10">'+
-                        '<div title="internal functions, include/require, class methods and procedural functions." style="position:relative;top:-20px;left:10px;width:301px;height:19px"></div>'
-                    );
-					
+					$("#breakdown").html(
+						'<img src="img/gradient_left.png" height="20" width="10">'+
+						'<img src="img/gradient_internal.png" title="internal functions" height="20" width="'+Math.floor(data.breakdown['internal']/breakdown_sum*300)+'">'+
+						'<img src="img/gradient_include.png" title="include/require" height="20" width="'+Math.floor(data.breakdown['include']/breakdown_sum*300)+'">'+
+						'<img src="img/gradient_class.png" title="class methods" height="20" width="'+Math.floor(data.breakdown['class']/breakdown_sum*300)+'">'+
+						'<img src="img/gradient_procedural.png" title="procedural functions" height="20" width="'+Math.floor(data.breakdown['procedural']/breakdown_sum*300)+'">'+
+						'<img src="img/gradient_right.png" height="20" width="10">'
+					);
+
 					$("#hello_message").hide();
 					$("#trace_view").show();
-					
+
 					$("#function_table").trigger('update');
-					$("#function_table").trigger("sorton",[[[4,1]]]);
-					
+					<?php
+					$sortCol = 0;
+					foreach (Webgrind_Config::$tableFields as $idx => $field) {
+						if (strpos($field, 'Cost') !== FALSE) {
+							$sortCol = 3 + $idx;
+							break;
+						}
+					}
+					?>
+					$("#function_table").trigger("sorton",[[[<?php echo $sortCol?>,1]]]);
+
 					$('#callfilter').trigger('keyup');
+					if (window.location.hash.length > 2)
+						openCallInfo(window.location.hash.replace(/[^0-9]/g, ''));
 				}
 			);
 		}
@@ -80,13 +90,13 @@
 			delete vars.hideInternals;
 			window.open('index.php?' + $.param(vars));
 		}
-		
-		function reloadFilelist(){
+
+		function reloadFilelist() {
 			$.getJSON("index.php",
 				{'op':'file_list'},
 				function(data){
 					var options = new Object();
-					for(i=0;i<data.length;i++){
+					for (i=0; i<data.length; i++) {
 						options[data[i]['filename']] = data[i]['invokeUrl']+' ('+data[i]['filename']+')'+' ['+data[i]['filesize']+']';
 					}
 					$("#dataFile").removeOption(/[^0]/);
@@ -95,55 +105,52 @@
 				}
 			);
 		}
-		
-		function loadCallInfo(functionNr){			
+
+		function loadCallInfo(functionNr) {
 			$.getJSON("index.php",
 				{'op':'callinfo_list', 'file':currentDataFile, 'functionNr':functionNr, 'costFormat':$("#costFormat").val()},
-				function(data){
+				function(data) {
 					if (data.error) {
-				        $("#hello_message").html(data.error);
-				        $("#hello_message").show();
-				        return;
-				    }
-				    
-					if(data.calledByHost)
+						$("#hello_message").html(data.error);
+						$("#hello_message").show();
+						return;
+					}
+
+					if (data.calledByHost)
 						$("#callinfo_area_"+functionNr).append('<b>Called from script host</b>');
-					
+
 					insertCallInfo(functionNr, 'sub_calls_table_', 'Calls', data.subCalls);
 					insertCallInfo(functionNr, 'called_from_table_', 'Called From', data.calledFrom);
 
-					
 					callInfoLoaded[functionNr] = true;
+					window.location.hash = "#callinfo_a_"+functionNr;
 				}
-			);				
-		
+			);
 		}
-		
-		function insertCallInfo(functionNr, idPrefix, title, data){
-			if(data.length==0)
+
+		function insertCallInfo(functionNr, idPrefix, title, data) {
+			if (data.length==0)
 				return;
-				
+
 			$("#callinfo_area_"+functionNr).append(callTable(functionNr,idPrefix, title));
-			
+
 			for(i=0;i<data.length;i++){
 				$("#"+idPrefix+functionNr+" tbody").append(callTableRow(i, data[i]));
 			}
-			
+
 			$("#"+idPrefix+functionNr).tablesorter({
 				widgets: ['zebra'],
-				headers: { 
-		            3: { 
-		                sorter: false 
-		            }
-		        }							
+				headers: {
+					3: {
+						sorter: false
+					}
+				}
 			});
 			$("#"+idPrefix+functionNr).bind("sortStart",sortBlock).bind("sortEnd",$.unblockUI);
-			$("#"+idPrefix+functionNr).trigger("sorton",[[[2,1]]]); 				
-				
-			
+			$("#"+idPrefix+functionNr).trigger("sorton",[[[2,1]]]);
 		}
-		
-		function callTable(functionNr, idPrefix, title){
+
+		function callTable(functionNr, idPrefix, title) {
 			return '<table class="tablesorter" id="'+idPrefix+functionNr+'" cellspacing="0"> \
 						<thead><tr><th><span>'+title+'</span></th><th><span>Count</span></th><th><span>Total Call Cost</span></th><th> </th></tr></thead> \
 						<tbody> \
@@ -151,8 +158,8 @@
 					</table> \
 			';
 		}
-		
-		function callTableRow(nr,data){
+
+		function callTableRow(nr, data) {
 			return '<tr> \
 						<td>'
 						+($("#callinfo_area_"+data.functionNr).length ? '<img src="img/right.gif">&nbsp;&nbsp;<a href="javascript:openCallInfo('+data.functionNr+')">'+data.callerFunctionName+'</a>' : '<img src="img/blank.gif">&nbsp;&nbsp;'+data.callerFunctionName)
@@ -161,212 +168,282 @@
 						<td class="nr">'+data.summedCallCost+'</td> \
 						<td><a title="Open file and show line" href="'+sprintf(fileUrlFormat,data.file,data.line)+'" target="_blank"><img src="img/file_line.png" alt="O"></a></td> \
 					</tr>';
-			
 		}
-				
-		function toggleCallInfo(functionNr){
-			if(!callInfoLoaded[functionNr]){
-				loadCallInfo(functionNr);
-			}					
-			
-			$("#callinfo_area_"+functionNr).toggle();
-			current = $("#fold_marker_"+functionNr).get(0).src;
-			if(current.substr(current.lastIndexOf('/')+1) == 'right.gif')
-				$("#fold_marker_"+functionNr).get(0).src = 'img/down.gif';
-			else
-				$("#fold_marker_"+functionNr).get(0).src = 'img/right.gif';
+
+		function toggleCallInfo(functionNr) {
+			var $ciar = $("#callinfo_area_"+functionNr);
+			var fmimg = $("#fold_marker_"+functionNr).get(0);
+			var current = $("#fold_marker_"+functionNr).get(0).src;
+			if ($ciar.is(":visible")) {
+				$ciar.hide();
+				fmimg.src = 'img/right.gif';
+			} else {
+				if (!callInfoLoaded[functionNr]) {
+					loadCallInfo(functionNr);
+				} else {
+					window.location.hash = "#callinfo_a_"+functionNr;
+				}
+				$ciar.show();
+				fmimg.src = 'img/down.gif';
+			}
 		}
-		
+
 		function openCallInfo(functionNr) {
 			var areaEl = $("#callinfo_area_"+functionNr);
 			if (areaEl.length) {
-    			if (areaEl.is(":hidden")) toggleCallInfo(functionNr);
-    			window.scrollTo(0, areaEl.parent().offset().top);
-    		}
+				if (areaEl.is(":hidden")) {
+					toggleCallInfo(functionNr);
+				} else {
+					window.location.hash = "#callinfo_a_"+functionNr;
+				}
+				window.scrollTo(0, areaEl.parent().offset().top);
+				setTimeout(function(){areaEl.parent().parent().css({'background-color' : '#DFECE0'})}, 50);
+				setTimeout(function(){areaEl.parent().parent().css({'background-color' : ''})}, 600);
+			}
 		}
-		
-		function functionTableRow(data, linkToFunctionLine){
+
+		function functionTableRow(data, linkToFunctionLine) {
 			if (data.file=='php%3Ainternal') {
-			    openLink = '<a title="Lookup function" href="<?php echo ini_get('xdebug.manual_url')?>/'+data.functionName.substr(5)+'" target="_blank"><img src="img/file.png" alt="O"></a>';;
+				openLink = '<a title="Lookup function" href="http://php.net/'+data.functionName.substr(5).replace("->",".")+'" target="_blank"><img src="img/file.png" alt="O"></a>';
 			} else {
-			    if(linkToFunctionLine){
-			        openLink = '<a title="Open file and show line" href="'+sprintf(fileUrlFormat, data.file, data.line)+'" target="_blank"><img src="img/file_line.png" alt="O"></a>';
-		        } else {
-		            openLink = '<a title="Open file" href="'+sprintf(fileUrlFormat, data.file, -1)+'" target="_blank"><img src="img/file.png" alt="O"></a>';
-		        }
+				if (linkToFunctionLine) {
+					openLink = '<a title="Open file and show line" href="'+sprintf(fileUrlFormat, data.file, data.line)+'" target="_blank"><img src="img/file_line.png" alt="O"></a>';
+				} else {
+					openLink = '<a title="Open file" href="'+sprintf(fileUrlFormat, data.file, -1)+'" target="_blank"><img src="img/file.png" alt="O"></a>';
+				}
 			}
 			return '<tr> \
-			            <td> \
-			                <img src="img/call_'+data.humanKind+'.png" title="'+data.humanKind+'"> \
-			            </td> \
 						<td> \
-							<a href="javascript:toggleCallInfo('+data.nr+')"> \
+							<img src="img/call_'+data.humanKind+'.png" title="'+data.humanKind+'"> \
+						</td> \
+						<td> \
+							<a id="callinfo_a_'+data.nr+'" href="javascript:toggleCallInfo('+data.nr+')"> \
 								<img id="fold_marker_'+data.nr+'" src="img/right.gif">&nbsp;&nbsp;'+data.functionName+' \
 							</a> \
 							<div class="callinfo_area" id="callinfo_area_'+data.nr+'"></div> \
 						</td> \
 						<td>'+openLink+'</td> \
-						<td class="nr">'+data.invocationCount+'</td> \
-						<td class="nr">'+data.summedSelfCost+'</td> \
-						<td class="nr">'+data.summedInclusiveCost+'</td> \
+						<?php
+						$dataCodes = array(
+							'Invocation Count'       => 'data.invocationCount',
+							'Total Self Cost'        => 'data.summedSelfCost',
+							'Average Self Cost'      => 'sprintf("%.2f", data.summedSelfCost/data.invocationCount)',
+							'Total Inclusive Cost'   => 'data.summedInclusiveCost',
+							'Average Inclusive Cost' => 'sprintf("%.2f", data.summedInclusiveCost/data.invocationCount)',
+						);
+						foreach (Webgrind_Config::$tableFields as $field) {
+							echo "<td class=\"nr\">'+$dataCodes[$field]+'</td> \\\n\t\t\t\t\t\t";
+						}
+						?>
 					</tr> \
 			';
 		}
-		
-		function sortBlock(){
+
+		function sortBlock() {
 			$.blockUI('<div class="block_box"><h1>Sorting...</h1></div>');
 		}
-		
-		function loadBlock(){
-			if(!disableAjaxBlock)
+
+		function loadBlock() {
+			if (!disableAjaxBlock)
 				$.blockUI();
 			disableAjaxBlock = false;
 		}
-		
-		function checkVersion(){
+
+		function checkVersion() {
 			disableAjaxBlock = true;
 			$.getJSON("index.php",
 				{'op':'version_info'},
-				function(data){
-					if(data.latest_version><?php echo Webgrind_Config::$webgrindVersion?>){
+				function(data) {
+					if (data.latest_version><?php echo Webgrind_Config::$webgrindVersion?>) {
 						$("#version_info").append('Version '+data.latest_version+' is available for <a href="'+data.download_url+'">download</a>.');
 					} else {
 						$("#version_info").append('You have the latest version.');
 					}
 
 				}
-			);			
-			
+			);
 		}
-		
-		$(document).ready(function() { 
-			
+
+		function clearFiles() {
+			$.getJSON("index.php",
+				{'op':'clear_files'},
+				function(data) {
+					if (data.error) {
+						$("#hello_message").html(data.error);
+						$("#hello_message").show();
+						return;
+					}
+					reloadFilelist();
+				}
+			);
+		}
+
+
+		$(document).ready(function() {
 			$.blockUI.defaults.pageMessage = '<div class="block_box"><h1>Loading...</h1><p>Loading information from server. If the callgrind file is large this may take some time.</p></div>';
-			$.blockUI.defaults.overlayCSS =  { backgroundColor: '#fff', opacity: '0' }; 
+			$.blockUI.defaults.overlayCSS =  { backgroundColor: '#fff', opacity: '0' };
 			$.blockUI.defaults.fadeIn = 0;
 			$.blockUI.defaults.fadeOut = 0;
 			$().ajaxStart(loadBlock).ajaxStop($.unblockUI);
 			$("#function_table").tablesorter({
 				widgets: ['zebra'],
 				sortInitialOrder: 'desc',
-				headers: { 
-		            1: { 
-		                sorter: false 
-		            },
-		            2: {
-		                sorter: false
-		            }
-		        }
+				headers: {
+					1: {
+						sorter: false
+					},
+					2: {
+						sorter: false
+					}
+				}
 			});
 			$("#function_table").bind("sortStart",sortBlock).bind("sortEnd",$.unblockUI);
-			
-			if(document.location.hash) {
-				update(document.location.hash.substr(1));
+
+			if (document.location.hash) {
+				update();
 			}
-			
+
 			<?php if(Webgrind_Config::$checkVersion):?>
 			setTimeout(checkVersion,100);
 			<?php endif?>
-			
+
+			$("#negateFilter").change(function(){
+				$('#callfilter').trigger('keyup');
+			});
+
 			$("#callfilter").keyup(function(){
-			    var reg = new RegExp($(this).val(), 'i');
-			    var row;
-			    $('#function_table').children('tbody').children('tr').each(function(){
-			        row = $(this);
-			        if (row.find('td:eq(1) a').text().match(reg))
-			            row.css('display', 'table-row');
-			        else
-			            row.css('display', 'none');
-			    });
-    		});
+				var reg = new RegExp($(this).val(), 'i');
+				var negate = $("#negateFilter").is(':checked');
+				var row;
+				$('#function_table').children('tbody').children('tr').each(function(){
+					row = $(this);
+					if (!row.find('td:eq(1) a').text().match(reg) == negate)
+						row.css('display', 'table-row');
+					else
+						row.css('display', 'none');
+				});
+			});
+
+			$( '#explanation' ).hide();
+			$( '#breakdown' ).hover( function() {
+				$( '#explanation' ).show();
+			}, function() {
+				$( '#explanation' ).hide();
+			} );
+
+			if (typeof window.addEventListener == "function") {
+				window.addEventListener("hashchange", function(e) {
+					if (window.location.hash.length > 2)
+						openCallInfo(window.location.hash.replace(/[^0-9]/g, ''));
+				});
+			}
 		});
-		
 	</script>
 </head>
 <body>
-    <div id="head">
-        <div id="logo">
-            <h1>webgrind<sup style="font-size:10px">v<?php echo Webgrind_Config::$webgrindVersion?></sup></h1>
-            <p>profiling in the browser</p>
-        </div>
-        <div id="options">
-            <form method="get" onsubmit="update();return false;">
-            	<div style="float:right;margin-left:10px">
-            	    <input type="submit" value="update">
-            	</div>
-            	<div style="float:right;">
-            		<label style="margin:0 5px">in</label>
-            		<select id="costFormat" name="costFormat">
-            		    <option value="percent" <?php echo (Webgrind_Config::$defaultCostformat=='percent') ? 'selected' : ''?>>percent</option>
-            		    <option value="msec" <?php echo (Webgrind_Config::$defaultCostformat=='msec') ? 'selected' : ''?>>milliseconds</option>
-            		    <option value="usec" <?php echo (Webgrind_Config::$defaultCostformat=='usec') ? 'selected' : ''?>>microseconds</option>
-            		</select>
-            	</div>
-            	<div style="float:right;">
-            		<label style="margin:0 5px">of</label>
-            		<select id="dataFile" name="dataFile" style="width:200px">
-            			<option value="0">Auto (newest)</option>
-            			<?php foreach(Webgrind_FileHandler::getInstance()->getTraceList() as $trace):?>
-                            <!-- <option value="<?php echo $trace['filename']?>"><?php echo $trace['invokeUrl']?> (<?php echo $trace['filename']?>) [<?php echo $trace['filesize']?>]</option> -->
-                            <option value="<?php echo $trace['filename']?>"><?php echo str_replace(array('%i','%f','%s','%m'),array($trace['invokeUrl'],$trace['filename'],$trace['filesize'],$trace['mtime']),Webgrind_Config::$traceFileListFormat); ?></option>
-            			<?php endforeach;?>
-            		</select>
-        			<img class="list_reload" src="img/reload.png" onclick="reloadFilelist()">
-            	</div>
-            	<div style="float:right">
-            		<label style="margin:0 5px">Show</label>
-            		<select id="showFraction" name="showFraction">
-            			<?php for($i=100; $i>0; $i-=10):?>
-            			<option value="<?php echo $i/100?>" <?php if ($i==Webgrind_Config::$defaultFunctionPercentage):?>selected="selected"<?php endif;?>><?php echo $i?>%</option>
-            			<?php endfor;?>
-            		</select>
-            	</div>
-            	<div style="clear:both;"></div>    	
-            	<div style="margin:0 70px">
-            	    <input type="checkbox" name="hideInternals" value="1" <?php echo (Webgrind_Config::$defaultHideInternalFunctions==1) ? 'checked' : ''?> id="hideInternals">
-            	    <label for="hideInternals">Hide PHP functions</label>
-            	</div>
-            </form>
-        </div>
-        
-        <div style="clear:both;"></div>
-    </div>
-    <div id="main">
-        
-        <div id="trace_view">
-        	<div style="float:left;">
-        	    <h2 id="invoke_url"></h2>
-        	    <span id="data_file"></span> @ <span id="mtime"></span>
-        	</div>
-        	<div style="float:right;">
-        	    <div id="breakdown" style="margin-bottom:5px;width:320px;height:20px"></div>
-        	    <span id="invocation_sum"></span> different functions called in <span id="runtime_sum"></span> milliseconds (<span id="runs"></span> runs, <span id="shown_sum"></span> shown)
+	<div id="head">
+		<div id="logo">
+			<h1>webgrind<sup style="font-size:10px">v<?php echo Webgrind_Config::$webgrindVersion?></sup></h1>
+			<p>profiling in the browser</p>
+		</div>
+		<div id="options">
+			<form method="get" onsubmit="window.location.hash='';update();return false;">
+				<div style="float:right;margin-left:10px">
+					<input type="submit" value="update">
+				</div>
+				<div style="float:right;">
+					<label style="margin:0 5px">in</label>
+					<select id="costFormat" name="costFormat">
+						<option value="percent" <?php echo (Webgrind_Config::$defaultCostformat=='percent') ? 'selected' : ''?>>percent</option>
+						<option value="msec" <?php echo (Webgrind_Config::$defaultCostformat=='msec') ? 'selected' : ''?>>milliseconds</option>
+						<option value="usec" <?php echo (Webgrind_Config::$defaultCostformat=='usec') ? 'selected' : ''?>>microseconds</option>
+					</select>
+				</div>
+				<div style="float:right;">
+					<label style="margin:0 5px">of</label>
+					<select id="dataFile" name="dataFile" style="width:200px">
+						<option value="0">Auto (newest)</option>
+						<?php foreach(Webgrind_FileHandler::getInstance()->getTraceList() as $trace):?>
+							<!-- <option value="<?php echo $trace['filename']?>"><?php echo $trace['invokeUrl']?> (<?php echo $trace['filename']?>) [<?php echo $trace['filesize']?>]</option> -->
+							<option value="<?php echo $trace['filename']?>"><?php echo str_replace(array('%i','%f','%s','%m'),array($trace['invokeUrl'],$trace['filename'],$trace['filesize'],$trace['mtime']),Webgrind_Config::$traceFileListFormat); ?></option>
+						<?php endforeach;?>
+					</select>
+					<img class="list_reload" src="img/reload.png" onclick="reloadFilelist()">
+				</div>
+				<div style="float:right">
+					<label style="margin:0 5px">Show</label>
+					<select id="showFraction" name="showFraction">
+						<?php foreach(array(100, 99.7, 98, 95, 90, 82, 68, 50, 26) as $i):?>
+						<option value="<?php echo $i/100?>" <?php if ($i==Webgrind_Config::$defaultFunctionPercentage):?>selected="selected"<?php endif;?>><?php echo $i?>%</option>
+						<?php endforeach;?>
+					</select>
+				</div>
+				<div style="clear:both;"></div>
+				<div style="margin:0 70px">
+					<input type="checkbox" name="hideInternals" value="1" <?php echo (Webgrind_Config::$defaultHideInternalFunctions==1) ? 'checked' : ''?> id="hideInternals">
+					<label for="hideInternals">Hide PHP functions</label>
+					<input type="button" value="clear files" onclick="clearFiles()">
+				</div>
+			</form>
+		</div>
+
+		<div style="clear:both;"></div>
+	</div>
+	<div id="main">
+
+		<div id="trace_view">
+			<div style="float:left;">
+				<h2 id="invoke_url"></h2>
+				<span id="data_file"></span> @ <span id="mtime"></span>
+			</div>
+			<div style="float:right;">
+				<div id="breakdown" style="margin-bottom:5px;width:320px;height:20px"></div>
+				<span id="invocation_sum"></span> different functions called in <span id="runtime_sum"></span> milliseconds (<span id="runs"></span> runs, <span id="shown_sum"></span> shown)
 				<div><input type="button" name="graph" value="Show Call Graph" onclick="showCallGraph()"></div>
-        	</div>
-        	<div style="clear:both"></div>
-        	Filter: <input type="text" style="width:150px" id="callfilter"> (regex too)
-        	<table class="tablesorter" id="function_table" cellspacing="0">
-        		<thead>
-        		    <tr>
-        		        <th> </th>
-        		        <th><span>Function</span></th>
-        		        <th> </th>
-        		        <th><span>Invocation Count</span></th>
-        		        <th><span>Total Self Cost</span></th>
-        		        <th><span>Total Inclusive Cost</span></th>
-        		    </tr>
-        		</thead>
-        		<tbody>
-        		</tbody>
-        	</table>
-        </div>
-        <h2 id="hello_message"><?php echo $welcome?></h2>
-        <div id="footer">
-            <?php if(Webgrind_Config::$checkVersion):?>
-        	<div id="version_info">&nbsp;</div>
-        	<?php endif?>
-            Copyright © 2008-2011 Jacob Oettinger &amp; Joakim Nygård. <a href="http://github.com/jokkedk/webgrind/">webgrind homepage</a>
-        </div>
-    </div>
+				<div id="explanation">
+					<h3>Explanation</h3>
+					<ul>
+						<li>
+							<img src="img/gradient_internal.png" height="20" width="10" alt="Color Blue" /> Blue are PHP internal functions.
+						</li>
+						<li>
+							<img src="img/gradient_include.png" height="20" width="10" alt="Color Grey"> Grey is time taken to include, or require .php files.
+						</li>
+						<li><img src="img/gradient_class.png" height="20" width="10" alt="Color Green"> Green are your class methods.
+						</li>
+						<li>
+							<img src="img/gradient_procedural.png" height="20" width="10" alt="Color Orange"> Orange are procedural functions.
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div style="clear:both"></div>
+			Filter: <input type="text" style="width:150px" id="callfilter"> (regex too)
+			<input type="checkbox" name="negateFilter" value="0" id="negateFilter">
+			<label for="negateFilter">Invert filter</label>
+			<table class="tablesorter" id="function_table" cellspacing="0">
+				<thead>
+					<tr>
+						<th> </th>
+						<th><span>Function</span></th>
+						<th> </th>
+						<?php foreach(Webgrind_Config::$tableFields as $field):?>
+						<th><span><?php echo $field?></span></th>
+						<?php endforeach;?>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<h2 id="hello_message"><?php echo $welcome?></h2>
+		<div id="footer">
+			<?php if(Webgrind_Config::$checkVersion):?>
+			<div id="version_info">&nbsp;</div>
+			<?php endif?>
+			Copyright © 2008-2011 Jacob Oettinger &amp; Joakim Nygård. <a href="http://github.com/jokkedk/webgrind/">webgrind homepage</a>
+			<a href="http://github.com/alpha0010/webgrind/">dev fork</a>
+		</div>
+	</div>
 </body>
 </html>
