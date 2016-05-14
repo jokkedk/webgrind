@@ -183,7 +183,7 @@ try {
         break;
 
         case 'version_info':
-            $response = @file_get_contents('http://alpha0010.github.io/webgrind/webgrindupdate.json?version='.Webgrind_Config::$webgrindVersion);
+            $response = @file_get_contents('http://jokkedk.github.io/webgrind/webgrindupdate.json?version='.Webgrind_Config::$webgrindVersion);
             if ($response) {
                 header('Content-type: application/json');
                 echo $response;
