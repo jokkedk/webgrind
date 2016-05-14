@@ -24,6 +24,9 @@ Installation
   2. Unzip package to favourite path accessible by webserver.
   3. Load webgrind in browser and start profiling
 
+For faster preprocessing under linux, give write access to the `bin` subdirectory
+or execute `make` in the unzipped folder (requires GCC).
+
 See the [Installation Wiki page](https://github.com/jokkedk/webgrind/wiki/Installation) for more
 
 Credits
