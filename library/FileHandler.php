@@ -51,7 +51,7 @@ class Webgrind_FileHandler
      * @return void string
      */
     private function getInvokeUrl($file) {
-        if (preg_match('/.webgrind$/', $file))
+        if (preg_match('/\.webgrind$/', $file))
             return 'Webgrind internal';
 
         // Grab name of invoked file.
