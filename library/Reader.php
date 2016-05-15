@@ -95,7 +95,7 @@ class Webgrind_Reader
      * Returns number of functions
      * @return int
      */
-    function getFunctionCount(){
+    function getFunctionCount() {
         return count($this->functionPos);
     }
 
@@ -138,7 +138,7 @@ class Webgrind_Reader
      * @param $calledFromNr int Called from position nr
      * @return array Called from information
      */
-    function getCalledFromInfo($functionNr, $calledFromNr){
+    function getCalledFromInfo($functionNr, $calledFromNr) {
         $this->seek(
             $this->functionPos[$functionNr]
             + self::NR_SIZE

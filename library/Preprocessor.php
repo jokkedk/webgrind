@@ -65,9 +65,9 @@ class Webgrind_Preprocessor
 
         // Read information into memory
         while (($line = fgets($in))) {
-            if (substr($line,0,3)==='fl=') {
+            if (substr($line, 0, 3) === 'fl=') {
                 // Found invocation of function. Read function name
-                fscanf($in,"fn=%[^\n\r]s",$function);
+                fscanf($in, "fn=%[^\n\r]s", $function);
                 $function = self::getCompressedName($function, false);
                 // Special case for ENTRY_POINT - it contains summary header
                 if (self::ENTRY_POINT == $function) {
@@ -76,7 +76,7 @@ class Webgrind_Preprocessor
                     fgets($in);
                 }
                 // Cost line
-                fscanf($in,"%d %d",$lnr,$cost);
+                fscanf($in, "%d %d", $lnr, $cost);
 
                 if (!isset($functionNames[$function])) {
                     $index = $nextFuncNr++;
@@ -85,7 +85,7 @@ class Webgrind_Preprocessor
                         $proxyQueue[$index] = array();
                     }
                     $functions[$index] = array(
-                        'filename'              => self::getCompressedName(substr(trim($line),3), true),
+                        'filename'              => self::getCompressedName(substr(trim($line), 3), true),
                         'line'                  => $lnr,
                         'invocationCount'       => 1,
                         'summedSelfCost'        => $cost,
@@ -101,11 +101,11 @@ class Webgrind_Preprocessor
                 }
             } else if (substr($line,0,4)==='cfn=') {
                 // Found call to function. ($function/$index should contain function call originates from)
-                $calledFunctionName = self::getCompressedName(substr(trim($line),4), false);
+                $calledFunctionName = self::getCompressedName(substr(trim($line), 4), false);
                 // Skip call line
                 fgets($in);
                 // Cost line
-                fscanf($in,"%d %d",$lnr,$cost);
+                fscanf($in, "%d %d", $lnr, $cost);
 
                 // Current function is a proxy -> skip
                 if (isset($proxyQueue[$index])) {
@@ -144,7 +144,7 @@ class Webgrind_Preprocessor
                 $functions[$index]['subCallInformation'][$calledKey]['callCount']++;
                 $functions[$index]['subCallInformation'][$calledKey]['summedCallCost'] += $cost;
 
-            } else if (strpos($line,': ')!==false) {
+            } else if (strpos($line, ': ') !== false) {
                 // Found header
                 $headers[] = $line;
             }
@@ -156,7 +156,7 @@ class Webgrind_Preprocessor
         $functionCount = sizeof($functions);
         fwrite($out, pack(self::NR_FORMAT.'*', self::FILE_FORMAT_VERSION, 0, $functionCount));
         // Make room for function addresses
-        fseek($out,self::NR_SIZE*$functionCount, SEEK_CUR);
+        fseek($out, self::NR_SIZE*$functionCount, SEEK_CUR);
         $functionAddresses = array();
         foreach ($functions as $index=>$function) {
             $functionAddresses[] = ftell($out);
@@ -177,14 +177,14 @@ class Webgrind_Preprocessor
         $headersPos = ftell($out);
         // Write headers
         foreach ($headers as $header) {
-            fwrite($out,$header);
+            fwrite($out, $header);
         }
 
         // Write addresses
-        fseek($out,self::NR_SIZE, SEEK_SET);
+        fseek($out, self::NR_SIZE, SEEK_SET);
         fwrite($out, pack(self::NR_FORMAT, $headersPos));
         // Skip function count
-        fseek($out,self::NR_SIZE, SEEK_CUR);
+        fseek($out, self::NR_SIZE, SEEK_CUR);
         // Write function addresses
         foreach ($functionAddresses as $address) {
             fwrite($out, pack(self::NR_FORMAT, $address));
