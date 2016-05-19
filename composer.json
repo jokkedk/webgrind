@@ -1,0 +1,25 @@
+{
+    "name": "jokkedk/webgrind",
+    "type": "application",
+    "description": "Webgrind is a Xdebug profiling web frontend in PHP5. It implements a subset of the features of kcachegrind and installs in seconds and works on all platforms. For quick'n'dirty optimizations it does the job.",
+    "keywords": ["webgrind","xdebug","debug"],
+    "homepage": "https://github.com/jokkedk/webgrind",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Joakim Nygård",
+            "email": "joakim@scienta.dk",
+            "homepage": "http://jokke.dk/"
+        },
+        {
+            "name": "Jacob Oettinger",
+            "email": "jacob@oettinger.dk",
+            "homepage": "http://oettinger.dk/"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/jokkedk/webgrind/issues",
+        "wiki": "https://github.com/jokkedk/webgrind/wiki",
+        "source": "https://github.com/jokkedk/webgrind"
+    }
+}
