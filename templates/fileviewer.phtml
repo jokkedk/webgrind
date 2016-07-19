@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/style.css">
 	<link rel="shortcut icon" type="image/ico" href="favicon.ico">
 	<title>
-		webgrind - fileviewer: <?php echo $file?>
+		<?php echo pathinfo($file, PATHINFO_FILENAME)?> - webgrind - fileviewer: <?php echo $file?>
 	</title>
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
