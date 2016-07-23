@@ -28,3 +28,5 @@ See the [Installation Wiki page](https://github.com/jokkedk/webgrind/wiki/Instal
 Credits
 -------
 Webgrind is written by [Joakim Nygård](http://jokke.dk) and [Jacob Oettinger](http://oettinger.dk). It would not have been possible without the great tool that Xdebug is thanks to [Derick Rethans](http://www.derickrethans.nl).
+
+Current maintainer is [Micah Ng](https://github.com/alpha0010).
