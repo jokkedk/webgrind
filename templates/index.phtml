@@ -73,8 +73,12 @@
 							break;
 						}
 					}
+					$maxCol = 3 + count(Webgrind_Config::$tableFields);
 					?>
-					$("#function_table").trigger("sorton",[[[<?php echo $sortCol?>,1]]]);
+					var sortCol = parseInt(document.cookie.split("=")[1]);
+					if ( isNaN(sortCol) || sortCol < 3 || sortCol > <?php echo $maxCol?> )
+						sortCol = <?php echo $sortCol?>;
+					$("#function_table").trigger("sorton",[[[sortCol,1]]]);
 
 					$('#callfilter').trigger('keyup');
 					if (window.location.hash.length > 2)
@@ -241,6 +245,7 @@
 
 		function sortBlock() {
 			$.blockUI('<div class="block_box"><h1>Sorting...</h1></div>');
+			document.cookie = "webgrind=" + this.config.sortList[0][0];
 		}
 
 		function loadBlock() {
