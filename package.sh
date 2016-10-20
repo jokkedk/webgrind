@@ -1,15 +1,17 @@
 #!/bin/sh
-if [ "$1" == "" ]
+if [ -z $1 ]
 then
   echo "Usage: package.sh <tag>"
 else
 	mkdir package_tmp
 	rm webgrind-$1.zip
 	cd package_tmp
-	svn export https://webgrind.googlecode.com/svn/tags/$1 webgrind
-	svn export https://webgrind.googlecode.com/svn/wiki webgrind/docs
-	for i in webgrind/docs/*.wiki; do mv "$i" "${i%.wiki}.txt"; done
-	rm webgrind/package.sh
+	git clone https://github.com/jokkedk/webgrind.git
+	cd webgrind
+	git checkout $1
+	cd ..
+	git clone https://github.com/jokkedk/webgrind.wiki.git webgrind/docs
+	rm -rf webgrind/.git webgrind/docs/.git webgrind/package.sh webgrind/bin/.gitignore
 	zip -r ../webgrind-$1.zip webgrind
 	cd ..
 	rm -rf package_tmp
