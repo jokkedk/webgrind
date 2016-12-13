@@ -195,7 +195,7 @@ class Webgrind_Reader
             $this->seek($this->headersPos);
             $this->headers = array(
                 'runs'    => 0,
-                'summary' => '',
+                'summary' => 0,
                 'cmd'     => '',
                 'creator' => '',
             );
@@ -203,7 +203,7 @@ class Webgrind_Reader
                 $parts = explode(': ',$line);
                 if ($parts[0] == 'summary') {
                     $this->headers['runs']++;
-                    $this->headers['summary'] += $parts[1];
+	                $this->headers['summary'] += $parts[1];
                 } else {
                     $this->headers[$parts[0]] = $parts[1];
                 }
