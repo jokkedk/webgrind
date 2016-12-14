@@ -195,7 +195,7 @@ class Webgrind_Reader
             $this->seek($this->headersPos);
             $this->headers = array(
                 'runs'    => 0,
-                'summary' => '',
+                'summary' => 0,
                 'cmd'     => '',
                 'creator' => '',
             );
