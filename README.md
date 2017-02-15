@@ -20,6 +20,10 @@ Installation
   2. Unzip package to favourite path accessible by webserver.
   3. Load webgrind in browser and start profiling
 
+Alternatively, on PHP 5.4+ run the application using the PHP built-in server
+with the command `composer serve` or `php -S 0.0.0.0:8080 index.php` if you
+are not using Composer.
+
 For faster preprocessing under linux, give write access to the `bin` subdirectory
 or execute `make` in the unzipped folder (requires GCC).
 
