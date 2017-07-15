@@ -1,0 +1,5 @@
+/js/jquery.js linguist-vendored
+/js/jquery.*.js linguist-vendored
+/js/sprintf.js linguist-vendored
+
+/library/gprof2dot.py linguist-vendored
