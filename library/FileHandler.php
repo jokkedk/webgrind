@@ -78,8 +78,6 @@ class Webgrind_FileHandler
         $list = preg_grep($format,scandir($dir));
         $files = array();
 
-        $scriptFilename = $_SERVER['SCRIPT_FILENAME'];
-
         # Moved this out of loop to run faster
         if (function_exists('xdebug_get_profiler_filename'))
             $selfFile = realpath(xdebug_get_profiler_filename());
@@ -119,8 +117,6 @@ class Webgrind_FileHandler
     private function getPrepFiles($format, $dir) {
         $list = preg_grep($format,scandir($dir));
         $files = array();
-
-        $scriptFilename = $_SERVER['SCRIPT_FILENAME'];
 
         foreach ($list as $file) {
             $absoluteFilename = $dir.$file;
