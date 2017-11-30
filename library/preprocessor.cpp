@@ -2,9 +2,14 @@
  * This is ported from Preprocessor.php for performance.
  */
 
-// #include <Winsock2.h>
+#ifndef _WIN32
 #include <arpa/inet.h>
+#else
+#include <Winsock2.h>
+#pragma comment(lib, "ws2_32.lib")
+#endif
 #include <algorithm>
+#include <cctype>
 #include <fstream>
 #include <map>
 #include <queue>
