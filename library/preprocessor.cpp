@@ -127,7 +127,7 @@ public:
         std::string buffer;
         int lnr;
         int cost;
-        int index;
+        int funcIndex;
 
         // Read information into memory
         while (std::getline(in, line)) {
@@ -150,17 +150,17 @@ public:
 
                 std::map<std::string, int>::const_iterator fnItr = functionNames.find(function);
                 if (fnItr == functionNames.end()) {
-                    index = nextFuncNr++;
-                    functionNames[function] = index;
+                    funcIndex = nextFuncNr++;
+                    functionNames[function] = funcIndex;
                     if (std::binary_search(proxyFunctions.begin(), proxyFunctions.end(), function)) {
-                        proxyQueue[index];
+                        proxyQueue[funcIndex];
                     }
                     line.erase(0, 3);
                     getCompressedName(line, true);
                     functions.push_back(FunctionData(line, lnr, cost));
                 } else {
-                    index = fnItr->second;
-                    FunctionData& funcData = functions[index];
+                    funcIndex = fnItr->second;
+                    FunctionData& funcData = functions[funcIndex];
                     funcData.invocationCount++;
                     funcData.summedSelfCost += cost;
                     funcData.summedInclusiveCost += cost;
@@ -178,7 +178,7 @@ public:
                 int calledIndex = functionNames[line];
 
                 // Current function is a proxy -> skip
-                std::map< int, std::queue<ProxyData> >::iterator pqItr = proxyQueue.find(index);
+                std::map< int, std::queue<ProxyData> >::iterator pqItr = proxyQueue.find(funcIndex);
                 if (pqItr != proxyQueue.end()) {
                     pqItr->second.push(ProxyData(calledIndex, lnr, cost));
                     continue;
@@ -194,14 +194,14 @@ public:
                     pqItr->second.pop();
                 }
 
-                functions[index].summedInclusiveCost += cost;
+                functions[funcIndex].summedInclusiveCost += cost;
 
-                CallData& calledFromData = functions[calledIndex].getCalledFromData(index, lnr);
+                CallData& calledFromData = functions[calledIndex].getCalledFromData(funcIndex, lnr);
 
                 calledFromData.callCount++;
                 calledFromData.summedCallCost += cost;
 
-                CallData& subCallData = functions[index].getSubCallData(calledIndex, lnr);
+                CallData& subCallData = functions[funcIndex].getSubCallData(calledIndex, lnr);
 
                 subCallData.callCount++;
                 subCallData.summedCallCost += cost;
@@ -229,7 +229,7 @@ public:
         out.seekp(NR_SIZE * functions.size(), std::ios::cur);
         std::vector<uint32_t> functionAddresses;
         for (size_t index = 0; index < functions.size(); ++index) {
-            functionAddresses.push_back(out.tellp());
+            functionAddresses.push_back((uint32_t)out.tellp());
             FunctionData& function = functions[index];
             writeBuff.push_back(function.line);
             writeBuff.push_back(function.summedSelfCost);
@@ -261,7 +261,7 @@ public:
 
             out << function.filename << '\n' << reFunctionNames[index] << '\n';
         }
-        size_t headersPos = out.tellp();
+        size_t headersPos = (size_t)out.tellp();
         // Write headers
         for (std::vector<std::string>::const_iterator hItr = headers.begin();
              hItr != headers.end(); ++hItr) {
