@@ -2,17 +2,21 @@
  * This is ported from Preprocessor.php for performance.
  */
 
-#ifndef _WIN32
-#include <arpa/inet.h>
-#else
+#if !defined(__BYTE_ORDER__) || __BYTE_ORDER__ != __ORDER_LITTLE_ENDIAN__
+#ifdef _WIN32
 #include <Winsock2.h>
 #pragma comment(lib, "ws2_32.lib")
-#endif
+#else
+#include <arpa/inet.h>
+#endif // _WIN32
+#endif // !defined(__BYTE_ORDER__) || __BYTE_ORDER__ != __ORDER_LITTLE_ENDIAN__
+
 #include <algorithm>
 #include <cctype>
 #include <fstream>
 #include <map>
 #include <queue>
+#include <stdint.h>
 #include <string>
 #include <vector>
 
@@ -309,8 +313,11 @@ private:
         buffer.clear();
     }
 
-    uint32_t toLittleEndian32(uint32_t value)
+    inline uint32_t toLittleEndian32(uint32_t value)
     {
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        return value;
+#else
         value = htonl(value);
         uint32_t result = 0;
         result |= (value & 0x000000FF) << 24;
@@ -318,6 +325,7 @@ private:
         result |= (value & 0x00FF0000) >>  8;
         result |= (value & 0xFF000000) >> 24;
         return result;
+#endif
     }
 
     std::map<int, std::string> compressedNames [2];
