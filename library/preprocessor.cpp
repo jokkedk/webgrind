@@ -13,6 +13,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <cstdio>
 #include <fstream>
 #include <map>
 #include <queue>
@@ -74,7 +75,8 @@ inline CallData& insertGetOrderedMap(int functionNr, int line, std::map<int, siz
 
 struct FunctionData
 {
-    FunctionData(const std::string& _filename, int _line, int _cost) :
+    FunctionData(const std::string& _name, std::string& _filename, int _line, int _cost) :
+        name(_name),
         filename(_filename),
         line(_line),
         invocationCount(1),
@@ -82,6 +84,7 @@ struct FunctionData
         summedInclusiveCost(_cost)
     {}
 
+    std::string name;
     std::string filename;
     int line;
     int invocationCount;
@@ -123,7 +126,6 @@ public:
 
         std::map< int, std::queue<ProxyData> > proxyQueue;
         int nextFuncNr = 0;
-        std::map<std::string, int> functionNames;
         std::vector<FunctionData> functions;
         std::vector<std::string> headers;
 
@@ -140,7 +142,7 @@ public:
                 std::string function;
                 std::getline(in, function);
                 function.erase(0, 3);
-                getCompressedName(function, false);
+                int funcCompressedId = getCompressedName(function, false);
                 // Special case for ENTRY_POINT - it contains summary header
                 if (function == ENTRY_POINT) {
                     std::getline(in, buffer);
@@ -152,16 +154,16 @@ public:
                 in >> lnr >> cost;
                 std::getline(in, buffer);
 
-                std::map<std::string, int>::const_iterator fnItr = functionNames.find(function);
-                if (fnItr == functionNames.end()) {
+                std::map<int, int>::const_iterator fnItr = funcIndexes.find(funcCompressedId);
+                if (fnItr == funcIndexes.end()) {
                     funcIndex = nextFuncNr++;
-                    functionNames[function] = funcIndex;
+                    funcIndexes[funcCompressedId] = funcIndex;
                     if (std::binary_search(proxyFunctions.begin(), proxyFunctions.end(), function)) {
                         proxyQueue[funcIndex];
                     }
                     line.erase(0, 3);
                     getCompressedName(line, true);
-                    functions.push_back(FunctionData(line, lnr, cost));
+                    functions.push_back(FunctionData(function, line, lnr, cost));
                 } else {
                     funcIndex = fnItr->second;
                     FunctionData& funcData = functions[funcIndex];
@@ -172,14 +174,14 @@ public:
             } else if (line.compare(0, 4, "cfn=") == 0) {
                 // Found call to function. ($function/$index should contain function call originates from)
                 line.erase(0, 4);
-                getCompressedName(line, false); // calledFunctionName
+                int funcCompressedId = getCompressedName(line, false); // calledFunctionName
                 // Skip call line
                 std::getline(in, buffer);
                 // Cost line
                 in >> lnr >> cost;
                 std::getline(in, buffer);
 
-                int calledIndex = functionNames[line];
+                int calledIndex = funcIndexes[funcCompressedId];
 
                 // Current function is a proxy -> skip
                 std::map< int, std::queue<ProxyData> >::iterator pqItr = proxyQueue.find(funcIndex);
@@ -216,12 +218,6 @@ public:
             }
         }
         in.close();
-
-        std::vector<std::string> reFunctionNames(functionNames.size());
-        for (std::map<std::string, int>::const_iterator fnItr = functionNames.begin();
-             fnItr != functionNames.end(); ++fnItr) {
-            reFunctionNames[fnItr->second] = fnItr->first;
-        }
 
         // Write output
         std::vector<uint32_t> writeBuff;
@@ -263,7 +259,7 @@ public:
                 writeBuffer(out, writeBuff);
             }
 
-            out << function.filename << '\n' << reFunctionNames[index] << '\n';
+            out << function.filename << '\n' << function.name << '\n';
         }
         size_t headersPos = (size_t)out.tellp();
         // Write headers
@@ -286,22 +282,40 @@ public:
 
 private:
 
-    void getCompressedName(std::string& name, bool isFile)
+    int getCompressedName(std::string& name, bool isFile)
     {
-        if (name[0] != '(' || !std::isdigit(name[1])) {
-            return;
-        }
-        int functionIndex = std::atoi(name.c_str() + 1);
-        size_t idx = name.find(')');
-        if (idx + 2 < name.length()) {
-            name.erase(0, idx + 2);
-            compressedNames[isFile][functionIndex] = name;
-        } else {
-            std::map<int, std::string>::iterator nmIt = compressedNames[isFile].find(functionIndex);
-            if (nmIt != compressedNames[isFile].end()) {
-                name = nmIt->second; // should always exist for valid files
+        std::map<int, std::string> &names = compressedNames[isFile];
+        std::map<std::string, int> &refs = compressedRefs[isFile];
+
+        if (name[0] == '(' && name.length() > 2 && std::isdigit(name[1])) {
+            int id = std::atoi(name.c_str() + 1);
+            if (names.find(id) == names.end()) {
+                size_t idx = name.find(')');
+                if (idx + 2 < name.length()) {
+                    name.erase(0, idx + 2);
+                }
+
+                names[id] = name;
+                refs[name] = id;
             }
+
+            std::map<int, std::string>::iterator foundName = names.find(id);
+            if (foundName != names.end()) {
+                name = foundName->second;
+            }
+            return id;
         }
+
+        std::map<std::string, int>::iterator foundRef = refs.find(name);
+        if (foundRef != refs.end()) {
+            return foundRef->second;
+        }
+
+        // Not a reference, but let's make one anyway.
+        int id = (int)names.size();
+        names[id] = name;
+        refs[name] = id;
+        return id;
     }
 
     void writeBuffer(std::ostream& out, std::vector<uint32_t>& buffer)
@@ -329,6 +343,10 @@ private:
     }
 
     std::map<int, std::string> compressedNames [2];
+    std::map<std::string, int> compressedRefs [2];
+
+    // Maps a compressed id to a func index.
+    std::map<int, int> funcIndexes;
 };
 
 int main(int argc, char* argv[])
