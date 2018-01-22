@@ -1,6 +1,6 @@
 Webgrind
 ========
-Webgrind is a [Xdebug](http://www.xdebug.org) profiling web frontend in PHP. It implements a subset of the features of [kcachegrind](http://kcachegrind.sourceforge.net/html/Home.html) and installs in seconds and works on all platforms. For quick'n'dirty optimizations it does the job. Here's a screenshot showing the output from profiling:
+Webgrind is an [Xdebug](http://www.xdebug.org) profiling web frontend in PHP. It implements a subset of the features of [kcachegrind](http://kcachegrind.sourceforge.net/html/Home.html) and installs in seconds and works on all platforms. For quick'n'dirty optimizations it does the job. Here's a screenshot showing the output from profiling:
 
 [![](http://jokke.dk/media/2008-webgrind/webgrind_small.png)](http://jokke.dk/media/2008-webgrind/webgrind_large.png)
 
@@ -24,10 +24,11 @@ Alternatively, on PHP 5.4+ run the application using the PHP built-in server
 with the command `composer serve` or `php -S 0.0.0.0:8080 index.php` if you
 are not using Composer.
 
-For faster preprocessing under linux, give write access to the `bin` subdirectory
-or execute `make` in the unzipped folder (requires GCC).
+For faster preprocessing, give write access to the `bin` subdirectory, or compile manually:
+  * Linux / Mac OS X: execute `make` in the unzipped folder (requires GCC or Clang.)
+  * Windows: execute `nmake -f NMakeFile` in the unzipped folder (requires Visual Studio 2015 or higher.)
 
-See the [Installation Wiki page](https://github.com/jokkedk/webgrind/wiki/Installation) for more
+See the [Installation Wiki page](https://github.com/jokkedk/webgrind/wiki/Installation) for more.
 
 Credits
 -------
