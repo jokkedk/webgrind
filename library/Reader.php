@@ -202,8 +202,9 @@ class Webgrind_Reader
             while ($line=$this->readLine()) {
                 $parts = explode(': ',$line);
                 if ($parts[0] == 'summary') {
+                    $subParts = explode(' ', $parts[1])
                     $this->headers['runs']++;
-                    $this->headers['summary'] += $parts[1];
+                    $this->headers['summary'] += $subParts[0];
                 } else {
                     $this->headers[$parts[0]] = $parts[1];
                 }
