@@ -1,0 +1,21 @@
+CXX = cl.exe
+CFLAGS = /O2 /W3 /MT /GS /Gy /EHsc /Zi /nologo /analyze
+SRCS = library/preprocessor.cpp
+OUT = bin\preprocessor.exe
+
+
+all: $(OUT)
+
+help:
+	@echo "Targets:"
+	@echo "  all     - build preprocessor"
+	@echo "  clean   - clear generated binaries"
+	@echo "  help    - show this message\n"
+
+clean:
+	del "$(OUT)" > nul
+
+$(OUT): $(SRCS)
+	cl.exe $(CFLAGS) $(SRCS) /Fe$(OUT)
+
+.PHONY: all help clean

@@ -44,17 +44,17 @@ class Webgrind_Preprocessor
      */
     static function parse($inFile, $outFile)
     {
+        // If possible, use the binary preprocessor
+        if (self::binaryParse($inFile, $outFile)) {
+            return;
+        }
+
         $in = @fopen($inFile, 'rb');
         if (!$in)
             throw new Exception('Could not open '.$inFile.' for reading.');
         $out = @fopen($outFile, 'w+b');
         if (!$out)
             throw new Exception('Could not open '.$outFile.' for writing.');
-
-        // If possible, use the binary preprocessor
-        if (self::binaryParse($inFile, $outFile)) {
-            return;
-        }
 
         $proxyFunctions = array_flip(Webgrind_Config::$proxyFunctions);
         $proxyQueue = array();
@@ -189,6 +189,9 @@ class Webgrind_Preprocessor
         foreach ($functionAddresses as $address) {
             fwrite($out, pack(self::NR_FORMAT, $address));
         }
+
+        fclose($in);
+        fclose($out);
     }
 
     /**
@@ -232,8 +235,8 @@ class Webgrind_Preprocessor
         foreach (Webgrind_Config::$proxyFunctions as $function) {
             $cmd .= ' '.escapeshellarg($function);
         }
-        exec($cmd);
-        return true;
+        exec($cmd, $output, $ret);
+        return $ret == 0;
     }
 
 }

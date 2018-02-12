@@ -140,20 +140,52 @@ class Webgrind_Config extends Webgrind_MasterConfig {
     static function getBinaryPreprocessor() {
         $localBin = __DIR__.'/bin/';
         $makeFailed = $localBin.'make-failed';
-        if (is_writable($localBin) && !file_exists($makeFailed)) {
-            $make = '/usr/bin/make';
-            if (is_executable($make)) {
-                $cwd = getcwd();
-                chdir(__DIR__);
-                exec($make, $output, $retval);
-                chdir($cwd);
-                if ($retval != 0) {
-                    touch($makeFailed);
-                }
+        if (PHP_OS == 'WINNT') {
+            $binary = $localBin.'preprocessor.exe';
+        } else {
+            $binary = $localBin.'preprocessor';
+        }
+
+        if (!file_exists($binary) && is_writable($localBin) && !file_exists($makeFailed)) {
+            if (PHP_OS == 'WINNT') {
+                $success = static::compileBinaryPreprocessorWindows();
             } else {
+                $success = static::compileBinaryPreprocessor();
+            }
+            if (!$success || !file_exists($binary)) {
                 touch($makeFailed);
             }
         }
-        return $localBin.'preprocessor';
+
+        return $binary;
+    }
+
+    static function compileBinaryPreprocessor() {
+        $make = '/usr/bin/make';
+        if (is_executable($make)) {
+            $cwd = getcwd();
+            chdir(__DIR__);
+            exec($make, $output, $retval);
+            chdir($cwd);
+            return $retval == 0;
+        }
+        return false;
+    }
+
+    static function compileBinaryPreprocessorWindows() {
+        if (getenv('VSAPPIDDIR')) {
+            $cwd = getcwd();
+            chdir(__DIR__);
+            exec('call "%VSAPPIDDIR%\..\Tools\vsdevcmd\ext\vcvars.bat" && nmake -f nmakefile', $output, $retval);
+            chdir($cwd);
+            return $retval == 0;
+        } elseif (getenv('VS140COMNTOOLS')) {
+            $cwd = getcwd();
+            chdir(__DIR__);
+            exec('call "%VS140COMNTOOLS%\vsvars32.bat" && nmake -f nmakefile', $output, $retval);
+            chdir($cwd);
+            return $retval == 0;
+        }
+        return false;
     }
 }
