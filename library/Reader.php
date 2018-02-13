@@ -204,7 +204,7 @@ class Webgrind_Reader
                 if ($parts[0] == 'summary') {
                     // According to https://github.com/xdebug/xdebug/commit/926808a6e0204f5835a617caa3581b45f6d82a6c#diff-1a570e993c4d7f2e341ba24905b8b2cdR355
                     // summary now includes time + memory usage, webgrind only tracks the time from the summary
-                    $subParts = explode(' ', $parts[1])
+                    $subParts = explode(' ', $parts[1]);
                     $this->headers['runs']++;
                     $this->headers['summary'] += $subParts[0];
                 } else {
