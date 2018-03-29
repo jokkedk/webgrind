@@ -89,6 +89,8 @@ class Webgrind_Reader
         if ($version!=self::FILE_FORMAT_VERSION)
             throw new Exception('Datafile not correct version. Found '.$version.' expected '.self::FILE_FORMAT_VERSION);
         $this->functionPos = $this->read($functionCount);
+        if (!is_array($this->functionPos))
+            $this->functionPos = [$this->functionPos];
     }
 
     /**
