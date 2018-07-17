@@ -36,6 +36,7 @@ class Webgrind_Config extends Webgrind_MasterConfig {
     static $defaultFunctionPercentage = 90;
     static $defaultHideInternalFunctions = false;
 
+    static $promptConfirmationBeforeDeleteFiles = false;
     /**
      * Path to python executable
      */
