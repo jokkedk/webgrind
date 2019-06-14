@@ -208,7 +208,7 @@ class Webgrind_Reader
                     // summary now includes time + memory usage, webgrind only tracks the time from the summary
                     $subParts = explode(' ', $parts[1]);
                     $this->headers['runs']++;
-                    $this->headers['summary'] += $subParts[0];
+                    $this->headers['summary'] += (double) $subParts[0];
                 } else {
                     $this->headers[$parts[0]] = $parts[1];
                 }
