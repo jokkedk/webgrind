@@ -13,7 +13,7 @@ if (PHP_SAPI == 'cli-server') {
 
 class Webgrind_MasterConfig
 {
-    static $webgrindVersion = '1.5';
+    static $webgrindVersion = '1.6';
 }
 
 require './config.php';
