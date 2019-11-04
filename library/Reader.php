@@ -252,11 +252,14 @@ class Webgrind_Reader
     }
 
     private function readLine() {
-        $result = fgets($this->fp);
-        if ($result)
-            return trim($result);
-        else
-            return $result;
+        // A workaround not requiring auto_detect_line_endings=true
+        while (!feof ($this->fp)) {
+            $result = fgets($this->fp);
+            if ($result && !empty($result = trim($result)))
+                return $result;
+        }
+
+        return false;
     }
 
     private function seek($offset, $whence=SEEK_SET) {
