@@ -210,7 +210,7 @@ class Webgrind_Reader
                     $this->headers['runs']++;
                     $this->headers['summary'] += (double) $subParts[0];
                 } else {
-                    $this->headers[$parts[0]] = $parts[1];
+                    $this->headers[$parts[0]] = $parts[1] ?? 'unknown';
                 }
             }
         }
