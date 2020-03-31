@@ -69,14 +69,23 @@ class Webgrind_Preprocessor
                 // Found invocation of function. Read function name
                 fscanf($in, "fn=%[^\n\r]s", $function);
                 $function = self::getCompressedName($function, false);
-                // Special case for ENTRY_POINT - it contains summary header
+
                 if (self::ENTRY_POINT == $function) {
-                    fgets($in);
-                    $headers[] = fgets($in);
-                    fgets($in);
+                    $buffer = fgets($in);
+                    if(strlen($buffer) > 0 && ctype_digit($buffer[0])) {
+                        // Cost line
+                        sscanf($buffer, "%d %d", $lnr, $cost);
+                    } else {
+                        // Special case for ENTRY_POINT - it contains summary header
+                        $headers[] = fgets($in);
+                        fgets($in);
+                        // Cost line
+                        fscanf($in, "%d %d", $lnr, $cost);
+                    }
+                } else {
+                    // Cost line
+                    fscanf($in, "%d %d", $lnr, $cost);
                 }
-                // Cost line
-                fscanf($in, "%d %d", $lnr, $cost);
 
                 if (!isset($functionNames[$function])) {
                     $index = $nextFuncNr++;

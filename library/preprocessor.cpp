@@ -18,6 +18,7 @@
 #include <map>
 #include <queue>
 #include <stdint.h>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -143,16 +144,27 @@ public:
                 std::getline(in, function);
                 function.erase(0, 3);
                 int funcCompressedId = getCompressedName(function, false);
-                // Special case for ENTRY_POINT - it contains summary header
+
                 if (function == ENTRY_POINT) {
                     std::getline(in, buffer);
-                    std::getline(in, buffer);
-                    headers.push_back(buffer);
+                    if(!buffer.empty() && isdigit(buffer[0])) {
+                        // Cost line
+                        std::istringstream bufferReader(buffer);
+                        bufferReader >> lnr >> cost;
+                    } else {
+                        // Special case for ENTRY_POINT - it contains summary header
+                        std::getline(in, buffer);
+                        headers.push_back(buffer);
+                        std::getline(in, buffer);
+                        // Cost line
+                        in >> lnr >> cost;
+                        std::getline(in, buffer);
+                    }
+                } else {
+                    // Cost line
+                    in >> lnr >> cost;
                     std::getline(in, buffer);
                 }
-                // Cost line
-                in >> lnr >> cost;
-                std::getline(in, buffer);
 
                 std::map<int, int>::const_iterator fnItr = funcIndexes.find(funcCompressedId);
                 if (fnItr == funcIndexes.end()) {
