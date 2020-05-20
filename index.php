@@ -133,7 +133,7 @@ try {
         case 'fileviewer':
             $file = get('file');
 
-            if (!Webgrind_MasterConfig::exposeServerFile($file)) {
+            if (!Webgrind_Config::exposeServerFile($file)) {
                 $message = 'Edit your Webgrind config.php to allow viewing of server files.';
             } else if ($file != '') {
                 $message = '';
