@@ -56,6 +56,19 @@ class Webgrind_Config extends Webgrind_MasterConfig {
     //static $fileUrlFormat = 'file://%1$s'; // ?
 
     /**
+     * enable viewing of server files.
+     * add whatever logic necessary to determine whether a visitor can access a particular file.
+     */
+    //static function exposeServerFile($file) {
+    //    # restore previous behaviour of allowing viewing any accessible files, including those outside the docroot
+    //    return true;
+    //    # limit to web root
+    //    return isset($_SERVER['DOCUMENT_ROOT'])
+    //        && ($file = realpath($file))
+    //        && preg_match('#^' . preg_quote($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR, '#') . '#', $file);
+    //}
+
+    /**
      * format of the trace drop down list
      * default is: invokeurl (tracefile_name) [tracefile_size]
      * the following options will be replaced:
