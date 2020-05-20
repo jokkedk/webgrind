@@ -11,9 +11,13 @@ if (PHP_SAPI == 'cli-server') {
     }
 }
 
-class Webgrind_MasterConfig
+abstract class Webgrind_MasterConfig
 {
     static $webgrindVersion = '1.7';
+
+    static function exposeServerFile($file) {
+        return false;
+    }
 }
 
 require './config.php';
@@ -129,7 +133,9 @@ try {
         case 'fileviewer':
             $file = get('file');
 
-            if ($file && $file!='') {
+            if (!Webgrind_MasterConfig::exposeServerFile($file)) {
+                $message = 'Edit your Webgrind config.php to allow viewing of server files.';
+            } else if ($file != '') {
                 $message = '';
                 if (!file_exists($file)) {
                     $message = $file.' does not exist.';
