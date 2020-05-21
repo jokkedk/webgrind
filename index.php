@@ -133,19 +133,18 @@ try {
         case 'fileviewer':
             $file = get('file');
 
-            if (!Webgrind_Config::exposeServerFile($file)) {
-                $message = 'Edit your Webgrind config.php to allow viewing of server files.';
-            } else if ($file != '') {
-                $message = '';
-                if (!file_exists($file)) {
-                    $message = $file.' does not exist.';
-                } else if (!is_readable($file)) {
-                    $message = $file.' is not readable.';
-                } else if (is_dir($file)) {
-                    $message = $file.' is a directory.';
-                }
-            } else {
+            if ($file == '') {
                 $message = 'No file to view';
+            } else if (!Webgrind_Config::exposeServerFile($file)) {
+                $message = 'The config does not allow you to view this file.';
+            } else if (!file_exists($file)) {
+                $message = $file.' does not exist.';
+            } else if (!is_readable($file)) {
+                $message = $file.' is not readable.';
+            } else if (is_dir($file)) {
+                $message = $file.' is a directory.';
+            } else {
+                $message = '';
             }
             require 'templates/fileviewer.phtml';
         break;
