@@ -30,6 +30,20 @@ For faster preprocessing, give write access to the `bin` subdirectory, or compil
 
 See the [Installation Wiki page](https://github.com/jokkedk/webgrind/wiki/Installation) for more.
 
+Use with Docker
+---------------
+
+Instead of uploading webgrind to a web server or starting a local one, you can use the official Docker image to 
+quickly inspect existing xDebug profiling files. To use the Docker image, run the following command with
+`/path/to/xdebug/files` replaced by the actual path of your profiling files.
+
+```
+docker run -v /path/to/xdebug/files:/tmp -p 80:80 jokkedk/webgrind:latest
+```
+
+Now open `http://localhost` in your browser. After using webgrind you can stop the Docker container by pressing 
+`CTRL / Strg` + `C`.
+
 Credits
 -------
 Webgrind is written by [Joakim Nygård](http://jokke.dk) and [Jacob Oettinger](http://oettinger.dk). It would not have been possible without the great tool that Xdebug is thanks to [Derick Rethans](http://www.derickrethans.nl).
