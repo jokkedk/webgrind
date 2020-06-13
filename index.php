@@ -129,17 +129,15 @@ try {
         case 'fileviewer':
             $file = get('file');
 
-            if ($file && $file!='') {
-                $message = '';
-                if (!file_exists($file)) {
-                    $message = $file.' does not exist.';
-                } else if (!is_readable($file)) {
-                    $message = $file.' is not readable.';
-                } else if (is_dir($file)) {
-                    $message = $file.' is a directory.';
+            $message = 'No file to view.';
+            if ($file) {
+                $message = '<tt>' . htmlspecialchars($file) . '</tt> is not readable. '
+                    . 'Modify <tt>exposeServerFile()</tt> in <tt>webgrind/config.php</tt> to grant access.';
+                $file = Webgrind_Config::exposeServerFile($file);
+                if ($file && is_file($file) && is_readable($file)) {
+                    // Access granted.
+                    $message = '';
                 }
-            } else {
-                $message = 'No file to view';
             }
             require 'templates/fileviewer.phtml';
         break;
