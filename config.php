@@ -39,7 +39,7 @@ class Webgrind_Config extends Webgrind_MasterConfig {
     /**
      * Path to python executable
      */
-    static $pythonExecutable = '/usr/bin/python';
+    static $pythonExecutable = '/usr/bin/python3';
 
     /**
      * Path to graphviz dot executable
@@ -56,17 +56,30 @@ class Webgrind_Config extends Webgrind_MasterConfig {
     //static $fileUrlFormat = 'file://%1$s'; // ?
 
     /**
-     * enable viewing of server files.
-     * add whatever logic necessary to determine whether a visitor can access a particular file.
+     * Enable viewing of server files.
+     *
+     * Add whatever logic necessary to determine whether a visitor can
+     * access a particular file. Access is granted if this function returns
+     * a path to a readable file.
      */
-    //static function exposeServerFile($file) {
-    //    # restore previous behaviour of allowing viewing any accessible files, including those outside the docroot
-    //    return true;
-    //    # limit to web root
-    //    return isset($_SERVER['DOCUMENT_ROOT'])
-    //        && ($file = realpath($file))
-    //        && preg_match('#^' . preg_quote($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR, '#') . '#', $file);
-    //}
+    static function exposeServerFile($file) {
+        // Grant access to all files remapped under the `/host` directory.
+        //$prefix = '/host/';                                    /** DOCKER:ENABLE **/
+        //$file = realpath($prefix . $file);                     /** DOCKER:ENABLE **/
+        //return strncmp($prefix, $file, strlen($prefix)) === 0  /** DOCKER:ENABLE **/
+        //    ? $file                                            /** DOCKER:ENABLE **/
+        //    : false;                                           /** DOCKER:ENABLE **/
+
+        return false; // Deny all access.
+
+        //return $file; // Grant access to all files on server.
+
+        // Limit to web root.
+        //return isset($_SERVER['DOCUMENT_ROOT'])
+        //    && ($file = realpath($file))
+        //    && preg_match('#^' . preg_quote($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR, '#') . '#', $file)
+        //    ? $file : false;
+    }
 
     /**
      * format of the trace drop down list

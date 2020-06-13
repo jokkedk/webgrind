@@ -33,16 +33,18 @@ See the [Installation Wiki page](https://github.com/jokkedk/webgrind/wiki/Instal
 Use with Docker
 ---------------
 
-Instead of uploading webgrind to a web server or starting a local one, you can use the official Docker image to 
+Instead of uploading webgrind to a web server or starting a local one, you can use the official Docker image to
 quickly inspect existing xDebug profiling files. To use the Docker image, run the following command with
 `/path/to/xdebug/files` replaced by the actual path of your profiling files.
 
 ```
-docker run -v /path/to/xdebug/files:/tmp -p 80:80 jokkedk/webgrind:latest
+docker run --rm -v /path/to/xdebug/files:/tmp -p 80:80 jokkedk/webgrind:latest
 ```
 
-Now open `http://localhost` in your browser. After using webgrind you can stop the Docker container by pressing 
+Now open `http://localhost` in your browser. After using webgrind you can stop the Docker container by pressing
 `CTRL / Strg` + `C`.
+
+To use the built-in file viewer, mount the appropriate files under `/host` in the container.
 
 Credits
 -------
