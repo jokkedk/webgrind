@@ -135,7 +135,13 @@ class Webgrind_Config extends Webgrind_MasterConfig {
      * Directory to search for trace files
      */
     static function xdebugOutputDir() {
-        $dir = ini_get('xdebug.profiler_output_dir');
+	$version = phpversion('xdebug');
+	if ($version >= '3.0.0') {
+	    $dir = ini_get('xdebug.output_dir');
+	} else {
+	    $dir = ini_get('xdebug.profiler_output_dir');
+	}
+
         if ($dir=='') // Ini value not defined
             return realpath(Webgrind_Config::$profilerDir).'/';
         return realpath($dir).'/';
