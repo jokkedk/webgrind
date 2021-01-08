@@ -137,15 +137,15 @@ class Webgrind_Config extends Webgrind_MasterConfig {
      * @return string xdebug output directory
      */
     static function xdebugOutputDir() {
-        // grab the Xdebug 3 output dir
+        // grab the Xdebug 3 output dir value
         $dir = ini_get('xdebug.output_dir');
 
-        // if it's empty, check for Xdebug 2
-        if (!empty($dir))
+        // if it's empty, check the Xdebug 2 value
+        if (empty($dir))
             $dir = ini_get('xdebug.profiler_output_dir');
 
-        // Fall back to webgrind config
-        if (!empty($dir)) 
+        // If it's still empty, fall back to webgrind config
+        if (empty($dir)) 
             $dir = Webgrind_Config::$profilerDir;
 
         return realpath($dir).'/';
