@@ -43,6 +43,7 @@
 						$("#function_table tbody").append(functionTableRow(data.functions[i], data.linkToFunctionLine));
 					}
 					currentDataFile = data.dataFile;
+					$("#download_link").attr("href", "index.php?op=download_file&file="+data.dataFile);
 					$("#data_file").html(data.dataFile);
 					$("#invoke_url").html(data.invokeUrl);
 					$(document).attr('title', 'webgrind of '+data.invokeUrl);
@@ -393,7 +394,9 @@
 		<div id="trace_view">
 			<div style="float:left;">
 				<h2 id="invoke_url"></h2>
-				<span id="data_file"></span> @ <span id="mtime"></span>
+				<a id="download_link">
+					<span id="data_file"></span> @ <span id="mtime"></span>
+				</a>
 			</div>
 			<div style="float:right;">
 				<div id="breakdown" style="margin-bottom:5px;width:320px;height:20px"></div>

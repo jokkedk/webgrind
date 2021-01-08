@@ -188,6 +188,22 @@ try {
             }
         break;
 
+        case 'download_file':
+            $file = Webgrind_Config::xdebugOutputDir().get('file');
+
+            if (!$file || !is_file($file) || !is_readable($file)) {
+                break;
+            }
+
+            header("Cache-Control: public");
+            header("Content-Description: File Transfer");
+            header("Content-Disposition: attachment; filename=".get('file'));
+            header("Content-Type: text/plain");
+            header("Content-Transfer-Encoding: binary");
+
+            readfile($file);
+        break;
+
         case 'clear_files':
             $files = Webgrind_FileHandler::getInstance()->getTraceList();
             if (!$files) {
