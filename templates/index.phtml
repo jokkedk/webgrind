@@ -43,7 +43,6 @@
 						$("#function_table tbody").append(functionTableRow(data.functions[i], data.linkToFunctionLine));
 					}
 					currentDataFile = data.dataFile;
-					$("#download_link").attr("href", "index.php?op=download_file&file="+data.dataFile);
 					$("#data_file").html(data.dataFile);
 					$("#invoke_url").html(data.invokeUrl);
 					$(document).attr('title', 'webgrind of '+data.invokeUrl);
@@ -95,6 +94,21 @@
 			delete vars.costFormat;
 			delete vars.hideInternals;
 			window.open('index.php?' + $.param(vars));
+		}
+
+		function downloadFile() {
+			$.getJSON("index.php",
+				{'op':'download_link','file':currentDataFile},
+				function(data){
+					if (data.error) {
+						$("#hello_message").html(data.error);
+						$("#hello_message").show();
+						return;
+					}
+
+					window.location = data.done;
+				}
+			);
 		}
 
 		function reloadFilelist() {
@@ -394,7 +408,7 @@
 		<div id="trace_view">
 			<div style="float:left;">
 				<h2 id="invoke_url"></h2>
-				<a id="download_link">
+				<a id="download_link" onclick="downloadFile()">
 					<span id="data_file"></span> @ <span id="mtime"></span>
 				</a>
 			</div>

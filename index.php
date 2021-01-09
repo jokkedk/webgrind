@@ -188,11 +188,23 @@ try {
             }
         break;
 
-        case 'download_file':
-            $file = Webgrind_Config::xdebugOutputDir().get('file');
+        case 'download_link':
+            $file = Webgrind_Config::exposeServerFile(get('file'));
 
-            if (!$file || !is_file($file) || !is_readable($file)) {
-                break;
+            if (!$file) {
+                sendJson(array('error' => 'No file found or access denied!'));
+                exit;
+            }
+
+            $params = array('op' => 'download_file', 'file' => get('file'));
+            sendJson(array('done' => "?".http_build_query($params)));
+        break;
+
+        case 'download_file':
+            $file = Webgrind_Config::exposeServerFile(get('file'));
+
+            if (!$file) {
+                exit;
             }
 
             header("Cache-Control: public");
