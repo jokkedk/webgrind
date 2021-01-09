@@ -192,7 +192,6 @@ try {
             $file = Webgrind_Config::exposeServerFile(get('file'));
 
             if ($file === false) {
-                http_response_code(404);
                 sendJson(array('error' => 'No file found or access denied!'));
                 exit;
             }
