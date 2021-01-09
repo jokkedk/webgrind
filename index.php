@@ -191,7 +191,7 @@ try {
         case 'download_link':
             $file = Webgrind_Config::exposeServerFile(get('file'));
 
-            if ($file === false) {
+            if (empty($file)) {
                 sendJson(array('error' => 'No file found or access denied!'));
                 exit;
             }
@@ -203,7 +203,7 @@ try {
         case 'download_file':
             $file = Webgrind_Config::exposeServerFile(get('file'));
 
-            if ($file === false) {
+            if (empty($file)) {
                 exit;
             }
 
