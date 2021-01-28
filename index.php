@@ -189,7 +189,7 @@ try {
         break;
 
         case 'download_link':
-            $file = Webgrind_Config::exposeServerFile(get('file'));
+            $file = Webgrind_Config::exposeServerFile(Webgrind_Config::xdebugOutputDir().get('file'));
 
             if (empty($file)) {
                 sendJson(array('error' => 'No file found or access denied!'));
@@ -201,7 +201,7 @@ try {
         break;
 
         case 'download_file':
-            $file = Webgrind_Config::exposeServerFile(get('file'));
+            $file = Webgrind_Config::exposeServerFile(Webgrind_Config::xdebugOutputDir().get('file'));
 
             if (empty($file)) {
                 exit;
