@@ -197,7 +197,7 @@ try {
             }
 
             $params = array('op' => 'download_file', 'file' => get('file'));
-            sendJson(array('done' => "?".http_build_query($params)));
+            sendJson(array('done' => '?'.http_build_query($params)));
         break;
 
         case 'download_file':
