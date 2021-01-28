@@ -97,12 +97,12 @@
 		}
 
 		function downloadFile() {
-			$.getJSON("index.php",
-				{'op':'download_link','file':currentDataFile},
+			$.getJSON('index.php',
+				{'op': 'download_link', 'file': currentDataFile},
 				function(data) {
 					if (data.error) {
-						$("#hello_message").html(data.error);
-						$("#hello_message").show();
+						$('#hello_message').html(data.error);
+						$('#hello_message').show();
 						return;
 					}
 
