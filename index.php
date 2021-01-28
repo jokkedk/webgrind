@@ -207,11 +207,11 @@ try {
                 exit;
             }
 
-            header("Cache-Control: public");
-            header("Content-Description: File Transfer");
-            header("Content-Disposition: attachment; filename=".get('file'));
-            header("Content-Type: text/plain");
-            header("Content-Transfer-Encoding: binary");
+            header('Cache-Control: public');
+            header('Content-Description: File Transfer');
+            header('Content-Disposition: attachment; filename='.get('file'));
+            header('Content-Type: text/plain');
+            header('Content-Transfer-Encoding: binary');
 
             readfile($file);
         break;
