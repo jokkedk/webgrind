@@ -34,6 +34,21 @@ class Webgrind_Reader
     const FUNCTIONINFORMATION_LENGTH = 6;
 
     /**
+     * Number of nanoseconds in 1 millisecond
+     */
+    const NANOSECONDS_IN_MILLISECOND = 1000000;
+
+    /**
+     * Number of nanoseconds in 1 microsecond
+     */
+    const NANOSECONDS_IN_MICROSECOND = 1000;
+
+    /**
+     * Number of microseconds in 1 millisecond
+     */
+    const MICROSECONDS_IN_MILLISECOND = 1000;
+
+    /**
      * Address of the headers in the data file
      *
      * @var int
@@ -61,6 +76,19 @@ class Webgrind_Reader
      */
     private $costFormat;
 
+    /**
+     * The divisor used to convert the raw time to milliseconds
+     *
+     * @var int
+     */
+    private $msecDivisor;
+
+    /**
+     * The divisor used to convert the raw time to microseconds
+     *
+     * @var int
+     */
+    private $usecDivisor;
 
     /**
      * Constructor
@@ -91,6 +119,22 @@ class Webgrind_Reader
         $this->functionPos = $this->read($functionCount);
         if (!is_array($this->functionPos))
             $this->functionPos = array($this->functionPos);
+        $eventsHeader = $this->getHeader('events');
+
+        // Keep current behavior and assume profiles are in microseconds by default
+        $this->msecDivisor = self::MICROSECONDS_IN_MILLISECOND;
+        $this->usecDivisor = 1;
+
+        // If the time unit is explicitly defined, then set the divisors appropriately.
+        if ($eventsHeader !== '' && preg_match('/Time_\(\d*([µn]s)\)/', $eventsHeader, $matches) === 1) {
+            if ($matches[1] === 'µs') {
+                $this->msecDivisor = self::MICROSECONDS_IN_MILLISECOND;
+                $this->usecDivisor = 1;
+            } elseif ($matches[1] === 'ns') {
+                $this->msecDivisor = self::NANOSECONDS_IN_MILLISECOND;
+                $this->usecDivisor = self::NANOSECONDS_IN_MICROSECOND;
+            }
+        }
     }
 
     /**
@@ -200,6 +244,7 @@ class Webgrind_Reader
                 'summary' => 0,
                 'cmd'     => '',
                 'creator' => '',
+                'events'  => '',
             );
             while ($line=$this->readLine()) {
                 $parts = explode(': ',$line);
@@ -236,11 +281,11 @@ class Webgrind_Reader
         }
 
         if ($format == 'msec') {
-            return round($cost/1000, 0);
+            return round($cost/$this->msecDivisor, 0);
         }
 
         // Default usec
-        return $cost;
+        return round($cost/$this->usecDivisor, 0);
     }
 
     private function read($numbers=1) {
