@@ -53,6 +53,7 @@ class Webgrind_Config extends Webgrind_MasterConfig {
      */
     static $fileUrlFormat = 'index.php?op=fileviewer&file=%1$s#line%2$d'; // Built in fileviewer
     //static $fileUrlFormat = 'txmt://open/?url=file://%1$s&line=%2$d'; // Textmate
+    //static $fileUrlFormat = 'vscode://file/%1$s:%2$d'; // VSCode
     //static $fileUrlFormat = 'file://%1$s'; // ?
 
     /**
@@ -145,7 +146,7 @@ class Webgrind_Config extends Webgrind_MasterConfig {
             $dir = ini_get('xdebug.profiler_output_dir');
 
         // If it's still empty, fall back to webgrind config
-        if (empty($dir)) 
+        if (empty($dir))
             $dir = Webgrind_Config::$profilerDir;
 
         return realpath($dir).'/';
