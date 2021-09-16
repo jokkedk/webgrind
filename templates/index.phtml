@@ -381,7 +381,6 @@
 				<div style="margin:0 70px">
 					<input type="checkbox" name="hideInternals" value="1" <?php echo (Webgrind_Config::$defaultHideInternalFunctions==1) ? 'checked' : ''?> id="hideInternals">
 					<label for="hideInternals">Hide PHP functions</label>
-					<input type="button" value="clear files" onclick="clearFiles()">
 				</div>
 			</form>
 		</div>
@@ -421,6 +420,8 @@
 		</div>
 		<h2 id="hello_message"><?php echo $welcome?></h2>
 		<div id="footer">
+			<input type="button" value="clear files" onclick="clearFiles()"><br><br>
+
 			<?php if(Webgrind_Config::$checkVersion):?>
 			<div id="version_info">&nbsp;</div>
 			<?php endif?>
