@@ -226,26 +226,21 @@ class Webgrind_Reader
      * @return int Formatted cost
      */
     function formatCost($cost, $format=null) {
-
-        // Check if the format uses nanoseconds (xdebug 3)
-        $events = $this->getHeader('events');
-        $nanoseconds = (stripos($events, 'Time_(10ns)') !== false);
-
-        if($nanoseconds)
-            $cost = round($cost / 100);
-
         if ($format==null)
             $format = $this->costFormat;
 
         if ($format == 'percent') {
             $total = $this->getHeader('summary');
             $result = ($total==0) ? 0 : ($cost*100)/$total;
-
-            // Convert nanoseconds if needed
-            if($nanoseconds)
-                $result = round($result * 100, 2);
-
             return number_format($result, 2, '.', '');
+        }
+
+        // Check for 10-nanosecond resolution (Xdebug 3).
+        // TODO: Time should be scaled in the preprocessor to avoid integer overflow.
+        // https://github.com/jokkedk/webgrind/pull/141#issuecomment-852623996
+        $events = $this->getHeader('events');
+        if (stripos($events, 'Time_(10ns)') !== false) {
+            $cost /= 100;
         }
 
         if ($format == 'msec') {
@@ -253,7 +248,7 @@ class Webgrind_Reader
         }
 
         // Default usec
-        return $cost;
+        return round($cost);
     }
 
     private function read($numbers=1) {
