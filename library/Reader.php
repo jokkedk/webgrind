@@ -226,12 +226,25 @@ class Webgrind_Reader
      * @return int Formatted cost
      */
     function formatCost($cost, $format=null) {
+
+        // Check if the format uses nanoseconds (xdebug 3)
+        $events = $this->getHeader('events');
+        $nanoseconds = (stripos($events, 'Time_(10ns)') !== false);
+
+        if($nanoseconds)
+            $cost = round($cost / 100);
+
         if ($format==null)
             $format = $this->costFormat;
 
         if ($format == 'percent') {
             $total = $this->getHeader('summary');
             $result = ($total==0) ? 0 : ($cost*100)/$total;
+
+            // Convert nanoseconds if needed
+            if($nanoseconds)
+                $result = round($result * 100, 2);
+
             return number_format($result, 2, '.', '');
         }
 
