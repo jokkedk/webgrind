@@ -23,6 +23,9 @@ class Webgrind_FileHandler
     }
 
     private function __construct() {
+        // Show profiles for index.php files if running inside the Docker image
+        //Webgrind_Config::$hideWebgrindProfiles = false; /** DOCKER:ENABLE **/
+
         // Get list of files matching the defined format
         $files = $this->getFiles(Webgrind_Config::xdebugOutputFormat(), Webgrind_Config::xdebugOutputDir());
 
