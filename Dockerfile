@@ -6,7 +6,8 @@ RUN apt-get update \
     && apt-get install -y build-essential \
     && cd /build \
     && make \
-    && sed 's/\(^ *\)\/\/\(.*DOCKER:ENABLE\)/\1\2/g' config.php > config-docker.php
+    && sed 's/\(^ *\)\/\/\(.*DOCKER:ENABLE\)/\1\2/g' config.php > config-docker.php \
+    && sed 's/\(^ *\)\/\/\(.*DOCKER:ENABLE\)/\1\2/g' index.php > index.php
 
 FROM php:7.4-apache
 WORKDIR /var/www/html
