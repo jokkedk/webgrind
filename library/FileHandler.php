@@ -96,8 +96,6 @@ class Webgrind_FileHandler
                 continue;
 
             $invokeUrl = rtrim($this->getInvokeUrl($absoluteFilename));
-            if (Webgrind_Config::$hideWebgrindProfiles && $invokeUrl == dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'index.php')
-                continue;
 
             $files[$file] = array('absoluteFilename' => $absoluteFilename,
                                   'mtime' => filemtime($absoluteFilename),
