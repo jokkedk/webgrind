@@ -2,7 +2,7 @@ Webgrind
 ========
 Webgrind is an [Xdebug](http://www.xdebug.org) profiling web frontend in PHP. It implements a subset of the features of [kcachegrind](https://kcachegrind.github.io/) and installs in seconds and works on all platforms. For quick'n'dirty optimizations it does the job. Here's a screenshot showing the output from profiling:
 
-[![](http://jokke.dk/media/2008-webgrind/webgrind_small.png)](http://jokke.dk/media/2008-webgrind/webgrind_large.png)
+<a href="https://jokkedk.github.io/webgrind/img/webgrind_2008_large.png"><img src="https://jokkedk.github.io/webgrind/img/webgrind_2008_large.png" height="384"></a>
 
 Features
 --------
