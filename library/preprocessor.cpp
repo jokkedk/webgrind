@@ -22,6 +22,9 @@
 #include <string>
 #include <vector>
 
+#include <cstring>
+#include "gzstream.h"
+
 /**
  * Fileformat version. Embedded in the output for parsers to use.
  */
@@ -122,7 +125,7 @@ public:
      */
     void parse(const char* inFile, const char* outFile, std::vector<std::string>& proxyFunctions)
     {
-        std::ifstream in(inFile);
+        igzstream in(inFile);
         std::ofstream out(outFile, std::ios::out | std::ios::binary | std::ios::trunc);
 
         std::map< int, std::queue<ProxyData> > proxyQueue;

@@ -15,6 +15,6 @@ clean:
 	rm -f $(OUT)
 
 $(OUT): $(SRCS)
-	$(CXX) -o $(OUT) -O2 -s $(SRCS)
+	$(CXX) -o $(OUT) -O2 -s $(SRCS) -lz
 
 .PHONY: all help clean
