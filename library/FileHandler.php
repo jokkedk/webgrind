@@ -55,14 +55,14 @@ class Webgrind_FileHandler
             return 'Webgrind internal';
 
         // Grab name of invoked file.
-        $fp = fopen($file, 'r');
+        $fp = gzopen($file, 'r');
         $invokeUrl = '';
         while ((($line = fgets($fp)) !== FALSE) && !strlen($invokeUrl)) {
             if (preg_match('/^cmd: (.*)$/', $line, $parts)) {
                 $invokeUrl = isset($parts[1]) ? $parts[1] : '';
             }
         }
-        fclose($fp);
+        gzclose($fp);
         if (!strlen($invokeUrl))
             $invokeUrl = 'Unknown!';
 

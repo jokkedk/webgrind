@@ -49,7 +49,7 @@ class Webgrind_Preprocessor
             return;
         }
 
-        $in = @fopen($inFile, 'rb');
+        $in = @gzopen($inFile, 'rb');
         if (!$in)
             throw new Exception('Could not open '.$inFile.' for reading.');
         $out = @fopen($outFile, 'w+b');
@@ -199,7 +199,7 @@ class Webgrind_Preprocessor
             fwrite($out, pack(self::NR_FORMAT, $address));
         }
 
-        fclose($in);
+        gzclose($in);
         fclose($out);
     }
 
