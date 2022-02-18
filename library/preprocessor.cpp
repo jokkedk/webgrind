@@ -22,6 +22,11 @@
 #include <string>
 #include <vector>
 
+#ifdef WITH_ZLIB
+#include <cstring>
+#include "gzstream.h"
+#endif
+
 /**
  * Fileformat version. Embedded in the output for parsers to use.
  */
@@ -122,7 +127,11 @@ public:
      */
     void parse(const char* inFile, const char* outFile, std::vector<std::string>& proxyFunctions)
     {
+#ifdef WITH_ZLIB
+        igzstream in(inFile);
+#else
         std::ifstream in(inFile);
+#endif
         std::ofstream out(outFile, std::ios::out | std::ios::binary | std::ios::trunc);
 
         std::map< int, std::queue<ProxyData> > proxyQueue;
