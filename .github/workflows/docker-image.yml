@@ -32,4 +32,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: jokkedk/webgrind:latest,${{ steps.meta.outputs.tags }}
