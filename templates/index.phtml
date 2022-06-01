@@ -292,7 +292,12 @@
 		function isNewer(oldV, newV) {
 			var oldP = parseVersion(oldV);
 			var newP = parseVersion(newV);
-			return newP[0] > oldP[0] || newP[1] > oldP[1] || newP[2] > oldP[2];
+			for (var i = 0; i < 3; ++i) {
+				if (newP[i] !== oldP[i]) {
+					return newP[i] > oldP[i];
+				}
+			}
+			return false;
 		}
 
 		function clearFiles() {
