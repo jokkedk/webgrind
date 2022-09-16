@@ -46,7 +46,7 @@
 
 struct ProxyData
 {
-    ProxyData(int _calledIndex, int _lnr, int _cost) :
+    ProxyData(int _calledIndex, int _lnr, unsigned int _cost) :
         calledIndex(_calledIndex), lnr(_lnr), cost(_cost)
     {}
 
@@ -63,8 +63,8 @@ struct CallData
 
     int functionNr;
     int line;
-    int callCount;
-    int summedCallCost;
+    unsigned int callCount;
+    unsigned int summedCallCost;
 };
 
 inline CallData& insertGetOrderedMap(int functionNr, int line, std::map<int, size_t>& keyMap, std::vector<CallData>& data)
@@ -81,7 +81,7 @@ inline CallData& insertGetOrderedMap(int functionNr, int line, std::map<int, siz
 
 struct FunctionData
 {
-    FunctionData(const std::string& _name, std::string& _filename, int _line, int _cost) :
+    FunctionData(const std::string& _name, std::string& _filename, int _line, unsigned int _cost) :
         name(_name),
         filename(_filename),
         line(_line),
@@ -93,9 +93,9 @@ struct FunctionData
     std::string name;
     std::string filename;
     int line;
-    int invocationCount;
-    int summedSelfCost;
-    int summedInclusiveCost;
+    unsigned int invocationCount;
+    unsigned int summedSelfCost;
+    unsigned int summedInclusiveCost;
     std::vector<CallData> calledFromInformation;
     std::vector<CallData> subCallInformation;
 
@@ -142,7 +142,7 @@ public:
         std::string line;
         std::string buffer;
         int lnr;
-        int cost;
+        unsigned int cost;
         int funcIndex;
 
         // Read information into memory
