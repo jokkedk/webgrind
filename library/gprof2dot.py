@@ -32,6 +32,8 @@ import collections
 import locale
 import json
 import fnmatch
+import gzip
+import io
 
 # Python 2.x/3.x compatibility
 if sys.version_info[0] >= 3:
@@ -3273,7 +3275,13 @@ def main():
         if not args:
             fp = sys.stdin
         elif PYTHON_3:
-            fp = open(args[0], 'rt', encoding='UTF-8')
+            fp = open(args[0], 'rb')
+            if fp.read(2) == b'\x1f\x8b':
+                fp.seek(0);
+                fp = gzip.open(fp, "r")
+            else:
+                fp.seek(0);
+            fp = io.TextIOWrapper(fp, encoding='Utf-8');
         else:
             fp = open(args[0], 'rt')
         parser = Format(fp)
