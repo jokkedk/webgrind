@@ -61,6 +61,10 @@ class Webgrind_Reader
      */
     private $costFormat;
 
+    /**
+     * File pointer resource for the file
+     */
+    private $fp;
 
     /**
      * Constructor
