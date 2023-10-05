@@ -28,6 +28,9 @@ set_time_limit(0);
 if (ini_get('date.timezone') == '')
     date_default_timezone_set( Webgrind_Config::$defaultTimezone );
 
+// Show profiles for index.php files if running inside the Docker image
+//Webgrind_Config::$hideWebgrindProfiles = false; /** DOCKER:ENABLE **/
+
 try {
     switch (get('op')) {
         case 'file_list':
