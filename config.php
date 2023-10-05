@@ -128,7 +128,7 @@ class Webgrind_Config extends Webgrind_MasterConfig {
         if ($outputName=='') // Ini value not defined
             $outputName = '/^cachegrind\.out\..+$/';
         else
-            $outputName = '/^'.preg_replace('/(%[^%])+/', '.+', $outputName).'$/';
+            $outputName = '/^'.preg_replace('/(%[^%])+/', '.+', str_replace('/', '\/', $outputName)).'$/';
         return $outputName;
     }
 
