@@ -17,7 +17,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            jokkedk/webgrind
+            ${{ vars.DOCKERHUB_REPOSITORY }}
           # generate Docker tags based on the following events/attributes
           tags: |
             type=semver,pattern={{version}}
@@ -32,4 +32,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: jokkedk/webgrind:latest,${{ steps.meta.outputs.tags }}
+          tags: ${{ vars.DOCKERHUB_REPOSITORY }}:latest,${{ steps.meta.outputs.tags }}
