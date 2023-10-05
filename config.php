@@ -10,7 +10,6 @@ class Webgrind_Config extends Webgrind_MasterConfig {
      * Automatically check if a newer version of webgrind is available for download
      */
     static $checkVersion = true;
-    static $hideWebgrindProfiles = true;
 
     /**
      * Writable dir for information storage.
