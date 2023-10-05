@@ -18,3 +18,4 @@ RUN apt-get update \
 COPY . /var/www/html
 COPY --from=builder /build/bin/preprocessor /var/www/html/bin/preprocessor
 COPY --from=builder /build/config-docker.php /var/www/html/config.php
+ENV XDEBUG_PROFILER_OUTPUT_NAME=""
