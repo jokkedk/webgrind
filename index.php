@@ -230,9 +230,18 @@ try {
                 unlink(Webgrind_Config::xdebugOutputDir().$file['filename']);
                 $format[] = preg_quote($file['filename'], '/');
             }
-            $files = preg_grep('/'.implode('|', $format).'/', scandir(Webgrind_Config::storageDir()));
+            $iterator = new RegexIterator (
+                new RecursiveIteratorIterator(
+                    new RecursiveDirectoryIterator(
+                        Webgrind_Config::storageDir(),
+                        FilesystemIterator::SKIP_DOTS | FilesystemIterator::CURRENT_AS_PATHNAME
+                    )
+                ),
+                '/'.implode('|', $format).'/'
+            );
+            $files = iterator_to_array($iterator, false);
             foreach ($files as $file) {
-                unlink(Webgrind_Config::storageDir().$file);
+                unlink($file);
             }
             sendJson(array('done' => true));
         break;
