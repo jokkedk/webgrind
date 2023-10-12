@@ -61,6 +61,13 @@ class Webgrind_Reader
      */
     private $costFormat;
 
+    /**
+     * Filehandle for opened datafile
+     *
+     * @var resource
+     */
+    private $fp;
+
 
     /**
      * Constructor
