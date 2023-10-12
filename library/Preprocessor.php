@@ -135,7 +135,9 @@ class Webgrind_Preprocessor
                     $cost = $data['cost'];
                 }
 
-                $functions[$index]['summedInclusiveCost'] += $cost;
+                if ($index !== $calledIndex) {
+                    $functions[$index]['summedInclusiveCost'] += $cost;
+                }
 
                 $key = $index.$lnr;
                 if (!isset($functions[$calledIndex]['calledFromInformation'][$key])) {

@@ -221,7 +221,9 @@ public:
                     pqItr->second.pop();
                 }
 
-                functions[funcIndex].summedInclusiveCost += cost;
+                if (funcIndex != calledIndex) {
+                    functions[funcIndex].summedInclusiveCost += cost;
+                }
 
                 CallData& calledFromData = functions[calledIndex].getCalledFromData(funcIndex, lnr);
 
