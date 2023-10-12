@@ -32,6 +32,7 @@ import collections
 import locale
 import json
 import fnmatch
+import gzip
 
 # Python 2.x/3.x compatibility
 if sys.version_info[0] >= 3:
@@ -3273,9 +3274,15 @@ def main():
         if not args:
             fp = sys.stdin
         elif PYTHON_3:
-            fp = open(args[0], 'rt', encoding='UTF-8')
+            if os.path.splitext(args[0])[1] == '.gz':
+                fp = gzip.open(args[0], 'rt', encoding='UTF-8')
+            else:
+                fp = open(args[0], 'rt', encoding='UTF-8')
         else:
-            fp = open(args[0], 'rt')
+            if os.path.splitext(args[0])[1] == '.gz':
+                fp = gzip.open(args[0], 'rt')
+            else:
+                fp = open(args[0], 'rt')
         parser = Format(fp)
     elif Format.multipleInput:
         if not args:
