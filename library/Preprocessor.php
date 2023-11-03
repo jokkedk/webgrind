@@ -46,7 +46,7 @@ class Webgrind_Preprocessor
     {
         $costPattern = $readMemory ? "%*d %d" : "%d";
         // If possible, use the binary preprocessor
-        if (self::binaryParse($inFile, $outFile)) {
+        if (self::binaryParse($inFile, $outFile, $readMemory)) {
             return;
         }
 
@@ -257,14 +257,14 @@ class Webgrind_Preprocessor
      * @param string $outFile File to write preprocessed data to
      * @return bool True if binary preprocessor was executed
      */
-    static function binaryParse($inFile, $outFile)
+    static function binaryParse($inFile, $outFile, $readMemory)
     {
         $preprocessor = Webgrind_Config::getBinaryPreprocessor();
         if (!is_executable($preprocessor)) {
             return false;
         }
 
-        $cmd = escapeshellarg($preprocessor).' '.escapeshellarg($inFile).' '.escapeshellarg($outFile);
+        $cmd = escapeshellarg($preprocessor).' '.escapeshellarg($inFile).' '.escapeshellarg($outFile).' '.($readMemory ? '1' : '0');
         foreach (Webgrind_Config::$proxyFunctions as $function) {
             $cmd .= ' '.escapeshellarg($function);
         }
