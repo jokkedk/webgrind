@@ -231,6 +231,10 @@ class Webgrind_Reader
         if ($format==null)
             $format = $this->costFormat;
 
+        if ($format == 'bytes') {
+           return number_format($cost, 0, '.', ',');
+        }
+
         if ($format == 'percent') {
             $total = $this->getHeader('summary');
             $result = ($total==0) ? 0 : ($cost*100)/$total;

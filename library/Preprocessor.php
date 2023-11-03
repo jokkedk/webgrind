@@ -42,8 +42,9 @@ class Webgrind_Preprocessor
      * @param string $outFile File to write preprocessed data to
      * @return void
      */
-    static function parse($inFile, $outFile)
+    static function parse($inFile, $outFile, $readMemory = false)
     {
+        $costPattern = $readMemory ? "%*d %d" : "%d";
         // If possible, use the binary preprocessor
         if (self::binaryParse($inFile, $outFile)) {
             return;
@@ -74,17 +75,17 @@ class Webgrind_Preprocessor
                     $buffer = fgets($in);
                     if(strlen($buffer) > 0 && ctype_digit($buffer[0])) {
                         // Cost line
-                        sscanf($buffer, "%d %d", $lnr, $cost);
+                        sscanf($buffer, "%d $costPattern", $lnr, $cost);
                     } else {
                         // Special case for ENTRY_POINT - it contains summary header
                         $headers[] = fgets($in);
                         fgets($in);
                         // Cost line
-                        fscanf($in, "%d %d", $lnr, $cost);
+                        fscanf($in, "%d $costPattern", $lnr, $cost);
                     }
                 } else {
                     // Cost line
-                    fscanf($in, "%d %d", $lnr, $cost);
+                    fscanf($in, "%d $costPattern", $lnr, $cost);
                 }
 
                 if (!isset($functionNames[$function])) {
@@ -114,7 +115,7 @@ class Webgrind_Preprocessor
                 // Skip call line
                 fgets($in);
                 // Cost line
-                fscanf($in, "%d %d", $lnr, $cost);
+                fscanf($in, "%d $costPattern", $lnr, $cost);
 
                 // Current function is a proxy -> skip
                 if (isset($proxyQueue[$index])) {
