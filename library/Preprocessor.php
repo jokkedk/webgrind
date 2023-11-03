@@ -139,7 +139,12 @@ class Webgrind_Preprocessor
 
                 $key = $index.$lnr;
                 if (!isset($functions[$calledIndex]['calledFromInformation'][$key])) {
-                    $functions[$calledIndex]['calledFromInformation'][$key] = array('functionNr'=>$index,'line'=>$lnr,'callCount'=>0,'summedCallCost'=>0);
+                    $functions[$calledIndex]['calledFromInformation'][$key] = array(
+                        'functionNr'=>$index,
+                        'line'=>$lnr,
+                        'callCount'=>0,
+                        'summedCallCost'=>0,
+                    );
                 }
 
                 $functions[$calledIndex]['calledFromInformation'][$key]['callCount']++;
@@ -147,7 +152,12 @@ class Webgrind_Preprocessor
 
                 $calledKey = $calledIndex.$lnr;
                 if (!isset($functions[$index]['subCallInformation'][$calledKey])) {
-                    $functions[$index]['subCallInformation'][$calledKey] = array('functionNr'=>$calledIndex,'line'=>$lnr,'callCount'=>0,'summedCallCost'=>0);
+                    $functions[$index]['subCallInformation'][$calledKey] = array(
+                        'functionNr'=>$calledIndex,
+                        'line'=>$lnr,
+                        'callCount'=>0,
+                        'summedCallCost'=>0,
+                    );
                 }
 
                 $functions[$index]['subCallInformation'][$calledKey]['callCount']++;
@@ -171,14 +181,27 @@ class Webgrind_Preprocessor
             $functionAddresses[] = ftell($out);
             $calledFromCount = sizeof($function['calledFromInformation']);
             $subCallCount = sizeof($function['subCallInformation']);
-            fwrite($out, pack(self::NR_FORMAT.'*', $function['line'], $function['summedSelfCost'], $function['summedInclusiveCost'], $function['invocationCount'], $calledFromCount, $subCallCount));
+            fwrite($out, pack(self::NR_FORMAT.'*',
+                $function['line'],
+                $function['summedSelfCost'],
+                $function['summedInclusiveCost'],
+                $function['invocationCount'],
+                $calledFromCount, $subCallCount));
             // Write called from information
             foreach ((array)$function['calledFromInformation'] as $call) {
-                fwrite($out, pack(self::NR_FORMAT.'*', $call['functionNr'], $call['line'], $call['callCount'], $call['summedCallCost']));
+                fwrite($out, pack(self::NR_FORMAT.'*',
+                    $call['functionNr'],
+                    $call['line'],
+                    $call['callCount'],
+                    $call['summedCallCost']));
             }
             // Write sub call information
             foreach ((array)$function['subCallInformation'] as $call) {
-                fwrite($out, pack(self::NR_FORMAT.'*', $call['functionNr'], $call['line'], $call['callCount'], $call['summedCallCost']));
+                fwrite($out, pack(self::NR_FORMAT.'*',
+                    $call['functionNr'],
+                    $call['line'],
+                    $call['callCount'],
+                    $call['summedCallCost']));
             }
 
             fwrite($out, $function['filename']."\n".$functionNames[$index]."\n");
