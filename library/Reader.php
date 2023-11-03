@@ -61,6 +61,8 @@ class Webgrind_Reader
      */
     private $costFormat;
 
+    private $fp;
+
 
     /**
      * Constructor
