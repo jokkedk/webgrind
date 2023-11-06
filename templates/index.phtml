@@ -161,8 +161,9 @@
 			$("#"+idPrefix+functionNr).tablesorter({
 				widgets: ['zebra'],
 				headers: {
+					2: { sorter: "floating" },
 					3: {
-						sorter: false
+						sorter: "floating"
 					}
 				}
 			});
@@ -330,7 +331,10 @@
 					},
 					2: {
 						sorter: false
-					}
+					},
+					3: { sorter: "floating" },
+					4: { sorter: "floating" },
+					5: { sorter: "floating" },
 				}
 			});
 			$("#function_table").bind("sortStart",sortBlock).bind("sortEnd",$.unblockUI);
