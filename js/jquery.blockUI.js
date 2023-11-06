@@ -12,6 +12,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
  (function($) {
+    $.browser = {};
 /**
  * blockUI provides a mechanism for blocking user interaction with a page (or parts of a page).
  * This can be an effective way to simulate synchronous behavior during ajax operations without

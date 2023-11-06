@@ -61,6 +61,8 @@ class Webgrind_Reader
      */
     private $costFormat;
 
+    private $fp;
+
 
     /**
      * Constructor
@@ -228,6 +230,10 @@ class Webgrind_Reader
     function formatCost($cost, $format=null) {
         if ($format==null)
             $format = $this->costFormat;
+
+        if ($format == 'bytes') {
+           return number_format($cost, 0, '.', ',');
+        }
 
         if ($format == 'percent') {
             $total = $this->getHeader('summary');

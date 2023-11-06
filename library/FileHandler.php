@@ -11,7 +11,7 @@ class Webgrind_FileHandler
 {
 
     private static $singleton = null;
-
+    private $files;
 
     /**
      * @return Singleton instance of the filehandler
@@ -160,12 +160,14 @@ class Webgrind_FileHandler
      * @return Webgrind_Reader Reader for $file
      */
     public function getTraceReader($file, $costFormat) {
-        $prepFile = Webgrind_Config::storageDir().$file.Webgrind_Config::$preprocessedSuffix;
+        $readMemory = $costFormat === 'bytes';
+        $memorySuffix = $readMemory ? ".memory" : "";
+        $prepFile = Webgrind_Config::storageDir().$file.$memorySuffix.Webgrind_Config::$preprocessedSuffix;
         try {
             $r = new Webgrind_Reader($prepFile, $costFormat);
         } catch (Exception $e) {
             // Preprocessed file does not exist or other error
-            Webgrind_Preprocessor::parse(Webgrind_Config::xdebugOutputDir().$file, $prepFile);
+            Webgrind_Preprocessor::parse(Webgrind_Config::xdebugOutputDir().$file, $prepFile, $readMemory);
             $r = new Webgrind_Reader($prepFile, $costFormat);
         }
         return $r;

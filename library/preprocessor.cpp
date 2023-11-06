@@ -125,7 +125,7 @@ public:
      * @param outFile File to write preprocessed data to
      * @param proxyFunctions Functions to skip, treated as proxies
      */
-    void parse(const char* inFile, const char* outFile, std::vector<std::string>& proxyFunctions)
+    void parse(const char* inFile, const char* outFile, bool readMemory, std::vector<std::string>& proxyFunctions)
     {
 #ifdef WITH_ZLIB
         igzstream in(inFile);
@@ -160,6 +160,7 @@ public:
                         // Cost line
                         std::istringstream bufferReader(buffer);
                         bufferReader >> lnr >> cost;
+                        if (readMemory) bufferReader >> cost;
                     } else {
                         // Special case for ENTRY_POINT - it contains summary header
                         std::getline(in, buffer);
@@ -167,11 +168,13 @@ public:
                         std::getline(in, buffer);
                         // Cost line
                         in >> lnr >> cost;
+                        if (readMemory) in >> cost;
                         std::getline(in, buffer);
                     }
                 } else {
                     // Cost line
                     in >> lnr >> cost;
+                    if (readMemory) in >> cost;
                     std::getline(in, buffer);
                 }
 
@@ -200,6 +203,7 @@ public:
                 std::getline(in, buffer);
                 // Cost line
                 in >> lnr >> cost;
+                if (readMemory) in >> cost;
                 std::getline(in, buffer);
 
                 int calledIndex = funcIndexes[funcCompressedId];
@@ -372,7 +376,7 @@ private:
 
 int main(int argc, char* argv[])
 {
-    if (argc < 3) {
+    if (argc < 4) {
         return 1;
     }
     std::vector<std::string> proxyFunctions;
@@ -381,6 +385,8 @@ int main(int argc, char* argv[])
     }
     std::sort(proxyFunctions.begin(), proxyFunctions.end());
     Webgrind_Preprocessor processor;
-    processor.parse(argv[1], argv[2], proxyFunctions);
+
+    bool useMemory = argv[3] == std::string("1");
+    processor.parse(argv[1], argv[2], useMemory, proxyFunctions);
     return 0;
 }
