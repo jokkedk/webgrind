@@ -161,8 +161,9 @@
 			$("#"+idPrefix+functionNr).tablesorter({
 				widgets: ['zebra'],
 				headers: {
+					2: { sorter: "floating" },
 					3: {
-						sorter: false
+						sorter: "floating"
 					}
 				}
 			});
@@ -330,7 +331,10 @@
 					},
 					2: {
 						sorter: false
-					}
+					},
+					3: { sorter: "floating" },
+					4: { sorter: "floating" },
+					5: { sorter: "floating" },
 				}
 			});
 			$("#function_table").bind("sortStart",sortBlock).bind("sortEnd",$.unblockUI);
@@ -386,6 +390,7 @@
 						<option value="percent" <?php echo (Webgrind_Config::$defaultCostformat=='percent') ? 'selected' : ''?>>percent</option>
 						<option value="msec" <?php echo (Webgrind_Config::$defaultCostformat=='msec') ? 'selected' : ''?>>milliseconds</option>
 						<option value="usec" <?php echo (Webgrind_Config::$defaultCostformat=='usec') ? 'selected' : ''?>>microseconds</option>
+						<option value="bytes" <?php echo (Webgrind_Config::$defaultCostformat=='bytes') ? 'selected' : ''?>>bytes of memory</option>
 					</select>
 				</div>
 				<div style="float:right;">

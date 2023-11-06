@@ -42,10 +42,11 @@ class Webgrind_Preprocessor
      * @param string $outFile File to write preprocessed data to
      * @return void
      */
-    static function parse($inFile, $outFile)
+    static function parse($inFile, $outFile, $readMemory = false)
     {
+        $costPattern = $readMemory ? "%*d %d" : "%d";
         // If possible, use the binary preprocessor
-        if (self::binaryParse($inFile, $outFile)) {
+        if (self::binaryParse($inFile, $outFile, $readMemory)) {
             return;
         }
 
@@ -74,17 +75,17 @@ class Webgrind_Preprocessor
                     $buffer = fgets($in);
                     if(strlen($buffer) > 0 && ctype_digit($buffer[0])) {
                         // Cost line
-                        sscanf($buffer, "%d %d", $lnr, $cost);
+                        sscanf($buffer, "%d $costPattern", $lnr, $cost);
                     } else {
                         // Special case for ENTRY_POINT - it contains summary header
                         $headers[] = fgets($in);
                         fgets($in);
                         // Cost line
-                        fscanf($in, "%d %d", $lnr, $cost);
+                        fscanf($in, "%d $costPattern", $lnr, $cost);
                     }
                 } else {
                     // Cost line
-                    fscanf($in, "%d %d", $lnr, $cost);
+                    fscanf($in, "%d $costPattern", $lnr, $cost);
                 }
 
                 if (!isset($functionNames[$function])) {
@@ -114,7 +115,7 @@ class Webgrind_Preprocessor
                 // Skip call line
                 fgets($in);
                 // Cost line
-                fscanf($in, "%d %d", $lnr, $cost);
+                fscanf($in, "%d $costPattern", $lnr, $cost);
 
                 // Current function is a proxy -> skip
                 if (isset($proxyQueue[$index])) {
@@ -139,7 +140,12 @@ class Webgrind_Preprocessor
 
                 $key = $index.$lnr;
                 if (!isset($functions[$calledIndex]['calledFromInformation'][$key])) {
-                    $functions[$calledIndex]['calledFromInformation'][$key] = array('functionNr'=>$index,'line'=>$lnr,'callCount'=>0,'summedCallCost'=>0);
+                    $functions[$calledIndex]['calledFromInformation'][$key] = array(
+                        'functionNr'=>$index,
+                        'line'=>$lnr,
+                        'callCount'=>0,
+                        'summedCallCost'=>0,
+                    );
                 }
 
                 $functions[$calledIndex]['calledFromInformation'][$key]['callCount']++;
@@ -147,7 +153,12 @@ class Webgrind_Preprocessor
 
                 $calledKey = $calledIndex.$lnr;
                 if (!isset($functions[$index]['subCallInformation'][$calledKey])) {
-                    $functions[$index]['subCallInformation'][$calledKey] = array('functionNr'=>$calledIndex,'line'=>$lnr,'callCount'=>0,'summedCallCost'=>0);
+                    $functions[$index]['subCallInformation'][$calledKey] = array(
+                        'functionNr'=>$calledIndex,
+                        'line'=>$lnr,
+                        'callCount'=>0,
+                        'summedCallCost'=>0,
+                    );
                 }
 
                 $functions[$index]['subCallInformation'][$calledKey]['callCount']++;
@@ -171,14 +182,27 @@ class Webgrind_Preprocessor
             $functionAddresses[] = ftell($out);
             $calledFromCount = sizeof($function['calledFromInformation']);
             $subCallCount = sizeof($function['subCallInformation']);
-            fwrite($out, pack(self::NR_FORMAT.'*', $function['line'], $function['summedSelfCost'], $function['summedInclusiveCost'], $function['invocationCount'], $calledFromCount, $subCallCount));
+            fwrite($out, pack(self::NR_FORMAT.'*',
+                $function['line'],
+                $function['summedSelfCost'],
+                $function['summedInclusiveCost'],
+                $function['invocationCount'],
+                $calledFromCount, $subCallCount));
             // Write called from information
             foreach ((array)$function['calledFromInformation'] as $call) {
-                fwrite($out, pack(self::NR_FORMAT.'*', $call['functionNr'], $call['line'], $call['callCount'], $call['summedCallCost']));
+                fwrite($out, pack(self::NR_FORMAT.'*',
+                    $call['functionNr'],
+                    $call['line'],
+                    $call['callCount'],
+                    $call['summedCallCost']));
             }
             // Write sub call information
             foreach ((array)$function['subCallInformation'] as $call) {
-                fwrite($out, pack(self::NR_FORMAT.'*', $call['functionNr'], $call['line'], $call['callCount'], $call['summedCallCost']));
+                fwrite($out, pack(self::NR_FORMAT.'*',
+                    $call['functionNr'],
+                    $call['line'],
+                    $call['callCount'],
+                    $call['summedCallCost']));
             }
 
             fwrite($out, $function['filename']."\n".$functionNames[$index]."\n");
@@ -233,14 +257,14 @@ class Webgrind_Preprocessor
      * @param string $outFile File to write preprocessed data to
      * @return bool True if binary preprocessor was executed
      */
-    static function binaryParse($inFile, $outFile)
+    static function binaryParse($inFile, $outFile, $readMemory)
     {
         $preprocessor = Webgrind_Config::getBinaryPreprocessor();
         if (!is_executable($preprocessor)) {
             return false;
         }
 
-        $cmd = escapeshellarg($preprocessor).' '.escapeshellarg($inFile).' '.escapeshellarg($outFile);
+        $cmd = escapeshellarg($preprocessor).' '.escapeshellarg($inFile).' '.escapeshellarg($outFile).' '.($readMemory ? '1' : '0');
         foreach (Webgrind_Config::$proxyFunctions as $function) {
             $cmd .= ' '.escapeshellarg($function);
         }
