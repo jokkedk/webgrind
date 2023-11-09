@@ -18,7 +18,7 @@ Installation
 ------------
   1. Download webgrind
   2. Unzip package to favourite path accessible by webserver.
-  3. Load webgrind in browser and start profiling
+  3. Load webgrind in browser and start profiling by clicking the "update" button in the top right corner
 
 Alternatively, on PHP 5.4+ run the application using the PHP built-in server
 with the command `composer serve` or `php -S 0.0.0.0:8080 index.php` if you
