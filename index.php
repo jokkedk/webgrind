@@ -16,7 +16,12 @@ class Webgrind_MasterConfig
     static $webgrindVersion = '1.9.3';
 }
 
-require './config.php';
+// Local config?
+if (file_exists('./config.local.php')) {
+	require './config.local.php';
+} else {
+	require './config.php';
+}
 require './library/FileHandler.php';
 
 // TODO: Errorhandling:
