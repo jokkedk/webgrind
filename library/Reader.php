@@ -60,6 +60,13 @@ class Webgrind_Reader
      * @var string
      */
     private $costFormat;
+     
+   /**
+     * File pointer resource.
+     *
+     * @var resource File pointer resource on success
+     */
+    private $fp;
 
 
     /**
