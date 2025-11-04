@@ -397,7 +397,7 @@
 				
 				var l = list.length; 
 				for(var i=0; i < l; i++) {
-					h[list[i][0]].addClass(css[list[i][1]]);
+					h[list[i][0]]?.addClass(css[list[i][1]]);
 				}
 			}
 			
