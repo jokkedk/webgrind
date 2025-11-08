@@ -91,7 +91,7 @@ class Webgrind_Config extends Webgrind_MasterConfig {
      *   %s - size of trace file
      *   %m - modified time of file name (in dateFormat specified above)
      */
-    static $traceFileListFormat = '%i (%f) [%s]';
+    static $traceFileListFormat = '[%s] %m - %f';
 
     /**
      * Proxy functions are stepped over transparently. Functions listed here
