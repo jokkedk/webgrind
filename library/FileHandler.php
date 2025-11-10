@@ -11,7 +11,7 @@ class Webgrind_FileHandler
 {
 
     private static $singleton = null;
-
+    private $files;
 
     /**
      * @return Singleton instance of the filehandler
