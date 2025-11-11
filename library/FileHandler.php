@@ -75,7 +75,16 @@ class Webgrind_FileHandler
      * @return array Files
      */
     private function getFiles($format, $dir) {
-        $list = preg_grep($format,scandir($dir));
+        // Since RecursiveDirectoryIterator returns absolute path - we need to add $dir and escape slashes
+        $format = str_replace('/^', "/^" . str_replace('/', '\/', $dir), $format);
+        $iterator = new RegexIterator (
+            new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS | FilesystemIterator::CURRENT_AS_PATHNAME)
+            ),
+            $format
+        );
+
+        $list = iterator_to_array($iterator, false);
         $files = array();
 
         # Moved this out of loop to run faster
@@ -85,7 +94,9 @@ class Webgrind_FileHandler
             $selfFile = '';
 
         foreach ($list as $file) {
-            $absoluteFilename = $dir.$file;
+            $absoluteFilename = $file;
+            //getting back relative path
+            $file = preg_replace('#^'.$dir.'#', '', $file, 1);
 
             // Exclude webgrind preprocessed files
             if (false !== strstr($absoluteFilename, Webgrind_Config::$preprocessedSuffix))
